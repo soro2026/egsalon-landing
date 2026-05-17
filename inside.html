@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EG SALON · Inside</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Noto+Serif+KR:wght@300;400&family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: #0a0a0a;
+    color: #d4d4d4;
+    font-family: 'Open Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ============================================
+     배경 별 (상단 검은 우주 영역에만)
+     ============================================ */
+  .bg-star {
+    position: absolute;
+    border-radius: 50%;
+    background: #00f6ff;
+    box-shadow: 0 0 4px rgba(0, 246, 255, 0.5);
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ============================================
+     섹션 1 — 7결 manifesto (검은 우주)
+     ============================================ */
+  .section-manifesto {
+    position: relative;
+    background: #0a0a0a;
+    padding: 6rem 2rem 7rem;
+    z-index: 1;
+  }
+
+  .manifesto-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 6rem;
+  }
+
+  .header-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    color: #ffffff;
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+  }
+
+  .header-sub {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.85rem, 1.1vw, 1rem);
+    color: #888888;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+  }
+
+  .header-line {
+    width: 60px;
+    height: 1px;
+    background: rgba(200, 200, 200, 0.3);
+    margin: 2rem auto 1.5rem;
+  }
+
+  .header-ko {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 300;
+    font-size: clamp(0.85rem, 1.1vw, 1rem);
+    color: #afafaf;
+    letter-spacing: 0.15em;
+    line-height: 1.8;
+  }
+
+  .nodes {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .node {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 2.5rem;
+    align-items: center;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(80, 80, 80, 0.25);
+  }
+
+  .node:last-child {
+    border-bottom: none;
+  }
+
+  .node-letter {
+    width: 100%;
+    max-width: 130px;
+    height: auto;
+    justify-self: center;
+  }
+
+  .node-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .node-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+    color: #ffffff;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+  }
+
+  .node-ko {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 300;
+    font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+    color: #c4c4c4;
+    letter-spacing: 0.05em;
+    line-height: 1.8;
+  }
+
+  /* ============================================
+     섹션 2 — 작업장 (화이트 / 크림톤)
+     공정율 + 오늘 시각 + 스파이럴 갤러리
+     ============================================ */
+  .section-workshop {
+    position: relative;
+    background: #fafaf5; /* 크림톤 화이트 */
+    color: #1a1a1a;
+    padding: 5rem 2rem 6rem;
+    overflow: hidden;
+  }
+
+  .workshop-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+  }
+
+  /* 상단 — 공정율 + 오늘 날짜 */
+  .workshop-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .workshop-label {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.75rem, 1vw, 0.9rem);
+    color: #666666;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .progress-row {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 0.3rem;
+    margin-bottom: 2rem;
+  }
+
+  .progress-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(4rem, 9vw, 8rem);
+    color: #1a1a1a;
+    line-height: 1;
+  }
+
+  .progress-percent {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    color: #666666;
+    line-height: 1;
+  }
+
+  .workshop-ko {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 300;
+    font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+    color: #444444;
+    letter-spacing: 0.1em;
+    line-height: 1.9;
+    margin-bottom: 0.5rem;
+  }
+
+  .workshop-time {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.8rem, 1vw, 0.95rem);
+    color: #888888;
+    letter-spacing: 0.25em;
+    margin-top: 0.8rem;
+  }
+
+  .workshop-line {
+    width: 60px;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.2);
+    margin: 2.5rem auto 0;
+  }
+
+  /* ============================================
+     섹션 3 — 스파이럴 갤러리
+     ============================================ */
+  .section-spiral {
+    position: relative;
+    background: #fafaf5;
+    width: 100%;
+    height: 100vh;
+    min-height: 600px;
+    overflow: hidden;
+  }
+
+  #spiral-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    outline: none;
+    cursor: grab;
+  }
+
+  #spiral-canvas:active {
+    cursor: grabbing;
+  }
+
+  /* 스파이럴 안내 — 좌하단 */
+  .spiral-hint {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: #444444;
+    letter-spacing: 0.15em;
+    z-index: 5;
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  /* 우상단 살롱 라벨 */
+  .spiral-label {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    text-align: right;
+    z-index: 5;
+  }
+
+  .spiral-label-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1.2rem, 2vw, 1.8rem);
+    color: #1a1a1a;
+    letter-spacing: 0.05em;
+  }
+
+  .spiral-label-sub {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    font-size: 0.75rem;
+    color: #666666;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+  }
+
+  /* ============================================
+     섹션 4 — 이메일 신청 (크림톤 이어짐)
+     ============================================ */
+  .section-email {
+    background: #fafaf5;
+    padding: 5rem 2rem 7rem;
+    text-align: center;
+    position: relative;
+  }
+
+  .email-inner {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .email-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+    color: #1a1a1a;
+    letter-spacing: 0.03em;
+    margin-bottom: 1.5rem;
+    line-height: 1.3;
+  }
+
+  .email-ko {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 300;
+    font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+    color: #555555;
+    letter-spacing: 0.05em;
+    line-height: 1.9;
+    margin-bottom: 3rem;
+  }
+
+  .email-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .email-input {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.8rem 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 300;
+    color: #1a1a1a;
+    letter-spacing: 0.05em;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+
+  .email-input:focus {
+    border-bottom-color: #1a1a1a;
+  }
+
+  .email-input::placeholder {
+    color: #aaaaaa;
+    font-style: italic;
+  }
+
+  .email-submit {
+    margin-top: 1.5rem;
+    padding: 0.8rem 2.2rem;
+    background: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.35);
+    color: #1a1a1a;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    font-size: 0.9rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  .email-submit:hover {
+    background: #1a1a1a;
+    color: #fafaf5;
+  }
+
+  /* ============================================
+     반응형
+     ============================================ */
+  @media (max-width: 768px) {
+    .node {
+      grid-template-columns: 80px 1fr;
+      gap: 1.2rem;
+      padding-bottom: 2rem;
+    }
+    .node-letter {
+      max-width: 80px;
+    }
+    .nodes {
+      gap: 2rem;
+    }
+    .section-manifesto, .section-workshop, .section-email {
+      padding: 3rem 1.2rem;
+    }
+    .spiral-label {
+      top: 15px;
+      right: 15px;
+    }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ============================================
+     섹션 1 — 7결 manifesto
+     ============================================ -->
+<section class="section-manifesto" id="manifesto">
+
+  <div class="manifesto-inner">
+
+    <header class="header">
+      <div class="header-title">Seven Notes</div>
+      <div class="header-sub">A Salon, Becoming</div>
+      <div class="header-line"></div>
+      <div class="header-ko">
+        E · G · S · A · L · O · N<br>
+        살롱 이름의 일곱 글자가, 일곱 영혼이 되었습니다
+      </div>
+    </header>
+
+    <div class="nodes">
+      <div class="node">
+        <img src="e.png" alt="E" class="node-letter">
+        <div class="node-content">
+          <div class="node-en">Eyes on Useless</div>
+          <div class="node-ko">쓸모없지만 눈부시게 아름다운 그 무엇을, 우리는 잊고 살았다</div>
+        </div>
+      </div>
+
+      <div class="node">
+        <img src="g.png" alt="G" class="node-letter">
+        <div class="node-content">
+          <div class="node-en">In Good Company</div>
+          <div class="node-ko">한나 아렌트, 페렉, 케이지, 카프카 — 이 이름들이 옆에 머무는 저녁이 있다</div>
+        </div>
+      </div>
+
+      <div class="node">
+        <img src="s.png" alt="S" class="node-letter">
+        <div class="node-content">
+          <div class="node-en">Slow River</div>
+          <div class="node-ko">30년이 흐르는 강물의 첫 한 굽이에서 만난다</div>
+        </div>
+      </div>
+
+      <div class="node">
+        <img src="a.png" alt="A" class="node-letter">
+        <div class="node-content">
+          <div class="node-en">Another Path</div>
+          <div class="node-ko">알고리즘이 모두에게 같은 것을 보여주는 시대, 어떤 이들은 조용히 다른 길로 걸어 들어간다</div>
+        </div>
+      </div>
+
+      <div class="node">
+        <img src="l.png" alt="L" class="node-letter">
+        <div class="node-content">
+          <div class="node-en">Less Kind, More True</div>
+          <div class="node-ko">친절하지 않아도 괜찮다. 옆에 앉음으로 충분하다</div>
+        </div>
+      </div>
+
+      <div class="node">
+        <img src="o.png" alt="O" class="node-letter">
+        <div class="node-content">
+          <div class="node-en">Of Two Hands</div>
+          <div class="node-ko">낮에는 흙을 파고, 밤에는 책장을 넘기는 사람들이 있다</div>
+        </div>
+      </div>
+
+      <div class="node">
+        <img src="n.png" alt="N" class="node-letter">
+        <div class="node-content">
+          <div class="node-en">Nothing Rushes</div>
+          <div class="node-ko">모든 것이 빠르게 변하는 피로한 시대, 조금씩 무르익고 싶은 사람들의 살롱</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ============================================
+     섹션 2 — 작업장 (공정율 + 오늘 시각)
+     ============================================ -->
+<section class="section-workshop">
+  <div class="workshop-inner">
+    <div class="workshop-header">
+      <div class="workshop-label">A Salon, Becoming</div>
+      <div class="progress-row">
+        <span class="progress-number" id="progressNumber">0</span><span class="progress-percent">%</span>
+      </div>
+      <div class="workshop-ko">살롱이 자라고 있습니다</div>
+      <div class="workshop-time" id="workshopTime">— 2026.05.17 (일) 20:00 —</div>
+      <div class="workshop-line"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     섹션 3 — 스파이럴 갤러리
+     ============================================ -->
+<section class="section-spiral">
+  <div class="spiral-label">
+    <div class="spiral-label-title">Inside the Salon</div>
+    <div class="spiral-label-sub">Today's Workshop</div>
+  </div>
+  <canvas id="spiral-canvas"></canvas>
+  <div class="spiral-hint" id="spiralHint" onclick="this.style.display='none'">
+    scroll · drag · 클릭하여 숨기기
+  </div>
+</section>
+
+<!-- ============================================
+     섹션 4 — 이메일 신청
+     ============================================ -->
+<section class="section-email">
+  <div class="email-inner">
+    <div class="email-title">살롱이 자라는 한 호흡씩,<br>가장 먼저 전해드립니다</div>
+    <div class="email-ko">
+      30년이 흐를 강물의 첫 한 굽이에서 — 우편함에 살며시 도착하는 결로.<br>
+      서두름 없이, 격주로 한 통.
+    </div>
+    <form class="email-form" onsubmit="event.preventDefault(); handleSubmit();">
+      <input type="email" class="email-input" id="emailInput" placeholder="당신의 우편함 한 곳" required>
+      <button type="submit" class="email-submit">Step Inside</button>
+    </form>
+  </div>
+</section>
+
+<!-- ============================================
+     설정 (공정율 + 사진 목록 — 한 곳에서 갱신)
+     ============================================ -->
+<script>
+  // ============================================
+  // 🌹 EG SALON 갱신 설정 — 여기만 바꾸면 됨
+  // ============================================
+  const EG_CONFIG = {
+    // 공정율 — 매번 갱신 시 이 숫자만 바꾸세요 (0~100)
+    progress: 64,
+
+    // 사진 목록 — 같은 폴더의 파일명. 24장 권장.
+    // 사진 추가/교체 시 이 배열만 바꾸세요.
+    images: [
+      'eg_spiral_01.jpg',
+      'eg_spiral_02.jpg',
+      'eg_spiral_03.jpg',
+      'eg_spiral_04.jpg',
+      'eg_spiral_05.jpg',
+      'eg_spiral_06.jpg',
+      'eg_spiral_07.jpg',
+      'eg_spiral_08.jpg',
+      'eg_spiral_09.jpg',
+      'eg_spiral_10.jpg',
+      'eg_spiral_11.jpg',
+      'eg_spiral_12.jpg',
+      'eg_spiral_13.jpg',
+      'eg_spiral_14.jpg',
+      'eg_spiral_15.jpg',
+      'eg_spiral_16.jpg',
+      'eg_spiral_17.jpg',
+      'eg_spiral_18.jpg',
+      'eg_spiral_19.jpg',
+      'eg_spiral_20.jpg',
+      'eg_spiral_21.jpg',
+      'eg_spiral_22.jpg',
+      'eg_spiral_23.jpg',
+      'eg_spiral_24.jpg'
+    ]
+  };
+</script>
+
+<!-- 별 배경 (manifesto 섹션) -->
+<script>
+  (function createBgStars() {
+    const section = document.getElementById('manifesto');
+    const W = window.innerWidth;
+    const H = section.offsetHeight;
+    const maxStars = 200;
+
+    for (let i = 0; i < maxStars; i++) {
+      const star = document.createElement('div');
+      star.className = 'bg-star';
+      const size = Math.floor(Math.random() * 3 + 1);
+      star.style.left = Math.floor(Math.random() * W) + 'px';
+      star.style.top = Math.floor(Math.random() * H) + 'px';
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      star.style.opacity = Math.random() * 0.4 + 0.1;
+      section.appendChild(star);
+    }
+  })();
+</script>
+
+<!-- 공정율 카운트업 + 오늘 시각 -->
+<script>
+  // 공정율 — 휘리릭→탁
+  function animateProgress() {
+    const target = EG_CONFIG.progress;
+    const el = document.getElementById('progressNumber');
+    let current = 0;
+    const duration = 1800; // 1.8초
+    const startTime = performance.now();
+
+    function tick(now) {
+      const elapsed = now - startTime;
+      const t = Math.min(1, elapsed / duration);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - t, 3);
+      current = Math.round(target * eased);
+      el.textContent = current;
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  // 오늘 시각 — 클라이언트 시간 (사이트 열 때마다 갱신)
+  function updateTime() {
+    const now = new Date();
+    const days = ['일','월','화','수','목','금','토'];
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const d = String(now.getDate()).padStart(2, '0');
+    const day = days[now.getDay()];
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    document.getElementById('workshopTime').textContent =
+      `— ${y}.${m}.${d} (${day}) ${hh}:${mm} —`;
+  }
+
+  // 스파이럴 섹션이 화면에 들어왔을 때 공정율 시작
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateProgress();
+        observer.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+  observer.observe(document.querySelector('.section-workshop'));
+
+  updateTime();
+  setInterval(updateTime, 60000); // 1분마다 갱신
+</script>
+
+<!-- 이메일 제출 -->
+<script>
+  function handleSubmit() {
+    const input = document.getElementById('emailInput');
+    const email = input.value;
+    // TODO: Supabase 연동 (파이스 자리)
+    alert(`도착하셨습니다.\n${email}\n\n30년을 우리에게 빌려주셔서 영광입니다.`);
+    input.value = '';
+  }
+</script>
+
+<!-- Three.js 스파이럴 갤러리 -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.150.0/build/three.min.js"></script>
+<script>
+(function() {
+  const imageUrls = EG_CONFIG.images;
+  const numberOfImages = imageUrls.length;
+  let scene, camera, renderer, spiralMesh, tiltGroup, shaderMaterial;
+  let scrollOffset = 0;
+  let isDragging = false;
+  let previousMousePosition = { x: 0, y: 0 };
+  let dragRotation = { x: 0, z: 0 };
+  let baseRotation = { x: 0, z: 0 };
+  let imageRatios = [];
+
+  let inertiaParams = {
+    friction: 0.94,
+    strength: 0.8,
+    maxSpeed: 0.05,
+    directionSmoothing: 0.92,
+    scrollSensitivity: 0.0008
+  };
+
+  let config = {
+    imageHeight: 7,
+    curvature: -0.030,
+    gapSize: 0,
+    spiralRadius: 3.5,
+    spiralTurns: 2.8 + (numberOfImages - 21) * 0.1,
+    spiralHeight: 12 + (numberOfImages - 21) * 0.25,
+    centerX: -2,
+    centerY: 4.38,
+    centerZ: 0
+  };
+
+  let originalPositions = [];
+  let targetVelocity = 0;
+  let currentVelocity = 0;
+  let isInView = false;
+
+  // 스파이럴 섹션이 화면에 보일 때만 스크롤 인터셉트
+  const spiralSection = document.querySelector('.section-spiral');
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      isInView = entry.isIntersecting;
+    });
+  }, { threshold: 0.3 });
+  sectionObserver.observe(spiralSection);
+
+  function rebuildGeometry() {
+    if (!spiralMesh) return;
+    const totalSlots = imageRatios.length;
+    const widths = imageRatios.map(r => r * config.imageHeight);
+    const totalWidth = widths.reduce((a, b) => a + b, 0);
+    const segmentsW = 200 + totalSlots * 20;
+    const segmentsH = 24;
+
+    const geometry = new THREE.PlaneGeometry(totalWidth, config.imageHeight, segmentsW, segmentsH);
+    const positions = geometry.attributes.position;
+    const uvs = geometry.attributes.uv;
+
+    let origX = [];
+    let origY = [];
+    for (let i = 0; i < positions.count; i++) {
+      origX.push(positions.getX(i));
+      origY.push(positions.getY(i));
+    }
+
+    let cumulative = [0];
+    for (let i = 0; i < totalSlots; i++) {
+      cumulative.push(cumulative[i] + widths[i] / totalWidth);
+    }
+
+    const imageRatio = 1 - config.gapSize;
+    for (let i = 0; i < uvs.count; i++) {
+      let u = uvs.getX(i);
+      u = Math.max(0, Math.min(0.999999, u));
+      let found = false;
+      for (let j = 0; j < totalSlots; j++) {
+        if (u >= cumulative[j] && u < cumulative[j + 1]) {
+          let localU = (u - cumulative[j]) / (cumulative[j + 1] - cumulative[j]);
+          if (localU > imageRatio) {
+            uvs.setX(i, cumulative[j + 1] - 0.001);
+          } else {
+            let scaledU = localU / imageRatio;
+            const edgeMargin = 0.001;
+            scaledU = Math.max(edgeMargin, Math.min(1 - edgeMargin, scaledU));
+            let newU = cumulative[j] + scaledU * (cumulative[j + 1] - cumulative[j]);
+            uvs.setX(i, newU);
+          }
+          found = true;
+          break;
+        }
+      }
+      if (!found) uvs.setX(i, cumulative[totalSlots] - 0.001);
+    }
+
+    for (let i = 0; i < positions.count; i++) {
+      const x = origX[i];
+      const y = origY[i];
+      let t = (x + totalWidth / 2) / totalWidth;
+      t = Math.max(0, Math.min(1, t));
+      const angle = t * Math.PI * 2 * config.spiralTurns;
+      const radius = config.spiralRadius * (1 - t * 0.12);
+      let px = Math.sin(angle) * radius;
+      let pz = Math.cos(angle) * radius;
+      let py = (t - 0.5) * config.spiralHeight + y * 0.35;
+
+      if (!originalPositions[i]) {
+        originalPositions[i] = {
+          x: px, y: py, z: pz,
+          offsetX: (Math.random() - 0.5) * 0.001,
+          offsetY: (Math.random() - 0.5) * 0.001,
+          offsetZ: (Math.random() - 0.5) * 0.001
+        };
+      }
+      px += originalPositions[i].offsetX;
+      py += originalPositions[i].offsetY;
+      pz += originalPositions[i].offsetZ;
+      positions.setXYZ(i, px, py, pz);
+    }
+
+    geometry.computeVertexNormals();
+    const oldGeo = spiralMesh.geometry;
+    spiralMesh.geometry = geometry;
+    if (oldGeo) oldGeo.dispose();
+  }
+
+  function updateUVOffset() {
+    if (!shaderMaterial) return;
+    let offset = scrollOffset;
+    while (offset >= 1.0) offset -= 1.0;
+    while (offset < 0) offset += 1.0;
+    shaderMaterial.uniforms.offset.value = offset;
+  }
+
+  function createMasterTexture() {
+    return new Promise((resolve) => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const baseHeight = 500;
+      let loaded = 0;
+      let images = [];
+
+      imageUrls.forEach((url, idx) => {
+        const img = new Image();
+        img.onload = () => {
+          const ratio = img.naturalWidth / img.naturalHeight;
+          imageRatios[idx] = ratio;
+          const width = baseHeight * ratio;
+          images[idx] = { img, width, height: baseHeight };
+          loaded++;
+          if (loaded === numberOfImages) finalize();
+        };
+        img.onerror = () => {
+          // 사진 없을 때 — 크림톤 placeholder
+          imageRatios[idx] = 4/3;
+          images[idx] = { img: null, width: baseHeight * 4/3, height: baseHeight, missing: true, label: idx + 1 };
+          loaded++;
+          if (loaded === numberOfImages) finalize();
+        };
+        img.src = url;
+      });
+
+      function finalize() {
+        const totalWidth = images.reduce((sum, i) => sum + i.width, 0);
+        canvas.width = totalWidth;
+        canvas.height = baseHeight;
+        ctx.fillStyle = '#fafaf5';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        let offsetX = 0;
+        images.forEach((data) => {
+          if (data && data.img) {
+            ctx.drawImage(data.img, offsetX, 0, data.width, data.height);
+          } else if (data && data.missing) {
+            // 사진 없는 자리 — 옅은 회색 + 번호 (Becoming의 정직한 표시)
+            ctx.fillStyle = '#ececec';
+            ctx.fillRect(offsetX, 0, data.width, data.height);
+            ctx.fillStyle = '#999999';
+            ctx.font = '24px serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(`${String(data.label).padStart(2, '0')}`, offsetX + data.width/2, data.height/2);
+            ctx.font = '12px sans-serif';
+            ctx.fillText('coming', offsetX + data.width/2, data.height/2 + 22);
+          }
+          offsetX += data.width;
+        });
+
+        const tex = new THREE.CanvasTexture(canvas);
+        tex.wrapS = THREE.RepeatWrapping;
+        tex.wrapT = THREE.ClampToEdgeWrapping;
+        tex.minFilter = THREE.LinearFilter;
+        tex.magFilter = THREE.LinearFilter;
+        tex.generateMipmaps = false;
+        resolve(tex);
+      }
+    });
+  }
+
+  async function init() {
+    const canvas = document.getElementById('spiral-canvas');
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xfafaf5); // 크림톤
+
+    const W = spiralSection.offsetWidth;
+    const H = spiralSection.offsetHeight;
+
+    camera = new THREE.PerspectiveCamera(50, W / H, 0.1, 1000);
+    camera.position.set(0, 3.5, 9);
+
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setSize(W, H);
+    renderer.setClearColor(0xfafaf5);
+
+    const ambient = new THREE.AmbientLight(0xffffff, 0.7);
+    scene.add(ambient);
+    const mainLight = new THREE.DirectionalLight(0xffffff, 0.6);
+    mainLight.position.set(5, 8, 5);
+    scene.add(mainLight);
+
+    tiltGroup = new THREE.Group();
+    baseRotation = { x: -0.18, z: 0.12 };
+    tiltGroup.rotation.x = baseRotation.x;
+    tiltGroup.rotation.z = baseRotation.z;
+    scene.add(tiltGroup);
+
+    const texture = await createMasterTexture();
+
+    shaderMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        map: { value: texture },
+        offset: { value: 0.0 }
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform sampler2D map;
+        uniform float offset;
+        varying vec2 vUv;
+        void main() {
+          float u = vUv.x + offset;
+          if (u >= 1.0) u -= 1.0;
+          if (u < 0.0) u += 1.0;
+          gl_FragColor = texture2D(map, vec2(u, vUv.y));
+        }
+      `,
+      side: THREE.DoubleSide
+    });
+
+    spiralMesh = new THREE.Mesh(new THREE.BufferGeometry(), shaderMaterial);
+    spiralMesh.position.set(config.centerX, config.centerY, config.centerZ);
+    spiralMesh.rotation.x = 0.35;
+    tiltGroup.add(spiralMesh);
+
+    rebuildGeometry();
+
+    window.addEventListener('resize', onResize);
+    setupScroll();
+    setupDrag();
+
+    animate();
+  }
+
+  function setupScroll() {
+    // 스파이럴 섹션이 화면에 보일 때만 휠 가로채기
+    canvas = document.getElementById('spiral-canvas');
+    canvas.addEventListener('wheel', (e) => {
+      if (!isInView) return;
+      e.preventDefault();
+      const rawDelta = e.deltaY * inertiaParams.scrollSensitivity * inertiaParams.strength;
+      targetVelocity = Math.max(-inertiaParams.maxSpeed,
+        Math.min(inertiaParams.maxSpeed, targetVelocity + rawDelta));
+    }, { passive: false });
+  }
+
+  function updateInertia() {
+    targetVelocity *= inertiaParams.friction;
+    currentVelocity = currentVelocity * 0.85 + targetVelocity * 0.15;
+    if (Math.abs(currentVelocity) > 0.0001) {
+      scrollOffset += currentVelocity;
+      updateUVOffset();
+    } else {
+      currentVelocity = 0;
+    }
+  }
+
+  function setupDrag() {
+    const canvas = document.getElementById('spiral-canvas');
+    canvas.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      previousMousePosition = { x: e.clientX, y: e.clientY };
+      e.preventDefault();
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - previousMousePosition.x;
+      const dy = e.clientY - previousMousePosition.y;
+      dragRotation.z += dx * 0.002;
+      dragRotation.x -= dy * 0.002;
+      dragRotation.x = Math.max(-0.35, Math.min(0.35, dragRotation.x));
+      dragRotation.z = Math.max(-0.35, Math.min(0.35, dragRotation.z));
+      tiltGroup.rotation.x = baseRotation.x + dragRotation.x;
+      tiltGroup.rotation.z = baseRotation.z + dragRotation.z;
+      previousMousePosition = { x: e.clientX, y: e.clientY };
+    });
+    window.addEventListener('mouseup', () => { isDragging = false; });
+
+    // 터치
+    let touchStartY = 0, touchLastY = 0;
+    let isTouching = false;
+    canvas.addEventListener('touchstart', (e) => {
+      isTouching = true;
+      touchStartY = e.touches[0].clientY;
+      touchLastY = touchStartY;
+    });
+    canvas.addEventListener('touchmove', (e) => {
+      if (!isTouching) return;
+      const currentY = e.touches[0].clientY;
+      const deltaY = currentY - touchLastY;
+      const deltaScroll = deltaY * inertiaParams.scrollSensitivity * inertiaParams.strength * 0.8;
+      scrollOffset += deltaScroll;
+      updateUVOffset();
+      touchLastY = currentY;
+    });
+    canvas.addEventListener('touchend', () => { isTouching = false; });
+  }
+
+  function onResize() {
+    const W = spiralSection.offsetWidth;
+    const H = spiralSection.offsetHeight;
+    camera.aspect = W / H;
+    camera.updateProjectionMatrix();
+    renderer.setSize(W, H);
+  }
+
+  function animate() {
+    requestAnimationFrame(animate);
+    updateInertia();
+    renderer.render(scene, camera);
+  }
+
+  init();
+})();
+</script>
+
+</body>
+</html>

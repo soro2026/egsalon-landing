@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EG SALON · Seven Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Noto+Serif+KR:wght@300;400&family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: #0a0a0a;
+    color: #d4d4d4;
+    font-family: 'Open Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* 별 배경 (희미하게) */
+  .star {
+    position: fixed;
+    border-radius: 50%;
+    background: #00f6ff;
+    box-shadow: 0 0 4px rgba(0, 246, 255, 0.5);
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* 컨테이너 */
+  .container {
+    position: relative;
+    z-index: 10;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 6rem 2rem 5rem;
+  }
+
+  /* 헤더 */
+  .header {
+    text-align: center;
+    margin-bottom: 6rem;
+  }
+
+  .header-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    color: #ffffff;
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+  }
+
+  .header-sub {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.85rem, 1.1vw, 1rem);
+    color: #888888;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+  }
+
+  .header-line {
+    width: 60px;
+    height: 1px;
+    background: rgba(200, 200, 200, 0.3);
+    margin: 2rem auto 1.5rem;
+  }
+
+  .header-ko {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 300;
+    font-size: clamp(0.85rem, 1.1vw, 1rem);
+    color: #afafaf;
+    letter-spacing: 0.15em;
+    line-height: 1.8;
+  }
+
+  /* 7개 노드 */
+  .nodes {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .node {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 2.5rem;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(80, 80, 80, 0.25);
+    padding-bottom: 3rem;
+  }
+
+  .node:last-child {
+    border-bottom: none;
+  }
+
+  /* 글자 PNG */
+  .node-letter {
+    width: 100%;
+    max-width: 130px;
+    height: auto;
+    justify-self: center;
+  }
+
+  /* 카피 영역 */
+  .node-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .node-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+    color: #ffffff;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+  }
+
+  .node-ko {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 300;
+    font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+    color: #c4c4c4;
+    letter-spacing: 0.05em;
+    line-height: 1.8;
+  }
+
+  /* 푸터 */
+  .footer {
+    text-align: center;
+    margin-top: 6rem;
+    padding-top: 3rem;
+  }
+
+  .footer-line {
+    width: 80px;
+    height: 1px;
+    background: rgba(200, 200, 200, 0.3);
+    margin: 0 auto 2rem;
+  }
+
+  .footer-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+    color: #888888;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+
+  /* 반응형 */
+  @media (max-width: 640px) {
+    .node {
+      grid-template-columns: 90px 1fr;
+      gap: 1.5rem;
+      padding-bottom: 2rem;
+    }
+    .node-letter {
+      max-width: 90px;
+    }
+    .container {
+      padding: 4rem 1.5rem 3rem;
+    }
+    .nodes {
+      gap: 2rem;
+    }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header class="header">
+    <div class="header-title">Seven Notes</div>
+    <div class="header-sub">A Salon, Becoming</div>
+    <div class="header-line"></div>
+    <div class="header-ko">
+      E · G · S · A · L · O · N<br>
+      살롱 이름의 일곱 글자가, 일곱 영혼이 되었습니다
+    </div>
+  </header>
+
+  <div class="nodes">
+
+    <!-- E -->
+    <div class="node">
+      <img src="e.png" alt="E" class="node-letter">
+      <div class="node-content">
+        <div class="node-en">Eyes on Useless</div>
+        <div class="node-ko">쓸모없지만 눈부시게 아름다운 그 무엇을, 우리는 잊고 살았다</div>
+      </div>
+    </div>
+
+    <!-- G -->
+    <div class="node">
+      <img src="g.png" alt="G" class="node-letter">
+      <div class="node-content">
+        <div class="node-en">In Good Company</div>
+        <div class="node-ko">한나 아렌트, 페렉, 케이지, 카프카 — 이 이름들이 옆에 머무는 저녁이 있다</div>
+      </div>
+    </div>
+
+    <!-- S -->
+    <div class="node">
+      <img src="s.png" alt="S" class="node-letter">
+      <div class="node-content">
+        <div class="node-en">Slow River</div>
+        <div class="node-ko">30년이 흐르는 강물의 첫 한 굽이에서 만난다</div>
+      </div>
+    </div>
+
+    <!-- A -->
+    <div class="node">
+      <img src="a.png" alt="A" class="node-letter">
+      <div class="node-content">
+        <div class="node-en">Another Path</div>
+        <div class="node-ko">알고리즘이 모두에게 같은 것을 보여주는 시대, 어떤 이들은 조용히 다른 길로 걸어 들어간다</div>
+      </div>
+    </div>
+
+    <!-- L -->
+    <div class="node">
+      <img src="l.png" alt="L" class="node-letter">
+      <div class="node-content">
+        <div class="node-en">Less Kind, More True</div>
+        <div class="node-ko">친절하지 않아도 괜찮다. 옆에 앉음으로 충분하다</div>
+      </div>
+    </div>
+
+    <!-- O -->
+    <div class="node">
+      <img src="o.png" alt="O" class="node-letter">
+      <div class="node-content">
+        <div class="node-en">Of Two Hands</div>
+        <div class="node-ko">낮에는 흙을 파고, 밤에는 책장을 넘기는 사람들이 있다</div>
+      </div>
+    </div>
+
+    <!-- N -->
+    <div class="node">
+      <img src="n.png" alt="N" class="node-letter">
+      <div class="node-content">
+        <div class="node-en">Nothing Rushes</div>
+        <div class="node-ko">모든 것이 빠르게 변하는 피로한 시대, 조금씩 무르익고 싶은 사람들의 살롱</div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    <div class="footer-line"></div>
+    <div class="footer-text">EG · Salon · Becoming</div>
+  </footer>
+
+</div>
+
+<script>
+  // 별 살짝 깔기 (배경)
+  (function createStars() {
+    const W = window.innerWidth;
+    const H = Math.max(window.innerHeight, document.body.scrollHeight);
+    const maxStars = 200;
+
+    for (let i = 0; i < maxStars; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      const size = Math.floor(Math.random() * 3 + 1);
+      star.style.left = Math.floor(Math.random() * W) + 'px';
+      star.style.top = Math.floor(Math.random() * H) + 'px';
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      star.style.opacity = Math.random() * 0.4 + 0.1;
+      document.body.appendChild(star);
+    }
+  })();
+</script>
+
+</body>
+</html>

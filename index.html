@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EG SALON · A Salon, Becoming</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Noto+Serif+KR:wght@300;400&family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: #0a0a0a;
+    overflow: hidden;
+    font-family: 'Open Sans', sans-serif;
+    color: #afafaf;
+  }
+
+  .sky-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .star {
+    position: absolute;
+    border-radius: 50%;
+    background: #00f6ff;
+    box-shadow: 0 0 5px rgba(0, 246, 255, 0.75);
+  }
+
+  .streak {
+    position: absolute;
+    width: 10px;
+    height: 150px;
+    border-radius: 100%;
+    transform: rotate(-135deg);
+    opacity: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(255,255,255, 1) 0%,
+      rgba(255,255,255, 0.75) 25%,
+      rgba(255,255,255, 0) 100%
+    );
+    box-shadow: 0 0 25px rgba(255,255,255, 0.75);
+  }
+
+  .container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+  }
+
+  .sky-zone {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 8vh; /* 헤드라인을 살짝 위로 끌어올림 */
+  }
+
+  .headline {
+    text-align: center;
+    width: 100%;
+    padding: 0 1rem;
+  }
+
+  .headline-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(1.5rem, 2.8vw, 2.6rem);
+    color: #ffffff;
+    letter-spacing: 0.05em;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    white-space: nowrap;
+  }
+
+  .headline-ko {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 300;
+    font-size: clamp(0.8rem, 1.1vw, 1rem);
+    color: #b8b8b8;
+    letter-spacing: 0.12em;
+    line-height: 2;
+    opacity: 0;
+    text-align: center;
+  }
+
+  .ground-zone {
+    width: 100%;
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* 상단 정렬 — EG 로고가 60% 경계선 근처 */
+    padding: 0 1rem;
+    margin-top: -7vh; /* 60% 경계선 위로 살짝 끌어올림 — EG 로고가 경계에 걸침 */
+  }
+
+  .eg-salon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    margin-bottom: 1.8rem;
+    perspective: 600px;
+  }
+
+  .eg-letter {
+    height: clamp(60px, 9vh, 110px);
+    width: auto;
+    opacity: 0;
+    transform-origin: 0% 10%;
+  }
+
+  .eg-letter.space-after {
+    margin-right: 1rem;
+  }
+
+  .subtitle-ko {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 300;
+    font-size: clamp(0.95rem, 1.3vw, 1.2rem);
+    color: #afafaf;
+    letter-spacing: 0.5em;
+    margin-bottom: 1rem;
+    text-align: center;
+    perspective: 600px;
+  }
+
+  .subtitle-ko .ch {
+    display: inline-block;
+    opacity: 0;
+    transform-origin: 0% 10%;
+  }
+
+  .becoming {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    font-size: clamp(1rem, 1.4vw, 1.3rem);
+    color: #c8c8c8;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    opacity: 0;
+    transform: scale(3);
+    transform-origin: center;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Step Inside 버튼 — Becoming 아래 */
+  .enter-button {
+    position: relative;
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.8rem 2rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(220, 220, 220, 0.35);
+    color: #e0e0e0;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.8rem, 1vw, 0.95rem);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 0;
+    overflow: hidden;
+    transition: background 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+    z-index: 1;
+  }
+
+  /* 파스텔 빙그르르 반짝임 — 버튼 테두리 따라 흐르는 빛 */
+  .enter-button::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      rgba(255, 182, 193, 0.4) 60deg,   /* 파스텔 핑크 */
+      rgba(176, 224, 230, 0.4) 120deg,  /* 파스텔 블루 */
+      rgba(221, 160, 221, 0.4) 180deg,  /* 파스텔 라일락 */
+      rgba(255, 218, 185, 0.4) 240deg,  /* 파스텔 피치 */
+      rgba(176, 196, 222, 0.4) 300deg,  /* 파스텔 라벤더 블루 */
+      transparent 360deg
+    );
+    animation: spin 6s linear infinite;
+    z-index: -2;
+  }
+
+  /* 안쪽 검정 마스크 — 테두리만 빛나게 */
+  .enter-button::after {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    background: rgba(20, 20, 20, 0.92);
+    z-index: -1;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  .enter-button:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(220, 220, 220, 0.6);
+    color: #ffffff;
+  }
+
+  .enter-button .arrow {
+    display: inline-block;
+    margin-left: 0.5rem;
+    transition: transform 0.4s ease;
+  }
+
+  .enter-button:hover .arrow {
+    transform: translateX(5px);
+  }
+</style>
+</head>
+<body>
+
+<div class="sky-canvas" id="sky">
+  <div class="streak" id="streak"></div>
+</div>
+
+<div class="container">
+
+  <div class="sky-zone">
+    <div class="headline">
+      <div class="headline-en" id="headlineEn">Remember Useless</div>
+      <div class="headline-ko" id="headlineKo">
+        쓸모없지만 눈부시게 아름다운 그 무엇을<br>
+        우리는 잊고 살았다
+      </div>
+    </div>
+  </div>
+
+  <div class="ground-zone">
+    <div class="eg-salon-container" id="egSalon">
+      <img src="e.png" alt="E" class="eg-letter">
+      <img src="g.png" alt="G" class="eg-letter space-after">
+      <img src="s.png" alt="S" class="eg-letter">
+      <img src="a.png" alt="A" class="eg-letter">
+      <img src="l.png" alt="L" class="eg-letter">
+      <img src="o.png" alt="O" class="eg-letter">
+      <img src="n.png" alt="N" class="eg-letter">
+    </div>
+    <div class="subtitle-ko" id="subtitle">은밀하게 스며드는 교양</div>
+    <div class="becoming" id="becoming">A Salon, Becoming</div>
+    <a href="inside.html" class="enter-button" id="enterBtn">Step Inside <span class="arrow">→</span></a>
+  </div>
+
+</div>
+
+<script>
+  (function createStarfield() {
+    const sky = document.getElementById('sky');
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+    const skyZoneHeight = H * 0.6; // 상단 60%만
+    const maxStars = 1000;
+
+    for (let i = 0; i < maxStars; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      const size = Math.floor(Math.random() * 4 + 1);
+      star.style.left = Math.floor(Math.random() * W) + 'px';
+      star.style.top = Math.floor(Math.random() * skyZoneHeight) + 'px';
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      star.style.opacity = Math.random();
+      sky.appendChild(star);
+
+      if (Math.random() < 0.1) {
+        const duration = 1 + Math.random() * 2;
+        const delay = Math.random() * 3;
+        star.style.animation = `twinkle ${duration}s ease-in-out ${delay}s infinite`;
+      }
+    }
+  })();
+
+  const styleSheet = document.createElement('style');
+  styleSheet.textContent = `
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; transform: scale(0.8); }
+      50%      { opacity: 1; transform: scale(1.2); }
+    }
+  `;
+  document.head.appendChild(styleSheet);
+
+  (function splitSubtitle() {
+    const subtitle = document.getElementById('subtitle');
+    const text = subtitle.textContent;
+    subtitle.innerHTML = '';
+    for (const ch of text) {
+      const span = document.createElement('span');
+      span.className = 'ch';
+      span.textContent = ch === ' ' ? '\u00A0' : ch;
+      subtitle.appendChild(span);
+    }
+  })();
+
+  function shootStar() {
+    const streak = document.getElementById('streak');
+    const W = window.innerWidth;
+
+    const startX = W * 0.5 + Math.random() * (W * 0.4);
+    const startY = -150;
+    const endX = startX - 750;
+    const endY = startY + 750;
+
+    streak.style.transition = 'none';
+    streak.style.left = startX + 'px';
+    streak.style.top = startY + 'px';
+    streak.style.opacity = '0';
+    streak.style.transform = 'rotate(-135deg) scale(1)';
+    void streak.offsetHeight;
+
+    streak.style.transition = 'opacity 0.2s ease-out';
+    streak.style.opacity = '1';
+
+    setTimeout(() => {
+      streak.style.transition = 'left 1.2s linear, top 1.2s linear';
+      streak.style.left = endX + 'px';
+      streak.style.top = endY + 'px';
+    }, 50);
+
+    setTimeout(() => {
+      streak.style.transition = 'opacity 0.3s ease-out';
+      streak.style.opacity = '0';
+    }, 1100);
+  }
+
+  const letters = document.querySelectorAll('.eg-letter');
+  const subtitleChars = document.querySelectorAll('.subtitle-ko .ch');
+  const headlineEn = document.getElementById('headlineEn');
+  const headlineKo = document.getElementById('headlineKo');
+  const becoming = document.getElementById('becoming');
+  const enterBtn = document.getElementById('enterBtn');
+
+  // 버튼 - 첫 사이클에서 한 번만 등장, 이후 계속 머묾
+  let buttonShown = false;
+
+  function runSequence() {
+    // Phase 1: 등장
+
+    letters.forEach((letter, i) => {
+      letter.style.transition = 'none';
+      letter.style.transform = 'rotateY(360deg) translateY(25px) scale(0.5)';
+      letter.style.opacity = '0';
+      setTimeout(() => {
+        letter.style.transition = 'opacity 1.5s ease-out, transform 1.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        letter.style.transform = 'rotateY(0deg) translateY(0) scale(1)';
+        letter.style.opacity = '1';
+      }, 200 + i * 150);
+    });
+
+    setTimeout(shootStar, 800);
+
+    setTimeout(() => {
+      headlineEn.style.transition = 'opacity 1.8s ease-out';
+      headlineEn.style.opacity = '1';
+    }, 1800);
+
+    setTimeout(() => {
+      headlineKo.style.transition = 'opacity 1.8s ease-out';
+      headlineKo.style.opacity = '1';
+    }, 3000);
+
+    subtitleChars.forEach((ch, i) => {
+      ch.style.transition = 'none';
+      ch.style.transform = 'rotateY(360deg) translateY(15px)';
+      ch.style.opacity = '0';
+      setTimeout(() => {
+        ch.style.transition = 'opacity 1s ease-out, transform 1s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        ch.style.transform = 'rotateY(0deg) translateY(0)';
+        ch.style.opacity = '1';
+      }, 3400 + i * 80);
+    });
+
+    setTimeout(() => {
+      becoming.style.transition = 'opacity 1.5s ease-out, transform 1.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+      becoming.style.opacity = '1';
+      becoming.style.transform = 'scale(1)';
+    }, 4800);
+
+    // 버튼 — 첫 사이클에서 한 번만 등장 (이후 계속 머묾)
+    if (!buttonShown) {
+      setTimeout(() => {
+        enterBtn.style.transition = 'opacity 2s ease-out';
+        enterBtn.style.opacity = '1';
+        buttonShown = true;
+      }, 5800);
+    }
+
+    // Phase 3: 페이드 아웃 (전체 사이클의 50% 시점)
+
+    setTimeout(() => {
+      headlineEn.style.transition = 'opacity 2.5s ease-in';
+      headlineKo.style.transition = 'opacity 2.5s ease-in';
+      headlineEn.style.opacity = '0';
+      headlineKo.style.opacity = '0';
+    }, 6500);
+
+    letters.forEach((letter, i) => {
+      setTimeout(() => {
+        letter.style.transition = 'opacity 1.5s ease-in, transform 1.5s ease-in';
+        letter.style.transform = 'rotateY(-360deg) translateY(-25px) scale(0.3)';
+        letter.style.opacity = '0';
+      }, 7000 + i * 100);
+    });
+
+    subtitleChars.forEach((ch, i) => {
+      setTimeout(() => {
+        ch.style.transition = 'opacity 1s ease-in, transform 1s ease-in';
+        ch.style.transform = 'rotateY(-360deg) translateY(-15px)';
+        ch.style.opacity = '0';
+      }, 7500 + i * 60);
+    });
+
+    setTimeout(() => {
+      becoming.style.transition = 'opacity 1.5s ease-in, transform 1.5s ease-in';
+      becoming.style.opacity = '0';
+      becoming.style.transform = 'scale(3)';
+    }, 7900);
+
+    setTimeout(runSequence, 11000);
+  }
+
+  window.addEventListener('load', () => {
+    setTimeout(runSequence, 300);
+  });
+
+  setInterval(() => {
+    if (Math.random() < 0.5) shootStar();
+  }, 6000);
+</script>
+
+</body>
+</html>
