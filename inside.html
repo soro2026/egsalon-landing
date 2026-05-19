@@ -6,7 +6,7 @@
 <title>EG SALON · Inside</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Noto+Serif+KR:wght@300;400&family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin:C 0; padding: 0; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   html, body {
     background: #0a0a0a;
@@ -497,7 +497,7 @@
     <div class="workshop-header">
       <div class="workshop-label">A Salon, Becoming</div>
       <div class="progress-row">
-        <span class="progress-number" id="progressNumber">0</span><span class="progress-percent">%</span>
+        <span class="progress-number" id="progressNumber">0.0</span><span class="progress-percent">%</span>
       </div>
       <div class="workshop-ko">살롱이 자라고 있습니다</div>
       <div class="workshop-time" id="workshopTime">— 2026.05.17 (일) 20:00 —</div>
@@ -546,7 +546,7 @@
   // ============================================
   const EG_CONFIG = {
     // 공정율 — 매번 갱신 시 이 숫자만 바꾸세요 (0~100)
-    progress: 51.2,
+    progress: 64,
 
     // 사진 목록 — 같은 폴더의 파일명. 24장 권장.
     // 사진 추가/교체 시 이 배열만 바꾸세요.
@@ -603,11 +603,10 @@
 
 <!-- 공정율 카운트업 + 오늘 시각 -->
 <script>
-  // 공정율 — 휘리릭→탁
+  // 공정율 — 휘리릭→탁 (소수 한 자리까지 표시)
   function animateProgress() {
     const target = EG_CONFIG.progress;
     const el = document.getElementById('progressNumber');
-    let current = 0;
     const duration = 1800; // 1.8초
     const startTime = performance.now();
 
@@ -616,8 +615,9 @@
       const t = Math.min(1, elapsed / duration);
       // ease-out cubic
       const eased = 1 - Math.pow(1 - t, 3);
-      current = Math.round(target * eased);
-      el.textContent = current;
+      const current = target * eased;
+      // 끝났을 땐 정확한 target 값을 toFixed(1)로 — 부동소수점 흔들림 방지
+      el.textContent = (t < 1) ? current.toFixed(1) : target.toFixed(1);
       if (t < 1) requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
