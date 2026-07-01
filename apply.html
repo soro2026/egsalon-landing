@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>은교살롱 — 첫 손님으로 오시는군요</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Serif+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #060812;
+    --bg-soft: #0b0a0c;
+    --cream: #efe7d6;
+    --gold: #C9A84C;
+    --gold-bright: #E9C97E;
+    --ink-dim: rgba(239,231,214,0.55);
+    --line: rgba(201,168,76,0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: radial-gradient(ellipse at 50% -10%, #10131f 0%, var(--bg) 55%, var(--bg-soft) 100%);
+    color: var(--cream);
+    font-family: 'Noto Serif KR', serif;
+    min-height: 100vh;
+  }
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+  }
+  .stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  .stars span {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--cream);
+    border-radius: 50%;
+    opacity: 0.4;
+  }
+  .card {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    padding: 52px 40px 44px;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    background: linear-gradient(180deg, rgba(201,168,76,0.04), transparent 40%);
+  }
+  .card::before, .card::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--gold);
+    opacity: 0.5;
+  }
+  .card::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+  .card::after { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+
+  .kicker {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 500;
+    font-size: 25px;
+    line-height: 1.5;
+    text-align: center;
+    margin-bottom: 14px;
+    color: var(--gold-bright);
+  }
+  .sub {
+    font-size: 14.5px;
+    line-height: 1.75;
+    color: var(--ink-dim);
+    text-align: center;
+    margin-bottom: 38px;
+    font-weight: 300;
+  }
+
+  form { display: flex; flex-direction: column; gap: 20px; }
+  .field label {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--gold);
+    margin-bottom: 8px;
+    font-weight: 400;
+  }
+  .field label .hint {
+    display: block;
+    margin-top: 4px;
+    font-size: 11px;
+    letter-spacing: 0.01em;
+    color: rgba(239,231,214,0.4);
+    font-weight: 300;
+    font-family: 'Noto Serif KR', serif;
+  }
+  .field input, .field textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(239,231,214,0.18);
+    border-radius: 2px;
+    padding: 13px 14px;
+    color: var(--cream);
+    font-family: 'Noto Serif KR', serif;
+    font-size: 14.5px;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+  .field input::placeholder, .field textarea::placeholder {
+    color: rgba(239,231,214,0.32);
+    font-weight: 300;
+  }
+  .field input:focus, .field textarea:focus {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.05);
+  }
+  .field textarea { resize: vertical; min-height: 76px; line-height: 1.6; }
+
+  .submit-btn {
+    margin-top: 6px;
+    background: var(--gold);
+    color: #1a1714;
+    border: none;
+    border-radius: 2px;
+    height: 50px;
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 500;
+    font-size: 14.5px;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: filter 0.2s ease, transform 0.2s ease;
+  }
+  .submit-btn:hover:not(:disabled) { filter: brightness(1.1); }
+  .submit-btn:active:not(:disabled) { transform: scale(0.99); }
+  .submit-btn:disabled { opacity: 0.55; cursor: default; }
+
+  .error-msg {
+    font-size: 13px;
+    color: #e39a8a;
+    text-align: center;
+    min-height: 18px;
+    font-weight: 300;
+  }
+
+  .done {
+    display: none;
+    text-align: center;
+    padding: 24px 0 8px;
+  }
+  .done .mark {
+    display: inline-block;
+    font-size: 20px;
+    color: var(--gold);
+    margin-bottom: 18px;
+  }
+  .done p {
+    font-size: 15px;
+    line-height: 1.85;
+    color: var(--cream);
+    font-weight: 300;
+  }
+
+  .foot {
+    margin-top: 34px;
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    color: rgba(239,231,214,0.35);
+  }
+
+  @media (max-width: 480px) {
+    .card { padding: 40px 26px 32px; }
+    h1 { font-size: 21px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="card">
+
+  <div id="formView">
+    <div class="kicker">LES PORTES SE FERMENT</div>
+    <h1>첫 손님으로 오시는군요.</h1>
+    <p class="sub">초대장을 보내드릴 주소만 남겨주시면 됩니다.<br>나머지는 저희가 준비하겠습니다.</p>
+
+    <form id="applyForm" novalidate>
+      <div class="field">
+        <label for="displayName">어떻게 불러드리면 좋을까요<span class="hint">닉네임, 한글 또는 영문 · 나중에 자유롭게 바꾸실 수 있어요</span></label>
+        <input type="text" id="displayName" name="displayName" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="email">초대장을 받으실 이메일 주소<span class="hint">오타 없이 정확하게 남겨주세요</span></label>
+        <input type="email" id="email" name="email" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="message">혹시, 남기고 싶은 말이 있다면<span class="hint">선택입니다</span></label>
+        <textarea id="message" name="message"></textarea>
+      </div>
+
+      <div class="error-msg" id="errorMsg"></div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">이대로 신청합니다</button>
+    </form>
+  </div>
+
+  <div class="done" id="doneView">
+    <div class="mark">✦</div>
+    <p>잘 받았습니다.<br>순서가 오면, 조용히 문을 두드리겠습니다.</p>
+  </div>
+
+  <div class="foot">은교(隱敎)</div>
+</div>
+
+<script>
+  // 배경 별
+  (function () {
+    var wrap = document.getElementById('stars');
+    var n = 40;
+    for (var i = 0; i < n; i++) {
+      var s = document.createElement('span');
+      s.style.left = Math.random() * 100 + '%';
+      s.style.top = Math.random() * 100 + '%';
+      s.style.opacity = (0.15 + Math.random() * 0.5).toFixed(2);
+      wrap.appendChild(s);
+    }
+  })();
+
+  // Supabase 연결 정보
+  var SUPABASE_URL = 'https://cyhlotwdisjvoxvfkpnd.supabase.co';
+  var SUPA_KEY = 'sb_publishable_jYYfQV_wQgMRFjSUuDq7xA_gWc9vsnR';
+
+  var form = document.getElementById('applyForm');
+  var errorMsg = document.getElementById('errorMsg');
+  var submitBtn = document.getElementById('submitBtn');
+  var formView = document.getElementById('formView');
+  var doneView = document.getElementById('doneView');
+
+  function isValidEmail(v) {
+    return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    errorMsg.textContent = '';
+
+    var displayName = document.getElementById('displayName').value.trim();
+    var email = document.getElementById('email').value.trim();
+    var message = document.getElementById('message').value.trim();
+
+    if (!displayName) {
+      errorMsg.textContent = '부르실 이름을 남겨주세요.';
+      return;
+    }
+    if (!email || !isValidEmail(email)) {
+      errorMsg.textContent = '초대장을 받으실 주소를 정확히 남겨주세요.';
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = '전하는 중…';
+
+    fetch(SUPABASE_URL + '/rest/v1/applications', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPA_KEY,
+        'Authorization': 'Bearer ' + SUPA_KEY,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        display_name: displayName,
+        email: email,
+        message: message || null
+      })
+    })
+      .then(function (res) {
+        if (!res.ok) throw new Error('insert failed: ' + res.status);
+        formView.style.display = 'none';
+        doneView.style.display = 'block';
+      })
+      .catch(function (err) {
+        console.error(err);
+        errorMsg.textContent = '잠시 문제가 생겼어요. 다시 한번 시도해 주시겠어요?';
+        submitBtn.disabled = false;
+        submitBtn.textContent = '이대로 신청합니다';
+      });
+  });
+</script>
+
+</body>
+</html>
