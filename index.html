@@ -377,9 +377,35 @@ body{margin:0;background:#1a1714;font-family:'Noto Serif KR',serif}
   .cd-sep{font-size:20px}
   .dv-turn,.j-night,.j-dawn,.j-paper,.jm-card,.v-wrap,.c-hero,.c-mid,.h-bridge{padding-left:18px;padding-right:18px}
 }
+/* ── 조용한 로그인 쪽문 (0704) · 우상단 고정, 아는 사람만 보이는 문 ── */
+.eg-enter{
+  position:fixed; top:18px; right:20px; z-index:60;
+  display:inline-flex; align-items:center; gap:7px;
+  padding:8px 15px; border-radius:2px;
+  border:1px solid rgba(201,168,76,.32);
+  background:rgba(6,8,18,.55); backdrop-filter:blur(6px);
+  color:rgba(233,201,126,.9); text-decoration:none;
+  font-family:'Noto Serif KR',serif; font-weight:300;
+  font-size:12.5px; letter-spacing:.02em; white-space:nowrap;
+  transition:border-color .25s ease, background .25s ease, color .25s ease;
+}
+.eg-enter:hover{
+  border-color:rgba(201,168,76,.7);
+  background:rgba(201,168,76,.1);
+  color:#F0D98A;
+}
+.eg-enter .eg-key{font-size:11px; opacity:.85}
+.eg-enter .eg-arrow{opacity:.6; transition:transform .25s ease}
+.eg-enter:hover .eg-arrow{transform:translateX(3px); opacity:1}
+@media (max-width:480px){
+  .eg-enter{top:12px; right:12px; padding:7px 12px; font-size:11.5px}
+}
 </style>
 </head>
 <body>
+<a class="eg-enter" href="https://app.egsalon.com/">
+  <span class="eg-key">🔑</span>이미 함께하고 계신가요? <span class="eg-arrow">→</span>
+</a>
 <x-dc>
 <helmet data-dc-atomics="">
 <link rel="preconnect" href="https://fonts.googleapis.com">
