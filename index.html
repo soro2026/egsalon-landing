@@ -338,6 +338,39 @@ body{margin:0;background:#1a1714;font-family:'Noto Serif KR',serif}
 .nm-prose{font-family:'Noto Serif KR',serif;font-weight:300;font-size:14.5px;line-height:1.95;color:#e8e2d2;letter-spacing:.01em;margin-top:2px}
 .nm-img{margin:12px 0}
 
+/* ===== 모바일 반응형 (0704 신설 · 데스크탑 값 무변경, 좁은 화면만 구제) ===== */
+@media (max-width:640px){
+  /* 좌우 60px 고정 패딩군 → 화면 폭에 맞게 축소 */
+  .dv-turn{padding:38px 22px 48px}
+  .j-night{padding:48px 24px 60px}
+  .j-dawn{padding:54px 24px}
+  .j-paper{padding:56px 26px 44px}
+  .jm-card{padding:38px 26px 40px}
+  .v-wrap{padding:52px 26px 48px}
+  .c-hero{padding:52px 26px 26px}
+  .c-mid{padding:34px 26px 52px}
+  .h-bridge{padding:52px 26px 64px}
+  /* 큰 폰트 축소 */
+  .c-h1{font-size:24px;line-height:1.5;margin-top:30px}
+  .c-hsub{font-size:16px}
+  .j-h1{font-size:34px}
+  .j-hsub{font-size:18px}
+  .j-sectitle{font-size:22px}
+  .v-title{font-size:30px}
+  .v-fr{font-size:19px}
+  .h-bline{font-size:22px}
+  .cd-num{font-size:28px}
+  .cd-sep{font-size:24px}
+}
+@media (max-width:440px){
+  .c-h1{font-size:21px}
+  .c-hsub{font-size:15px}
+  .j-h1{font-size:28px}
+  .v-title{font-size:26px}
+  .cd-num{font-size:24px}
+  .cd-sep{font-size:20px}
+  .dv-turn,.j-night,.j-dawn,.j-paper,.jm-card,.v-wrap,.c-hero,.c-mid,.h-bridge{padding-left:18px;padding-right:18px}
+}
 </style>
 </head>
 <body>
