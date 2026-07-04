@@ -247,8 +247,14 @@ body{margin:0;background:#1a1714;font-family:'Noto Serif KR',serif}
 .c-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .c-lnpath{fill:none;stroke:#C9A84C;stroke-width:1;opacity:.26;stroke-dasharray:2 5;vector-effect:non-scaling-stroke}
 .c-node{position:absolute;transform:translate(-50%,-50%);width:min(360px,72%)}
+.c-node .c-dot,.c-node .c-nL{transition:transform .45s cubic-bezier(.22,1,.36,1),box-shadow .45s ease,background .45s ease,color .45s ease,text-shadow .45s ease,filter .45s ease}
 .c-dot{width:9px;height:9px;border-radius:50%;background:radial-gradient(circle,#fff8e7,#C9A84C 70%);box-shadow:0 0 12px 3px rgba(201,168,76,.5);margin:0 auto 14px}
 .c-heart .c-dot{width:18px;height:18px;background:radial-gradient(circle,#fff8e7 22%,#C9A84C 78%);box-shadow:0 0 26px 7px rgba(201,168,76,.6),0 0 9px 2px rgba(255,248,231,.9)}
+/* ── hover: 후욱 밝아지며 커지는 별 (0704) ── */
+.nm-node:hover .c-dot{transform:scale(2.1);background:radial-gradient(circle,#fffdf5,#F0D98A 72%);box-shadow:0 0 30px 10px rgba(233,201,126,.85),0 0 12px 4px rgba(255,252,240,.95)}
+.c-heart.nm-node:hover .c-dot{transform:scale(1.7);box-shadow:0 0 40px 13px rgba(233,201,126,.9),0 0 16px 5px rgba(255,252,240,1)}
+.nm-node:hover .c-nL{color:#F6E6B0;text-shadow:0 0 22px rgba(233,201,126,.75),0 0 8px rgba(255,252,240,.6)}
+.nm-node:hover .c-nEn{color:#F4E4A8}
 .c-ntxt{text-align:center}
 .c-nL{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:30px;line-height:1;color:#C9A84C}
 .c-nEn{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:#E9C97E;margin-top:5px}
@@ -457,7 +463,7 @@ body{margin:0;background:#1a1714;font-family:'Noto Serif KR',serif}
 <div class="jm-hsub" data-edit="menuSub">Le Menu du Jour</div>
 <svg class="jm-flourish" viewBox="0 0 260 28" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke="#a8802f" stroke-width="1.3" stroke-linecap="round"><path d="M132 14H178"></path><path d="M178 14c10 0 14-6 22-6s8 6 2 7c-4 .8-6-3-3-5"></path><path d="M128 14H82"></path><path d="M82 14c-10 0-14-6-22-6s-8 6-2 7c4 .8 6-3 3-5"></path></g><path d="M130 8l5 6-5 6-5-6z" fill="#a8802f"></path></svg>
 <div class="jm-today" data-edit="menuToday">오늘의 차림</div>
-<div class="jm-date" style="font-size: 12px; color: #14141366">2026.07.01</div>
+<div class="jm-date" id="menuDate" style="font-size: 12px; color: #14141366">2026.07.01</div>
 
 <div class="jm-course"><div class="jm-chead"><span class="jm-cline"></span><span class="jm-cko" data-edit="courseKo-ap">들어가며</span><span class="jm-clat" data-edit="courseLat-ap">L'Apéritif</span><span class="jm-cline"></span></div>
 <div class="jm-items">
@@ -526,16 +532,8 @@ body{margin:0;background:#1a1714;font-family:'Noto Serif KR',serif}
 <div class="cd-cell"><div class="cd-num" data-cd="s">··</div><div class="cd-lab">SECONDS</div></div>
 </div>
 </div>
-<div class="j-signup">
-<div class="j-sukick" data-edit="suKick" style="font-size: 12px">LES PORTES SE FERMENT</div>
-<div class="j-sutitle" data-edit="ctaTitle" style="font-size: 17px; font-family: Noto Serif KR"><strong>첫 손님으로 신청하시면, 순서대로 초대장을 보내드립니다.</strong><br><strong>신청은 7월 17일(금) 밤 11시59분까지.</strong></div>
-
-<div class="fld-row" style="justify-content: center"><a class="fbtn" href="apply.html" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center">신청하기</a></div>
-
-
-</div>
-<!-- ▽ 639 트레일러 임베드 (2026.07.03 파이스) · youtube-nocookie/자동재생off/추적쿠키off · 위 한 줄 카피는 아이리스·레테 발주 확정 시 교체 -->
-<div class="eg-trailer" style="max-width:520px;margin:96px auto 0;text-align:center">
+<!-- ▽ 639 트레일러 임베드 (2026.07.03 파이스) · youtube-nocookie/자동재생off/추적쿠키off · 0704 신청 버튼 위로 이동 -->
+<div class="eg-trailer" style="max-width:520px;margin:40px auto 0;text-align:center">
 <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.32em;color:#a8802f;text-indent:.32em;margin-bottom:14px">UNIVERSE EG</div>
 <div style="font-family:'Noto Serif KR',serif;font-size:15px;color:#2c2317;margin-bottom:24px;line-height:1.75">그 <span style="color:#a8802f">떨림</span>, 아직 당신 안에 있어요.</div>
 <div style="position:relative;width:100%;padding-top:56.25%;border-radius:6px;overflow:hidden;box-shadow:0 10px 34px rgba(44,35,23,.16)">
@@ -549,6 +547,14 @@ allowfullscreen></iframe>
 </div>
 </div>
 <!-- △ 639 트레일러 임베드 끝 -->
+<div class="j-signup" style="margin-top:72px">
+<div class="j-sukick" data-edit="suKick" style="font-size: 12px">LES PORTES SE FERMENT</div>
+<div class="j-sutitle" data-edit="ctaTitle" style="font-size: 17px; font-family: Noto Serif KR"><strong>첫 손님으로 신청하시면, 순서대로 초대장을 보내드립니다.</strong><br><strong>신청은 7월 17일(금) 밤 11시59분까지.</strong></div>
+
+<div class="fld-row" style="justify-content: center"><a class="fbtn" href="apply.html" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center">신청하기</a></div>
+
+
+</div>
 <div class="j-foot" data-edit="foot" style="font-size: 11px; font-family: Cormorant Garamond">은교(隱敎) — 은밀하게 스며드는 교양.
 떠들썩하지 않게, 당신의 밤에 조용히.</div>
 </div>
@@ -609,11 +615,12 @@ allowfullscreen></iframe>
     measure();
     var density=150, stars=[];
     for(var i=0;i<density;i++) stars.push({sx:Math.random(),sy:Math.random(),r:Math.random()*1.1+0.3,a:Math.random()*0.5+0.16,ph:Math.random()*6.28,sp:Math.random()*0.0013+0.0004});
-    var meteors=[], nextSpawn=600;
+    var meteors=[], nextSpawn=1800;
     function spawn(){
-      var sx=Math.random()*W*0.92+W*0.04, sy=Math.random()*H*0.35;
-      var ang=(Math.random()<0.5?0.52:2.62)+(Math.random()*0.3-0.15), sp=Math.random()*0.2+0.3;
-      meteors.push({x:sx,y:sy,vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp,life:0,max:Math.random()*420+520,len:Math.random()*60+75});
+      // 진정성 있는 유성(0704): 우상단→좌하단 한 방향으로만, 서로 나란히 흐르게
+      var sx=Math.random()*W*0.55+W*0.42, sy=Math.random()*H*0.22;
+      var ang=2.62+(Math.random()*0.14-0.07), sp=Math.random()*0.06+0.30;  // 방향 통일·속도 균일
+      meteors.push({x:sx,y:sy,vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp,life:0,max:Math.random()*260+620,len:Math.random()*28+92});
     }
     var last=performance.now();
     function loop(t){
@@ -636,7 +643,7 @@ allowfullscreen></iframe>
         ctx.beginPath(); ctx.moveTo(m.x,m.y); ctx.lineTo(tx,ty); ctx.stroke();
         ctx.beginPath(); ctx.fillStyle='rgba(255,250,235,'+(0.95*kk)+')'; ctx.arc(m.x,m.y,1.5,0,6.2832); ctx.fill();
       }
-      if(t>nextSpawn){ spawn(); if(Math.random()<0.25)spawn(); nextSpawn=t+(Math.random()*1500+700); }
+      if(t>nextSpawn){ spawn(); nextSpawn=t+(Math.random()*4200+3800); }
       requestAnimationFrame(loop);
     }
     requestAnimationFrame(loop);
@@ -644,6 +651,12 @@ allowfullscreen></iframe>
   }
 
   function init(){
+    // 오늘의 차림표 날짜 = 오늘(KST) 자동 (0704)
+    var md=document.getElementById('menuDate');
+    if(md){
+      var kst=new Date(Date.now()+(new Date().getTimezoneOffset()*60000)+9*3600000);
+      md.textContent=kst.getFullYear()+'.'+pad(kst.getMonth()+1)+'.'+pad(kst.getDate());
+    }
     patchCd(); setInterval(patchCd,1000);
     var cv=document.getElementById('starfield'); if(cv)runStar(cv);
   }
