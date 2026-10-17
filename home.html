@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0b0907">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="preload" as="image" href="media/eg_home_hero_poster.jpg">
+<link rel="preload" as="image" href="media/eg_home_hero_poster.jpg?v=1017b">
 <style>
 /* ── EG 홈페이지 · 후킹 층 (1017) ───────────────────────────────
    결정문 〈EG홈페이지_후킹층_영상5컷_카피 v1.0 1016밤〉
@@ -26,7 +26,7 @@ html,body{height:100%;background:var(--ink);color:var(--paper)}
 body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
   -webkit-font-smoothing:antialiased;overflow:hidden}
 
-.hero{position:fixed;inset:0;overflow:hidden;background:var(--ink) url('media/eg_home_hero_poster.jpg') center/cover no-repeat}
+.hero{position:fixed;inset:0;overflow:hidden;background:var(--ink) url('media/eg_home_hero_poster.jpg?v=1017b') center/cover no-repeat}
 .hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
 /* 글자가 읽히도록 아래·위만 살짝 어둡게 — 영상 자체는 손대지 않는다 */
 .hero::after{content:'';position:absolute;inset:0;pointer-events:none;
@@ -69,7 +69,7 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
 
 <section class="hero" aria-label="EG유니버스 소개 영상">
   <video id="hero" muted playsinline autoplay loop preload="auto"
-         poster="media/eg_home_hero_poster.jpg" aria-hidden="true"></video>
+         poster="media/eg_home_hero_poster.jpg?v=1017b" aria-hidden="true"></video>
 </section>
 
 <div class="plate">
@@ -98,7 +98,7 @@ const credit = document.getElementById('credit');
 
 /* 폰은 가벼운 판, 넓은 화면은 1920 판 */
 v.src = (Math.max(screen.width, screen.height) * (window.devicePixelRatio || 1) > 2000 && window.innerWidth > 900)
-  ? 'media/eg_home_hero_1920.mp4' : 'media/eg_home_hero_1280.mp4';
+  ? 'media/eg_home_hero_1920.mp4?v=1017b' : 'media/eg_home_hero_1280.mp4?v=1017b';
 
 let cur = -1, swapTimer = 0;
 function cutAt(time){
