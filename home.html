@@ -4,29 +4,42 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>EG유니버스</title>
-<meta name="description" content="지구 위에 세운 하루 10분 인문학 여행. 30년을 동행하는 교양우주, EG유니버스.">
+<meta name="description" content="지구 위에 세운 인문학 구독. 하루 10분, 지구 위를 날아 그림 한 점, 음악 한 곡, 별 하나를 만나고 그 끝에서 책 한 권을 손에 듭니다.">
 <meta name="theme-color" content="#0b0907">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500&display=swap">
 <link rel="preload" as="image" href="media/eg_home_hero_poster.jpg?v=1017b">
 <style>
-/* ── EG 홈페이지 · 후킹 층 (1017) ───────────────────────────────
-   결정문 〈EG홈페이지_후킹층_영상5컷_카피 v1.0 1016밤〉
-   · 영상에는 글자를 굽지 않는다 — 카피 · 명패는 여기 HTML 글자로 얹는다(값 · 날짜를 고칠 수 있게)
-   · 카피는 왼쪽 아래, 흰 글씨, 장식 없음(글렌스톤 명패 결)
-   · 소리 없음. 레코드 소리는 나중에 손님이 누를 때만 */
+/* ── EG 홈페이지 (1017) ───────────────────────────────────────
+   ① 후킹 층 — 결정문 〈EG홈페이지_후킹층_영상5컷_카피 v1.0 1016밤〉
+      · 영상에는 글자를 굽지 않는다 — 카피 · 명패는 HTML 글자로 얹는다
+      · 카피는 왼쪽 아래, 흰 글씨, 장식 없음(글렌스톤 명패 결) · 소리 없음
+      · 첫 화면 명패에 값은 넣지 않는다 — 돈부터 드러내지 않는다(1017 소로)
+   ② 정의 층 — 영상 아래 첫 화면. 세 줄과 문 하나(1017 소로 확정)
+      · 책을 맨 끝, 도착지에 세운다 — 그림 · 음악 · 별이 모두 책으로 가는 길
+      · 값은 여기서 처음 말한다 — 무엇을 하는 곳인지 다 들은 뒤라 정보로 읽힌다
+   ⚠ 메뉴는 아직 없다 — 정해지면 「움직일 때만 위에서 내려오는 띠」로(1017 소로 찬성) */
 :root{
   --ink:#0b0907;
   --paper:#f4efe6;
+  --paper-2:#ebe4d7;
+  --ink-soft:#3a332b;
+  --ink-dim:#7a6f62;
   --dim:rgba(244,239,230,.62);
   --gutter:clamp(16px,4.2vw,64px);
+  --serif:'Noto Serif KR','Nanum Myeongjo',serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:var(--ink);color:var(--paper)}
+html{background:var(--ink)}
 body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
-  -webkit-font-smoothing:antialiased;overflow:hidden}
+  -webkit-font-smoothing:antialiased;color:var(--paper);background:var(--ink);overflow-x:hidden}
 
-.hero{position:fixed;inset:0;overflow:hidden;background:var(--ink) url('media/eg_home_hero_poster.jpg?v=1017b') center/cover no-repeat}
+/* ── ① 후킹 층 ─────────────────────────────────────── */
+.hero{position:relative;height:100vh;height:100svh;min-height:420px;overflow:hidden;
+  background:var(--ink) url('media/eg_home_hero_poster.jpg?v=1017b') center/cover no-repeat}
 .hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
 /* 글자가 읽히도록 아래·위만 살짝 어둡게 — 영상 자체는 손대지 않는다 */
 .hero::after{content:'';position:absolute;inset:0;pointer-events:none;
@@ -34,15 +47,14 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
     linear-gradient(0deg, rgba(8,6,4,.62) 0%, rgba(8,6,4,.18) 26%, rgba(8,6,4,0) 42%),
     linear-gradient(180deg, rgba(8,6,4,.42) 0%, rgba(8,6,4,0) 18%)}
 
-/* 고정 명패 — 맨 위 왼쪽 */
-.plate{position:fixed;z-index:3;left:var(--gutter);top:calc(var(--gutter) * .8 + env(safe-area-inset-top));
+/* 명패 — 맨 위 왼쪽 */
+.plate{position:absolute;z-index:3;left:var(--gutter);top:calc(var(--gutter) * .8 + env(safe-area-inset-top));
   display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
   font-size:13px;letter-spacing:.04em;color:var(--dim)}
 .plate b{font-weight:600;font-size:16px;letter-spacing:.02em;color:var(--paper)}
-.plate .sep{opacity:.45}
 
 /* 카피 — 왼쪽 아래, 컷마다 바뀐다 */
-.copy{position:fixed;z-index:3;left:var(--gutter);right:var(--gutter);
+.copy{position:absolute;z-index:3;left:var(--gutter);right:var(--gutter);
   bottom:calc(var(--gutter) + env(safe-area-inset-bottom));
   font-size:clamp(20px,2.6vw,38px);font-weight:400;line-height:1.35;letter-spacing:-.01em;
   max-width:22em;word-break:keep-all;text-wrap:balance;text-shadow:0 1px 18px rgba(0,0,0,.45);
@@ -50,15 +62,45 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
 .copy.on{opacity:1;transform:none}
 
 /* 빌려 쓴 땅의 이름표 — 지구 컷(①③)에서만 */
-.credit{position:fixed;z-index:3;right:var(--gutter);bottom:calc(10px + env(safe-area-inset-bottom));
+.credit{position:absolute;z-index:3;right:var(--gutter);bottom:calc(10px + env(safe-area-inset-bottom));
   font-size:10.5px;letter-spacing:.04em;color:rgba(244,239,230,.42);
   opacity:0;transition:opacity .5s}
 .credit.on{opacity:1}
+
+/* ── ② 정의 층 — 세 줄과 문 하나 ─────────────────────── */
+.define{background:var(--paper);color:var(--ink);
+  min-height:100vh;min-height:100svh;display:flex;align-items:center;
+  padding:clamp(72px,14vh,160px) var(--gutter)}
+.define .inner{width:100%;max-width:1080px;margin:0 auto}
+.define h1{font-family:var(--serif);font-weight:400;
+  font-size:clamp(34px,6.2vw,84px);line-height:1.18;letter-spacing:-.025em;
+  word-break:keep-all;color:var(--ink)}
+.define .gloss{margin-top:clamp(28px,4.4vw,52px);max-width:34em;
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(17px,1.75vw,24px);line-height:1.85;letter-spacing:-.005em;
+  color:var(--ink-soft);word-break:keep-all;text-wrap:pretty}
+.define .gloss .book{font-weight:500;color:var(--ink)}
+.define .terms{margin-top:clamp(36px,5vw,64px);padding-top:18px;border-top:1px solid rgba(11,9,7,.14);
+  display:flex;flex-wrap:wrap;gap:6px 22px;
+  font-size:14px;letter-spacing:.02em;color:var(--ink-dim)}
+.define .terms b{font-weight:600;color:var(--ink-soft)}
+.define .door{margin-top:clamp(32px,4.5vw,52px);display:inline-flex;align-items:center;gap:12px;
+  min-width:220px;justify-content:center;padding:16px 30px;border-radius:999px;
+  background:var(--ink);color:var(--paper);text-decoration:none;
+  font-size:15px;font-weight:500;letter-spacing:.04em;
+  transition:transform .2s ease,background .2s ease}
+.define .door:hover{transform:translateY(-1px);background:#2a231b}
+.define .door.tbd{background:transparent;color:var(--ink-dim);border:1px dashed rgba(11,9,7,.3);cursor:default}
+.define .door.tbd:hover{transform:none}
 
 @media (max-width:640px){
   .plate{gap:8px;font-size:12px}
   .plate b{font-size:15px}
   .copy{font-size:22px;max-width:15em}
+  .define h1{font-size:clamp(32px,9.4vw,44px)}
+  .define .gloss br{display:none}
+  .define .terms{font-size:13px}
+  .define .door{width:100%}
 }
 @media (prefers-reduced-motion:reduce){
   .copy{transition:none}
@@ -67,18 +109,29 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
 </head>
 <body>
 
-<section class="hero" aria-label="EG유니버스 소개 영상">
+<header class="hero" aria-label="EG유니버스 소개 영상">
   <video id="hero" muted playsinline autoplay loop preload="auto"
          poster="media/eg_home_hero_poster.jpg?v=1017b" aria-hidden="true"></video>
-</section>
+  <div class="plate">
+    <b>EG유니버스</b>
+    <span>2026년 12월 25일(금) 개관</span>
+  </div>
+  <p class="copy" id="copy" aria-live="off"></p>
+  <div class="credit" id="credit">지도 · Google · Cesium</div>
+</header>
 
-<div class="plate">
-  <b>EG유니버스</b>
-  <span>2026년 12월 25일(금) 개관</span>
-</div>
-
-<p class="copy" id="copy" aria-live="off"></p>
-<div class="credit" id="credit">지도 · Google · Cesium</div>
+<main>
+  <section class="define" aria-labelledby="def-title">
+    <div class="inner">
+      <h1 id="def-title">지구 위에 세운<br>인문학 구독</h1>
+      <p class="gloss">하루 10분, 지구 위를 날아 그림 한 점, 음악 한 곡, 별 하나를 만나고<br>
+        그 끝에서 <span class="book">책 한 권</span>을 손에 듭니다.</p>
+      <p class="terms"><span><b>월 30,030원</b></span><span>2026년 12월 25일(금) 개관</span></p>
+      <!-- 문 이름은 아직 정하지 않았다(1017) — 정해지면 tbd 를 떼고 href 를 단다 -->
+      <a class="door tbd" role="button" aria-disabled="true">문 이름 · 정하는 중</a>
+    </div>
+  </section>
+</main>
 
 <script>
 /* ── 컷 시간표 (영상 25.8초 · 1017 소로 완성본) ──
@@ -125,12 +178,18 @@ show(0);
 requestAnimationFrame(tick);
 
 /* 자동재생이 막힌 브라우저(저전력 모드 등) — 첫 손길에 다시 시도한다 */
-const kick = () => { v.play().catch(()=>{}); };
+let inView = true;
+const kick = () => { if (inView && !document.hidden) v.play().catch(()=>{}); };
 v.play().catch(() => {
   ['pointerdown','touchstart','keydown'].forEach(e => window.addEventListener(e, kick, { once: true, passive: true }));
 });
 /* 탭을 떠났다 돌아오면 이어서 */
-document.addEventListener('visibilitychange', () => { if (!document.hidden) kick(); });
+document.addEventListener('visibilitychange', () => { if (document.hidden) v.pause(); else kick(); });
+/* 영상이 화면 밖으로 완전히 나가면 쉬게 한다 — 아래를 읽는 동안 폰 배터리를 아낀다 */
+if ('IntersectionObserver' in window){
+  new IntersectionObserver(([e]) => { inView = e.isIntersecting; inView ? kick() : v.pause(); },
+    { threshold: 0 }).observe(document.querySelector('.hero'));
+}
 </script>
 </body>
 </html>
