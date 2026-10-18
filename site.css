@@ -1,0 +1,79 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   site.css — egsalon.com 모든 페이지가 함께 쓰는 머리 (2026.10.18)
+
+   결정문 〈EG홈페이지_단추두얼굴 … v1.0 1018〉 §1 · §7
+     · 오른쪽 위 단추 — 늘 보인다 · 처음 온 분 「EG 둘러보기」(먹색) / 와 본 분 「EG 들어가기」(노랑)
+     · 메뉴 띠 — 현관에서는 움직일 때만 위에서 내려온다(1017 소로) · 하위 페이지에서는 늘 떠 있다
+   골격 (1018 저녁 소로) — 본채 다섯과 곁채 넷
+     1 현관 왜 · 2 오늘 지금 · 3 쓰는 법(작명 대기) 어떻게 · 4 장소 어디 · 5 소장품 무엇
+     뉴스레터 · 일정 · 후기 · 제작 과정
+   ⚠ 이 파일을 고치면 꼬리표(?v=)를 모든 html 에서 함께 바꾼다 — grep "site.css?v="
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root{
+  --ink:#0b0907;
+  --paper:#f4efe6;
+  --paper-2:#ebe4d7;
+  --ink-soft:#3a332b;
+  --ink-dim:#7a6f62;
+  --dim:rgba(244,239,230,.62);
+  --arrow:#f2c94c;                       /* 노란 화살표의 노랑 */
+  --gutter:clamp(16px,4.2vw,64px);
+  --head-top:calc(var(--gutter) * .8 + env(safe-area-inset-top) - 9px);
+  --serif:'Noto Serif KR','Nanum Myeongjo',serif;
+}
+
+/* ── 오른쪽 위 단추 ─────────────────────────────────────── */
+.gate{position:fixed;z-index:20;right:var(--gutter);top:var(--head-top);
+  display:inline-flex;align-items:center;padding:9px 18px;border-radius:999px;
+  background:rgba(11,9,7,.62);color:var(--paper);border:1px solid rgba(244,239,230,.32);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+  font-size:13.5px;font-weight:500;letter-spacing:.04em;text-decoration:none;white-space:nowrap;
+  transition:background .2s ease,border-color .2s ease}
+.gate:hover{background:rgba(11,9,7,.86);border-color:rgba(244,239,230,.6)}
+/* 영상 밖(종이색 위)에서는 반투명이 탁해 보인다 — 또렷한 먹색으로 */
+.gate.solid{background:var(--ink);border-color:rgba(244,239,230,.38)}
+.gate.solid:hover{background:#2a231b;border-color:rgba(244,239,230,.7)}
+/* 「EG 들어가기」 — 한 번 와 본 분에게 「이쪽입니다」를 가리키는 노랑 */
+.gate.in,.gate.in.solid{background:var(--arrow);border-color:var(--arrow);color:var(--ink)}
+.gate.in:hover,.gate.in.solid:hover{background:#f6d773;border-color:#f6d773}
+
+/* 휴대폰에서 「EG 들어가기」를 누르면 앱으로 보내지 않고 이 안내를 띄운다 */
+.gate-note{position:fixed;z-index:21;right:var(--gutter);left:var(--gutter);
+  top:calc(var(--head-top) + 49px);
+  margin-left:auto;max-width:300px;padding:14px 16px;border-radius:10px;
+  background:var(--paper);color:var(--ink);box-shadow:0 10px 30px rgba(0,0,0,.28);
+  font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+  font-size:13.5px;line-height:1.65;word-break:keep-all;
+  opacity:0;transform:translateY(-4px);pointer-events:none;transition:opacity .25s ease,transform .25s ease}
+.gate-note.on{opacity:1;transform:none;pointer-events:auto}
+
+/* ── 메뉴 띠 ─────────────────────────────────────────── */
+.eg-nav{position:fixed;z-index:19;left:0;right:0;top:0;
+  padding:var(--head-top) calc(var(--gutter) + 160px) 14px var(--gutter);
+  display:flex;align-items:center;gap:clamp(18px,2.4vw,34px);min-height:calc(var(--head-top) + 51px);
+  background:rgba(11,9,7,.78);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(244,239,230,.08);
+  font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+  transform:translateY(-100%);transition:transform .35s ease}
+.eg-nav.on,.eg-nav.fixed{transform:none}
+/* 하위 페이지(종이색 위)에서는 반투명이 탁해 보인다 — 또렷한 먹색으로 */
+.eg-nav.fixed{background:var(--ink);border-bottom-color:var(--ink)}
+.eg-nav .home{flex:none;font-size:16px;font-weight:600;letter-spacing:.02em;color:var(--paper);text-decoration:none}
+.eg-nav ul{display:flex;align-items:center;gap:clamp(16px,2vw,28px);list-style:none;margin:0;padding:0;
+  overflow-x:auto;scrollbar-width:none;white-space:nowrap;padding:4px 0}
+.eg-nav ul::-webkit-scrollbar{display:none}
+.eg-nav a{display:inline-block;color:rgba(244,239,230,.8);font-size:14px;letter-spacing:.03em;text-decoration:none;padding:4px 0;
+  border-bottom:2px solid transparent;transition:color .2s ease,border-color .2s ease}
+.eg-nav a:hover{color:var(--paper)}
+.eg-nav a[aria-current="page"]{color:var(--paper);border-bottom-color:var(--arrow)}
+.eg-nav .sep{flex:none;width:1px;height:14px;background:rgba(244,239,230,.22)}
+.eg-nav .minor a{color:rgba(244,239,230,.52);font-size:13px}
+.eg-nav .minor a:hover{color:var(--paper)}
+
+@media (max-width:640px){
+  .gate{padding:8px 14px;font-size:12.5px}
+  .eg-nav{padding-right:calc(var(--gutter) + 118px);gap:14px}
+  .eg-nav .home{font-size:14px}
+}
