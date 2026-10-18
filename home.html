@@ -65,6 +65,9 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
 /* 영상이 화면을 벗어나면(종이색 층 위) 반투명이 탁해 보인다 — 또렷한 먹색으로 */
 .gate.solid{background:var(--ink);border-color:var(--ink)}
 .gate.solid:hover{background:#2a231b;border-color:#2a231b}
+/* 「EG 들어가기」 — 노란 화살표의 노랑. 한 번 와 본 분에게 「이쪽입니다」를 가리킨다 (1018 소로: 두 얼굴을 색으로도 가르자) */
+.gate.in,.gate.in.solid{background:#f2c94c;border-color:#f2c94c;color:var(--ink)}
+.gate.in:hover,.gate.in.solid:hover{background:#f6d773;border-color:#f6d773}
 
 /* 휴대폰에서 「EG 들어가기」를 누르면 — 앱으로 보내지 않고 이 안내를 띄운다 (앱은 노트북 · 데스크톱 전용) */
 .gate-note{position:fixed;z-index:21;right:var(--gutter);left:var(--gutter);
@@ -112,6 +115,8 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
   font-size:15px;font-weight:500;letter-spacing:.04em;
   transition:transform .2s ease,background .2s ease}
 .define .door:hover{transform:translateY(-1px);background:#2a231b}
+.define .door.in{background:#f2c94c;color:var(--ink)}
+.define .door.in:hover{background:#f6d773}
 .define .door.tbd{background:transparent;color:var(--ink-dim);border:1px dashed rgba(11,9,7,.3);cursor:default}
 .define .door.tbd:hover{transform:none}
 
@@ -238,7 +243,7 @@ const LOOK_URL = '';   /* 2번이 서기 전에는 비워 둔다 — 누르면 �
   const seen = /(?:^|;\s*)eg_seen=1(?:;|$)/.test(document.cookie);
   document.querySelectorAll('[data-gate]').forEach(a => {
     if (seen){
-      a.textContent = 'EG 들어가기'; a.href = APP_URL;
+      a.textContent = 'EG 들어가기'; a.href = APP_URL; a.classList.add('in');
       /* 앱은 노트북 · 데스크톱 전용 — 휴대폰이면 앱으로 보내지 않고 안내를 띄운다 */
       a.addEventListener('click', ev => {
         const phone = (typeof egIsPhone === 'function') ? egIsPhone() : false;
