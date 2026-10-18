@@ -66,6 +66,15 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
 .gate.solid{background:var(--ink);border-color:var(--ink)}
 .gate.solid:hover{background:#2a231b;border-color:#2a231b}
 
+/* 휴대폰에서 「EG 들어가기」를 누르면 — 앱으로 보내지 않고 이 안내를 띄운다 (앱은 노트북 · 데스크톱 전용) */
+.gate-note{position:fixed;z-index:21;right:var(--gutter);left:var(--gutter);
+  top:calc(var(--gutter) * .8 + env(safe-area-inset-top) + 40px);
+  margin-left:auto;max-width:300px;padding:14px 16px;border-radius:10px;
+  background:var(--paper);color:var(--ink);box-shadow:0 10px 30px rgba(0,0,0,.28);
+  font-size:13.5px;line-height:1.65;word-break:keep-all;
+  opacity:0;transform:translateY(-4px);pointer-events:none;transition:opacity .25s ease,transform .25s ease}
+.gate-note.on{opacity:1;transform:none;pointer-events:auto}
+
 /* 카피 — 왼쪽 아래, 컷마다 바뀐다 */
 .copy{position:absolute;z-index:3;left:var(--gutter);right:var(--gutter);
   bottom:calc(var(--gutter) + env(safe-area-inset-bottom));
@@ -154,6 +163,7 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
 <body>
 
 <a class="gate" data-gate href="#">EG 둘러보기</a>
+<p class="gate-note" id="gate-note" role="status">EG유니버스는 노트북이나 데스크톱에서 웹으로 접속합니다. 모바일에서는 접속할 수 없으니 착오 없으시길 바랍니다.</p>
 
 <header class="hero" aria-label="EG유니버스 소개 영상">
   <video id="hero" muted playsinline autoplay loop preload="auto"
@@ -214,6 +224,8 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
   </section>
 </main>
 
+<!-- 휴대폰 판정은 앱과 같은 한 벌을 쓴다(eg_device.js) — 판정이 둘이면 어긋난다 -->
+<script src="https://app.egsalon.com/eg_device.js?v=20260729"></script>
 <script>
 /* ── 단추 두 얼굴 (결정문 1018 §1) ──────────────────────────────
    앱(app.egsalon.com)이 로그인한 기기에 eg_seen=1 표지를 남긴다(eg_seen.js).
@@ -225,7 +237,18 @@ const LOOK_URL = '';   /* 2번이 서기 전에는 비워 둔다 — 누르면 �
 (function(){
   const seen = /(?:^|;\s*)eg_seen=1(?:;|$)/.test(document.cookie);
   document.querySelectorAll('[data-gate]').forEach(a => {
-    if (seen){ a.textContent = 'EG 들어가기'; a.href = APP_URL; }
+    if (seen){
+      a.textContent = 'EG 들어가기'; a.href = APP_URL;
+      /* 앱은 노트북 · 데스크톱 전용 — 휴대폰이면 앱으로 보내지 않고 안내를 띄운다 */
+      a.addEventListener('click', ev => {
+        const phone = (typeof egIsPhone === 'function') ? egIsPhone() : false;
+        if (!phone) return;
+        ev.preventDefault();
+        const n = document.getElementById('gate-note');
+        n.classList.add('on');
+        clearTimeout(n._t); n._t = setTimeout(() => n.classList.remove('on'), 6000);
+      });
+    }
     else {
       a.textContent = 'EG 둘러보기';
       if (LOOK_URL) a.href = LOOK_URL;
@@ -233,6 +256,12 @@ const LOOK_URL = '';   /* 2번이 서기 전에는 비워 둔다 — 누르면 �
     }
   });
 })();
+
+/* 안내는 화면 아무 데나 누르면 닫힌다 */
+document.addEventListener('pointerdown', ev => {
+  const n = document.getElementById('gate-note');
+  if (n.classList.contains('on') && !ev.target.closest('[data-gate]')) n.classList.remove('on');
+}, { passive: true });
 
 /* ── 컷 시간표 (영상 25.8초 · 1017 소로 완성본) ──
    t = 그 컷이 시작하는 초. pos = 세로 화면(폰)에서 영상이 잘릴 때 어디를 남길지(가로 %).
