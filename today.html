@@ -131,9 +131,47 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
 .table .halt{margin-top:clamp(30px,3.6vw,48px);display:inline-flex;align-items:center;gap:12px;font-size:14.5px;
   letter-spacing:.03em;color:var(--paper)}
 .table .halt::before{content:'';width:22px;height:2px;background:var(--arrow)}
-@media (prefers-reduced-motion:reduce){.stage .bg.on{animation:none}.steam i{animation:none}}
+
+/* ── 오늘의 미술관 — 바깥 영상 → 정문 → 유리 천장에서 벽으로 → 빈 벽에 오늘의 그림 → 명패 → 「지식」 첫 단락 → 멈춤 ── */
+.galerie{margin-top:clamp(96px,12vw,160px);padding-top:clamp(40px,6vw,72px);border-top:1px solid rgba(11,9,7,.12)}
+.galerie .place{margin-top:14px;font-size:clamp(15px,1.4vw,18px);letter-spacing:.02em;color:var(--ink-dim);word-break:keep-all}
+.galerie .lede{margin-top:clamp(24px,3vw,36px);max-width:34em;font-family:var(--serif);font-weight:300;
+  font-size:clamp(17px,1.55vw,19.5px);line-height:2;color:var(--ink-soft);word-break:keep-all}
+.gstage{position:relative;width:100vw;margin-left:calc(50% - 50vw);margin-top:clamp(40px,5vw,64px);
+  height:min(92svh,62vw);min-height:520px;overflow:hidden;background:#0d0a07;color:var(--paper)}
+.gstage video,.gstage .ggate{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  background:center/cover no-repeat;opacity:0;transition:opacity 1.4s ease}
+.gstage video.on,.gstage .ggate.on{opacity:1}
+/* ⚠ 「gate」는 site.css 의 「EG 둘러보기」 단추 이름이다 — 겹치면 알약 모양(둥근 모서리)이 입혀져 정문 그림이 타원이 된다 (1019) */
+.gstage .ggate.on{animation:drift 7s ease-out both}
+.gstage .hall{position:absolute;left:0;top:0;width:100%;opacity:0;transition:opacity 1.4s ease,transform 5.5s cubic-bezier(.45,.05,.25,1)}
+.gstage .hall.on{opacity:1}
+.gstage .hall img.wall{display:block;width:100%;height:100%;object-fit:fill}
+.gstage .art{position:absolute;opacity:0;transition:opacity 1.4s ease}
+.gstage .art.on{opacity:1}
+.gstage .art img{width:100%;height:100%;display:block;object-fit:contain;
+  filter:drop-shadow(0 10px 30px rgba(0,0,0,.5)) drop-shadow(0 2px 8px rgba(0,0,0,.4))}
+.gstage .gplaque{position:absolute;transform:translateX(-50%);text-align:center;white-space:nowrap;opacity:0;transition:opacity 1.2s ease;
+  font-family:var(--serif);text-shadow:0 1px 10px rgba(0,0,0,.55)}
+.gstage .gplaque.on{opacity:1}
+.gstage .gplaque b{display:block;font-weight:400;font-size:clamp(12.5px,1.25vw,15px);color:#f2ead6;letter-spacing:.04em}
+.gstage .gplaque span{display:block;margin-top:4px;font-size:clamp(10.5px,1vw,12.5px);color:rgba(242,234,214,.66);letter-spacing:.06em}
+.gstage::after{content:'';position:absolute;inset:0;pointer-events:none;transition:background 1.2s ease;
+  background:linear-gradient(0deg,rgba(8,6,4,.45) 0%,rgba(8,6,4,0) 35%)}
+.gstage.dim::after{background:linear-gradient(0deg,rgba(8,6,4,.86) 0%,rgba(8,6,4,.55) 38%,rgba(8,6,4,0) 70%)}
+.gstage .where{position:absolute;z-index:3;left:var(--gutter);top:var(--gutter);font-size:12.5px;letter-spacing:.14em;
+  color:rgba(244,239,230,.78);text-shadow:0 1px 12px rgba(0,0,0,.5)}
+.gstage .know{position:absolute;z-index:3;left:var(--gutter);right:var(--gutter);bottom:calc(var(--gutter) + 8px);max-width:36em}
+.gstage .know .line{opacity:0;transform:translateY(8px);transition:opacity 1s ease,transform 1s ease}
+.gstage .know .line.on{opacity:1;transform:none}
+.gstage .know .scene{font-family:var(--serif);font-size:clamp(19px,2vw,26px);line-height:1.6;color:var(--paper);word-break:keep-all;text-shadow:0 1px 18px rgba(0,0,0,.6)}
+.gstage .know .k{margin-top:16px;font-size:clamp(14.5px,1.3vw,16.5px);line-height:1.9;color:rgba(244,239,230,.85);word-break:keep-all;text-shadow:0 1px 14px rgba(0,0,0,.6)}
+.gstage .know .halt{margin-top:22px;display:inline-flex;align-items:center;gap:12px;font-size:14.5px;letter-spacing:.03em;color:var(--paper)}
+.gstage .know .halt::before{content:'';width:22px;height:2px;background:var(--arrow)}
+@media (prefers-reduced-motion:reduce){.stage .bg.on,.gstage .ggate.on{animation:none}.gstage .hall{transition:opacity 1.4s ease}.steam i{animation:none}}
 
 @media (max-width:640px){
+  .gstage .know .k{display:none}
   .plate .tag{font-size:12px;letter-spacing:.08em}
   .books{padding:22px 20px}
   .books li{grid-template-columns:1fr;gap:4px}
@@ -253,9 +291,39 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
   </section>
   <!-- ▲ -->
 
+  <!-- ▼ 오늘의 미술관 — 당번 = 미술관 명단[ KST날수 % 5 ] · 그림 = 배열[ (KST날수 + floor(museum_no × N ÷ H)) % N ] (앱 galerieGate · artOfMuseum 과 같은 셈)
+       방 그림은 앱과 같은 파일(tour-assets/galerie/<관>_gate|hall_<m|d|e|n>) · 걸이 기준 frame_rect · 명패 plaque_pos 도 앱 콘솔 값 그대로 -->
+  <section class="galerie" aria-labelledby="galerie-title">
+    <div class="eyebrow">오늘의 미술관 · 10/19(월)</div>
+    <h1 id="galerie-title">오르세 미술관</h1>
+    <p class="place">PARIS · 기차가 끊긴 뒤 남은 유리 천장</p>
+    <p class="lede">이 건물은 그림을 걸려고 지은 것이 아니라, 기차를 받으려고 지은 것입니다. 지구 위 미술관 다섯 곳에 날마다 그림이 한 점씩 걸리고, 그 가운데 한 곳이 오늘의 미술관이 됩니다.</p>
+
+    <div class="gstage" id="galStage"
+         data-video-1920="media/today_galerie_orsay_1920.mp4?v=1019" data-video-1280="media/today_galerie_orsay_1280.mp4?v=1019"
+         data-code="orsay" data-tz="Europe/Paris" data-name="오르세 미술관"
+         data-art="https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/heritage-treasures/htg_p075.webp"
+         data-rect='{"L":27.39,"T":43.09,"W":38.06,"H":23.15}' data-plaque='{"X":70.78,"Y":64.88}'
+         aria-label="오르세 미술관 — 정문에서 오늘의 그림까지">
+      <video muted playsinline preload="none" aria-hidden="true"></video>
+      <div class="ggate"></div>
+      <div class="hall">
+        <img class="wall" alt="" aria-hidden="true">
+        <div class="art"><img alt="우타가와 히로시게 「오하시 다리에 내리는 소나기」"></div>
+        <div class="gplaque"><b>오하시 다리에 내리는 소나기</b><span>우타가와 히로시게 · 1857</span></div>
+      </div>
+      <div class="where" aria-hidden="true"></div>
+      <div class="know">
+        <p class="scene line">검은 구름에서 쏟아진 빗줄기 아래,<br>다리 위 사람들이 웅크리고 달린다</p>
+        <p class="k line">원제 <em>Ōhashi Atake no yūdachi</em>는 오하시 다리와 아타케의 소나기라는 뜻이에요. 유다치는 여름 해 질 녘 갑자기 쏟아졌다 금세 그치는 비로, 브루클린 미술관은 천둥신이 저녁에 내려오는 일이라 풀지요.</p>
+        <p class="halt line">명패 뒤의 이야기는 EG 안에서</p>
+      </div>
+    </div>
+  </section>
+  <!-- ▲ -->
+
   <div class="day" aria-label="짓는 중인 칸">
     <ul>
-      <li>오늘의 미술관<span>짓는 중</span></li>
       <li>오늘의 음악관<span>짓는 중</span></li>
       <li>오늘의 스타디움<span>짓는 중</span></li>
       <li>오늘의 뮤세움<span>짓는 중</span></li>
@@ -356,6 +424,94 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
     var end = off + 8200 + (lines.length - 1) * 1900;
     at(end + 7000, function(){ lines.forEach(function(l){ l.classList.remove('on'); }); st.classList.remove('dim'); steam.classList.remove('on'); });
     at(end + 8400, play);
+  }
+  if ('IntersectionObserver' in window){
+    var inside = false;
+    new IntersectionObserver(function(es){
+      var e = es[0];
+      if (e.intersectionRatio >= 0.5 && !inside){ inside = true; play(); }
+      else if (e.intersectionRatio === 0 && inside){ inside = false; reset(); }
+    }, { threshold:[0, 0.5] }).observe(st);
+  } else play();
+})();
+</script>
+<script>
+/* ── 오늘의 미술관 무대 — 화면에 들어오면 돈다 · 끝나면 7초 뒤 처음부터 · 나가면 멈춤 ── */
+(function(){
+  'use strict';
+  var st = document.getElementById('galStage');
+  if (!st) return;
+  var PUB = 'https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/tour-assets/galerie/';
+  var code = st.dataset.code, NAME = st.dataset.name;
+  var h = 12;
+  try { h = Number(new Intl.DateTimeFormat('en-GB',{hour:'2-digit',hour12:false,timeZone:st.dataset.tz}).format(new Date())) % 24; } catch(e){}
+  var t = (h>=5 && h<11) ? 'm' : (h>=11 && h<17) ? 'd' : (h>=17 && h<21) ? 'e' : 'n';
+  var gate = st.querySelector('.ggate'), hall = st.querySelector('.hall'), wall = hall.querySelector('img.wall');
+  var art = st.querySelector('.art'), artImg = art.querySelector('img'), plq = st.querySelector('.gplaque');
+  var where = st.querySelector('.where'), lines = st.querySelectorAll('.know .line'), vid = st.querySelector('video');
+  gate.style.backgroundImage = 'url("' + PUB + code + '_gate_' + t + '.webp")';
+  wall.src = PUB + code + '_hall_' + t + '.webp';
+  artImg.src = st.dataset.art;
+  var RECT = JSON.parse(st.dataset.rect), PLQ = JSON.parse(st.dataset.plaque);
+  var PW = 941, PH = 1672;                          /* 앱 그림판(HALL_RATIO) — galerie.html hangBox 와 같은 셈 */
+
+  /* 걸이 기준과 같은 면적 · 그림 비율 — 앱과 같은 자리에 같은 크기로 걸린다 */
+  function hang(){
+    var iw = artImg.naturalWidth, ih = artImg.naturalHeight, g = RECT;
+    if (iw && ih){
+      var bw = RECT.W/100*PW, bh = RECT.H/100*PH, r = iw/ih;
+      var hh = Math.sqrt(bw*bh/r), ww = hh*r, cx = RECT.L+RECT.W/2, cy = RECT.T+RECT.H/2;
+      g = { L:cx-ww/PW*50, T:cy-hh/PH*50, W:ww/PW*100, H:hh/PH*100 };
+    }
+    art.style.left = g.L+'%'; art.style.top = g.T+'%'; art.style.width = g.W+'%'; art.style.height = g.H+'%';
+    plq.style.left = PLQ.X+'%'; plq.style.top = PLQ.Y+'%';
+  }
+  artImg.addEventListener('load', hang); hang();
+
+  /* 방은 앱처럼 폭 100% — 세로로 긴 방을 위(유리 천장)에서 그림 높이까지 내려온다 */
+  function fit(){ hall.style.height = (st.clientWidth * PH / PW) + 'px'; }
+  function shift(toArt){
+    var H = st.clientWidth * PH / PW, cy = (RECT.T + RECT.H/2) / 100 * H;
+    var y = toArt ? Math.min(0, Math.max(st.clientHeight - H, st.clientHeight * 0.36 - cy)) : 0;
+    hall.style.transform = 'translateY(' + y + 'px)';
+  }
+  fit(); window.addEventListener('resize', function(){ fit(); });
+
+  var timers = [];
+  function at(ms, fn){ timers.push(setTimeout(fn, ms)); }
+  function reset(){
+    timers.forEach(clearTimeout); timers = [];
+    [gate, hall, art, plq, vid].forEach(function(e){ e.classList.remove('on'); });
+    lines.forEach(function(l){ l.classList.remove('on'); });
+    st.classList.remove('dim'); hall.style.transition = 'none'; shift(false);
+    void hall.offsetWidth; hall.style.transition = '';
+    try { vid.pause(); } catch(e){}
+  }
+  function play(){
+    reset(); fit();
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce){ hall.classList.add('on'); shift(true); art.classList.add('on'); plq.classList.add('on'); st.classList.add('dim');
+      lines.forEach(function(l){ l.classList.add('on'); }); where.textContent = NAME + ' · 오늘의 그림'; return; }
+    var off = 0;
+    var vsrc = (Math.max(screen.width, screen.height) * (window.devicePixelRatio || 1) > 2000 && window.innerWidth > 900)
+      ? st.getAttribute('data-video-1920') : st.getAttribute('data-video-1280');
+    if (vsrc){
+      if (!vid.getAttribute('src')){ vid.src = vsrc; vid.preload = 'auto'; }
+      vid.classList.add('on'); where.textContent = NAME + ' · 지구 위';
+      try { vid.currentTime = 0; } catch(e){}
+      vid.play().catch(function(){});
+      off = 4400;
+    }
+    at(off,          function(){ vid.classList.remove('on'); gate.classList.add('on'); where.textContent = NAME + ' · 정문'; });
+    /* 1019 소로 — 그림은 전시실이 열릴 때부터 벽에 걸려 있다(빈 벽을 기다리게 하지 않는다) */
+    at(off + 3400,   function(){ gate.classList.remove('on'); hall.classList.add('on'); art.classList.add('on'); where.textContent = NAME + ' · 오늘의 그림'; });
+    at(off + 4000,   function(){ shift(true); });
+    at(off + 9200,   function(){ plq.classList.add('on'); });
+    at(off + 10600,  function(){ st.classList.add('dim'); lines[0].classList.add('on'); });
+    for (var i = 1; i < lines.length; i++) (function(i){ at(off + 10600 + i*2200, function(){ lines[i].classList.add('on'); }); })(i);
+    var end = off + 10600 + (lines.length - 1) * 2200;
+    at(end + 7000, function(){ lines.forEach(function(l){ l.classList.remove('on'); }); st.classList.remove('dim'); plq.classList.remove('on'); art.classList.remove('on'); hall.classList.remove('on'); });
+    at(end + 8600, play);
   }
   if ('IntersectionObserver' in window){
     var inside = false;
