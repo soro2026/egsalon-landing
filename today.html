@@ -231,7 +231,7 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
     <p class="lede">파리를 벗어나는 마차길 옆, 라일락을 심어 놓은 야외 술집으로 시작했습니다. 월 · 수 · 금 아침마다 새 문장 하나가 카페 탁자에 놓이고, 사람들이 그 위에 한 줄씩 얹습니다.</p>
 
     <div class="stage" id="spoonStage"
-         data-video-1920="media/today_spoon_closerie_1920.mp4?v=1019" data-video-1280="media/today_spoon_closerie_1280.mp4?v=1019"
+         data-video-1920="media/today_spoon_closerie_1920.mp4?v=1019b" data-video-1280="media/today_spoon_closerie_1280.mp4?v=1019b"
          data-code="closerie" data-tz="Europe/Paris"
          data-cup="1" data-steam-x="47.6" data-steam-y="34" data-steam-s="0.85"
          aria-label="클로즈리 데 릴라 — 정문에서 탁자까지">
@@ -343,7 +343,7 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
       vid.classList.add('on'); where.textContent = NAME + ' · 지구 위';
       try { vid.currentTime = 0; } catch(e){}
       vid.play().catch(function(){});
-      off = 8000;
+      off = 4400;   /* 영상 4.8초(앞 4.7초 잘라 냄 · 0.5초 페이드인) — 끝나기 직전에 정문으로 겹쳐 넘어감 (1019 소로) */
       at(off, function(){ vid.classList.remove('on'); });
     }
     if (reduce){ show('cup','오늘의 탁자'); steam.classList.add('on'); st.classList.add('dim'); lines.forEach(function(l){ l.classList.add('on'); }); return; }
