@@ -92,6 +92,47 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
   border-bottom:1px solid rgba(11,9,7,.08);font-size:16px;color:var(--ink-dim)}
 .day li span{flex:none;padding:3px 10px;border-radius:999px;border:1px dashed rgba(11,9,7,.24);font-size:12px;letter-spacing:.04em}
 
+
+/* ── 교양 한 스푼 — 바깥 영상 → 정문 → 실내 → 탁자 → 오늘의 문장 → 멈춤 (결정문 §3) ── */
+.spoon{margin-top:clamp(96px,12vw,160px);padding-top:clamp(40px,6vw,72px);border-top:1px solid rgba(11,9,7,.12)}
+.spoon .place{margin-top:14px;font-size:clamp(15px,1.4vw,18px);letter-spacing:.02em;color:var(--ink-dim);word-break:keep-all}
+.spoon .lede{margin-top:clamp(24px,3vw,36px);max-width:34em;font-family:var(--serif);font-weight:300;
+  font-size:clamp(17px,1.55vw,19.5px);line-height:2;color:var(--ink-soft);word-break:keep-all}
+.stage{position:relative;width:100vw;margin-left:calc(50% - 50vw);margin-top:clamp(40px,5vw,64px);
+  height:min(92svh,62vw);min-height:520px;overflow:hidden;background:#15110d;color:var(--paper)}
+.stage .bg,.stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  background:center/cover no-repeat;opacity:0;transition:opacity 1.4s ease}
+.stage .bg.on,.stage video.on{opacity:1}
+.stage .bg.on{animation:drift 9s ease-out both}
+@keyframes drift{from{transform:scale(1.06)}to{transform:scale(1)}}
+.stage::after{content:'';position:absolute;inset:0;pointer-events:none;transition:background 1.2s ease;
+  background:linear-gradient(0deg,rgba(8,6,4,.55) 0%,rgba(8,6,4,0) 40%)}
+.stage.dim::after{background:linear-gradient(0deg,rgba(8,6,4,.78) 0%,rgba(8,6,4,.5) 45%,rgba(8,6,4,.38) 100%)}
+.stage .where{position:absolute;z-index:3;left:var(--gutter);top:var(--gutter);font-size:12.5px;letter-spacing:.14em;
+  color:rgba(244,239,230,.78);text-shadow:0 1px 12px rgba(0,0,0,.5);transition:opacity .6s}
+/* 김 — 앱 콘솔에서 맞춘 잔 입 자리(terra_pins.meta.cup_steam)에 선다 */
+.steam{position:absolute;z-index:2;width:90px;height:150px;transform:translate(-50%,-100%);pointer-events:none;opacity:0;transition:opacity 1.6s}
+.steam.on{opacity:1}
+.steam i{position:absolute;bottom:0;left:50%;width:22px;height:110px;margin-left:-11px;border-radius:50%;
+  background:radial-gradient(ellipse at center,rgba(255,255,255,.34),rgba(255,255,255,0) 70%);filter:blur(7px);
+  animation:rise 4.2s ease-in infinite}
+.steam i:nth-child(2){left:38%;animation-delay:1.4s}
+.steam i:nth-child(3){left:62%;animation-delay:2.8s}
+@keyframes rise{0%{transform:translateY(20px) scaleX(.7);opacity:0}25%{opacity:.9}100%{transform:translateY(-70px) scaleX(1.5);opacity:0}}
+.table{position:absolute;z-index:3;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:0 var(--gutter)}
+.table .line{opacity:0;transform:translateY(8px);transition:opacity 1s ease,transform 1s ease}
+.table .line.on{opacity:1;transform:none}
+.table .head{font-family:var(--serif);font-weight:400;font-size:clamp(24px,3.1vw,40px);line-height:1.6;letter-spacing:-.01em;
+  text-shadow:0 1px 22px rgba(0,0,0,.55);word-break:keep-all}
+.table .story{margin-top:clamp(28px,3.4vw,44px);display:flex;flex-direction:column;gap:14px;max-width:30em}
+.table .story p{font-size:clamp(15px,1.35vw,17.5px);line-height:1.85;color:rgba(244,239,230,.86);word-break:keep-all;
+  text-shadow:0 1px 14px rgba(0,0,0,.6)}
+.table .halt{margin-top:clamp(30px,3.6vw,48px);display:inline-flex;align-items:center;gap:12px;font-size:14.5px;
+  letter-spacing:.03em;color:var(--paper)}
+.table .halt::before{content:'';width:22px;height:2px;background:var(--arrow)}
+@media (prefers-reduced-motion:reduce){.stage .bg.on{animation:none}.steam i{animation:none}}
+
 @media (max-width:640px){
   .plate .tag{font-size:12px;letter-spacing:.08em}
   .books{padding:22px 20px}
@@ -181,9 +222,39 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
   </article>
   <!-- ▲ -->
 
+  <!-- ▼ 교양 한 스푼 — 오늘 문을 연 카페(앱 spoonOnDuty 와 같은 셈: KST 날수 % 13) · 오늘의 회차(spoons.open_on 이 오늘이거나 그 앞인 가장 최근)
+       그림은 앱과 같은 파일(tour-assets/hansfoon/<곳>_gate|hall_<m|d|e|n> · _cup_n) — 자정 작업이 data-* 를 채운다 -->
+  <section class="spoon" aria-labelledby="spoon-title">
+    <div class="eyebrow">교양 한 스푼 · 10/19(월) · 오늘 놓인 문장</div>
+    <h1 id="spoon-title">클로즈리 데 릴라</h1>
+    <p class="place">PARIS · 헤밍웨이가 연필로 쓰던 구석</p>
+    <p class="lede">파리를 벗어나는 마차길 옆, 라일락을 심어 놓은 야외 술집으로 시작했습니다. 월 · 수 · 금 아침마다 새 문장 하나가 카페 탁자에 놓이고, 사람들이 그 위에 한 줄씩 얹습니다.</p>
+
+    <div class="stage" id="spoonStage"
+         data-video-1920="media/today_spoon_closerie_1920.mp4?v=1019" data-video-1280="media/today_spoon_closerie_1280.mp4?v=1019"
+         data-code="closerie" data-tz="Europe/Paris"
+         data-cup="1" data-steam-x="47.6" data-steam-y="34" data-steam-s="0.85"
+         aria-label="클로즈리 데 릴라 — 정문에서 탁자까지">
+      <video muted playsinline preload="none" aria-hidden="true"></video>
+      <div class="bg" data-k="gate"></div>
+      <div class="bg" data-k="hall"></div>
+      <div class="bg" data-k="cup"></div>
+      <div class="steam" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="where" aria-hidden="true"></div>
+      <div class="table">
+        <p class="head line">나는 나비의 꿈인가,<br>나비가 나의 꿈인가.<br>그 사이 어디쯤.</p>
+        <div class="story">
+          <p class="line">어느 날 장자가 꿈을 꾸었어요.<br>자신이 나비가 된 꿈을.</p>
+          <p class="line">팔랑팔랑 꽃 사이를 날며<br>스스로 장자임을 까맣게 잊었죠.<br>그저 나비로서 즐거울 뿐이었어요.</p>
+        </div>
+        <p class="halt line">이어지는 이야기와 퀴즈는 EG 안에서</p>
+      </div>
+    </div>
+  </section>
+  <!-- ▲ -->
+
   <div class="day" aria-label="짓는 중인 칸">
     <ul>
-      <li>교양 한 스푼<span>짓는 중</span></li>
       <li>오늘의 미술관<span>짓는 중</span></li>
       <li>오늘의 음악관<span>짓는 중</span></li>
       <li>오늘의 스타디움<span>짓는 중</span></li>
@@ -218,6 +289,78 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
     new IntersectionObserver(function(es){ inView = es[0].isIntersecting; inView ? kick() : v.pause(); },
       { threshold:0 }).observe(document.querySelector('.hero'));
   }
+})();
+</script>
+<script>
+/* ── 교양 한 스푼 무대 — 화면에 들어오면 한 번 돈다 · 나갔다 다시 들어오면 처음부터 ── */
+(function(){
+  'use strict';
+  var st = document.getElementById('spoonStage');
+  if (!st) return;
+  var PUB = 'https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/tour-assets/hansfoon/';
+  var code = st.dataset.code;
+  /* 시간대 — 그 카페의 현지 시각으로 (아침 m · 낮 d · 저녁 e · 밤 n) */
+  var h = 12;
+  try { h = Number(new Intl.DateTimeFormat('en-GB',{hour:'2-digit',hour12:false,timeZone:st.dataset.tz}).format(new Date())) % 24; } catch(e){}
+  var t = (h>=5 && h<11) ? 'm' : (h>=11 && h<17) ? 'd' : (h>=17 && h<21) ? 'e' : 'n';
+  var bgs = {};
+  st.querySelectorAll('.bg').forEach(function(el){
+    var k = el.dataset.k;
+    var url = k === 'cup' ? PUB + code + '_cup_' + (st.dataset.cup || '1') + '.webp' : PUB + code + '_' + k + '_' + t + '.webp';
+    el.style.backgroundImage = 'url("' + url + '")';
+    bgs[k] = el;
+  });
+  var steam = st.querySelector('.steam');
+  steam.style.left = (st.dataset.steamX || 50) + '%';
+  steam.style.top  = (st.dataset.steamY || 42) + '%';
+  steam.style.transform = 'translate(-50%,-100%) scale(' + (st.dataset.steamS || 1) + ')';
+  var where = st.querySelector('.where');
+  var lines = st.querySelectorAll('.line');
+  var vid = st.querySelector('video');
+  var NAME = '클로즈리 데 릴라';
+  var timers = [];
+  function at(ms, fn){ timers.push(setTimeout(fn, ms)); }
+  function show(k, label){
+    Object.keys(bgs).forEach(function(x){ bgs[x].classList.toggle('on', x === k); });
+    where.textContent = NAME + ' · ' + label;
+  }
+  function reset(){
+    timers.forEach(clearTimeout); timers = [];
+    Object.keys(bgs).forEach(function(x){ bgs[x].classList.remove('on'); });
+    lines.forEach(function(l){ l.classList.remove('on'); });
+    steam.classList.remove('on'); st.classList.remove('dim'); vid.classList.remove('on');
+    try { vid.pause(); } catch(e){}
+  }
+  function play(){
+    reset();
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var off = 0;
+    /* 바깥 — 소로 촬영 영상이 걸려 있으면 먼저 */
+    var vsrc = (Math.max(screen.width, screen.height) * (window.devicePixelRatio || 1) > 2000 && window.innerWidth > 900)
+      ? st.dataset.video1920 : st.dataset.video1280;
+    if (vsrc && !reduce){
+      if (!vid.getAttribute('src')){ vid.src = vsrc; vid.preload = 'auto'; }
+      vid.classList.add('on'); where.textContent = NAME + ' · 지구 위';
+      try { vid.currentTime = 0; } catch(e){}
+      vid.play().catch(function(){});
+      off = 8000;
+      at(off, function(){ vid.classList.remove('on'); });
+    }
+    if (reduce){ show('cup','오늘의 탁자'); steam.classList.add('on'); st.classList.add('dim'); lines.forEach(function(l){ l.classList.add('on'); }); return; }
+    at(off,         function(){ show('gate','정문'); });
+    at(off + 3200,  function(){ show('hall','실내'); });
+    at(off + 6400,  function(){ show('cup','오늘의 탁자'); steam.classList.add('on'); });
+    at(off + 8200,  function(){ st.classList.add('dim'); lines[0].classList.add('on'); });
+    for (var i = 1; i < lines.length; i++) (function(i){ at(off + 8200 + i*1900, function(){ lines[i].classList.add('on'); }); })(i);
+  }
+  if ('IntersectionObserver' in window){
+    var inside = false;
+    new IntersectionObserver(function(es){
+      var e = es[0];
+      if (e.intersectionRatio >= 0.5 && !inside){ inside = true; play(); }
+      else if (e.intersectionRatio === 0 && inside){ inside = false; reset(); }
+    }, { threshold:[0, 0.5] }).observe(st);
+  } else play();
 })();
 </script>
 </body>
