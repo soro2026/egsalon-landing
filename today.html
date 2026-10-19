@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Today · EG유니버스</title>
-<meta name="description" content="지금 이 순간 EG유니버스 안에서 일어나는 일을 보여 드립니다. 오늘의 비행, 오늘 미술관에 걸린 그림, 음악관에 걸린 곡, 카페 탁자에 놓인 한 문장이 매일 자정 새로 걸립니다.">
+<meta name="description" content="지금 이 순간 EG유니버스 안에서 일어나는 일을 보여 드립니다. 오늘의 독서비행, 오늘 미술관에 걸린 그림, 음악관에 걸린 곡, 카페 탁자에 놓인 한 문장이 매일 자정 새로 걸립니다.">
 <meta name="theme-color" content="#0b0907">
 <link rel="preload" as="image" href="media/today_flight_andes_poster.jpg?v=1018">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
@@ -15,7 +15,7 @@
 <style>
 /* ══════════════════════════════════════════════════════════════════════════
    Today — 시범판 (1018 밤) · 결정문 〈EG홈페이지_Today판 … v1.0 1018밤〉
-     맨 위  오늘의 비행 — 화면 가득 영상 + 왼쪽 아래 명패 (§4)
+     맨 위  오늘의 독서비행 — 화면 가득 영상 + 왼쪽 아래 명패 (§4)
      그 아래 아침 → 낮 → 밤 칸 (§2) — 짓는 대로 채운다
    ⚠ 「오늘의 ○○」 값은 매일 자정 자동 작업이 이 파일에 적어 넣는다(§7) — 지금은 손으로 적은 1018 판
    ══════════════════════════════════════════════════════════════════════════ */
@@ -24,7 +24,7 @@ html{background:var(--ink)}
 body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
   -webkit-font-smoothing:antialiased;color:var(--ink);background:var(--paper);overflow-x:hidden}
 
-/* ── 오늘의 비행 ─────────────────────────────────────── */
+/* ── 오늘의 독서비행 ─────────────────────────────────────── */
 .hero{position:relative;height:100vh;height:100svh;min-height:440px;overflow:hidden;color:var(--paper);
   background:var(--ink) url('media/today_flight_andes_poster.jpg?v=1018') center/cover no-repeat}
 .hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
@@ -50,7 +50,7 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
 
 .plate .book b{font-weight:500;color:var(--paper)}
 
-/* ── 오늘의 비행 — 한 편 ─────────────────────────────── */
+/* ── 오늘의 독서비행 — 한 편 ─────────────────────────────── */
 .flight .sub{margin-top:14px;font-size:clamp(15px,1.4vw,18px);letter-spacing:.02em;color:var(--ink-dim)}
 .prose{margin-top:clamp(40px,5vw,64px);max-width:34em;font-family:var(--serif);font-weight:300;
   font-size:clamp(17px,1.55vw,19.5px);line-height:2;color:var(--ink-soft);word-break:keep-all;text-wrap:pretty}
@@ -66,30 +66,40 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
   font-size:15px;letter-spacing:.02em;color:var(--ink)}
 .stop::before{content:'';width:22px;height:2px;background:var(--arrow)}
 
-/* ── 아침 → 낮 → 밤 ──────────────────────────────────── */
-main{max-width:1080px;margin:0 auto;padding:clamp(72px,12vh,140px) var(--gutter) 120px}
+/* ── Epigraph — 책의 제사(題詞) 쪽처럼 · 넓은 여백 가운데 문장 하나 ── */
+main{max-width:1080px;margin:0 auto;padding:0 var(--gutter) 120px}
+.epigraph{min-height:78vh;min-height:78svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:clamp(96px,14vh,160px) 0}
+.slot-date{margin-bottom:14px;font-size:13px;letter-spacing:.08em;color:var(--ink-dim)}
+.epigraph h2{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(17px,1.6vw,20px);letter-spacing:.14em;color:var(--ink-dim)}
+.epi-gloss{margin-top:10px;font-size:13.5px;letter-spacing:.02em;color:var(--ink-dim);word-break:keep-all}
+.epigraph blockquote{margin-top:clamp(44px,6vw,72px);max-width:46rem}
+.epigraph blockquote p{font-family:var(--serif);font-weight:400;font-size:clamp(24px,3vw,38px);line-height:1.65;
+  letter-spacing:-.01em;color:var(--ink);word-break:keep-all}
+.epigraph cite{display:block;margin-top:clamp(20px,2.4vw,30px);font-style:normal;text-align:right;
+  font-size:clamp(14px,1.3vw,16px);letter-spacing:.04em;color:var(--ink-dim)}
+.epigraph cite::before{content:'— '}
+
+.flight{padding-top:clamp(40px,6vw,72px);border-top:1px solid rgba(11,9,7,.12)}
 .eyebrow{font-size:13px;letter-spacing:.12em;color:var(--ink-dim)}
 h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px,6.4vw,88px);
   line-height:1.15;letter-spacing:-.025em;word-break:keep-all}
-.gloss{margin-top:clamp(24px,3.6vw,44px);max-width:34em;font-family:var(--serif);font-weight:300;
-  font-size:clamp(17px,1.7vw,22px);line-height:1.9;color:var(--ink-soft);word-break:keep-all;text-wrap:pretty}
 
-.day{margin-top:clamp(96px,12vw,160px);border-top:1px solid rgba(11,9,7,.14)}
-.day section{display:grid;grid-template-columns:120px 1fr;gap:20px;padding:28px 0;border-bottom:1px solid rgba(11,9,7,.1)}
-.day h3{font-family:var(--serif);font-weight:400;font-size:19px;letter-spacing:.06em;color:var(--ink-soft)}
-.day ul{list-style:none;display:flex;flex-direction:column;gap:12px}
-.day li{display:flex;align-items:baseline;justify-content:space-between;gap:16px;font-size:16px;color:var(--ink-dim)}
+/* ── 짓는 중인 칸 — 시간대 이름표 없이 순서만 ── */
+.day{margin-top:clamp(96px,12vw,160px);border-top:1px solid rgba(11,9,7,.14);padding-top:12px}
+.day ul{list-style:none;display:flex;flex-direction:column}
+.day li{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:16px 0;
+  border-bottom:1px solid rgba(11,9,7,.08);font-size:16px;color:var(--ink-dim)}
 .day li span{flex:none;padding:3px 10px;border-radius:999px;border:1px dashed rgba(11,9,7,.24);font-size:12px;letter-spacing:.04em}
 
 @media (max-width:640px){
   .plate .tag{font-size:12px;letter-spacing:.08em}
-  .day section{grid-template-columns:1fr;gap:14px}
   .books{padding:22px 20px}
   .books li{grid-template-columns:1fr;gap:4px}
 }
 </style>
 </head>
-<body>
+<body data-nav="auto">
 
 <a class="gate" data-gate href="#">EG 둘러보기</a>
 <p class="gate-note" id="gate-note" role="status">EG유니버스는 노트북이나 데스크톱에서 열립니다. 3D 지구를 실시간으로 그리는 곳이라 넉넉한 메모리가 필요해, 휴대폰에서는 들어오실 수 없습니다. 양해 부탁드립니다.</p>
@@ -109,26 +119,37 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
   </ul>
 </nav>
 
-<!-- ▼ Today 표지 — 영상은 오늘의 비행 (자정 작업이 채운다 · 1018 = 올해 291째 날 · 291 % 7 = 4 → 안데스) -->
-<header class="hero" aria-label="Today — 오늘의 비행 영상">
+<!-- ▼ Today 표지 — 영상은 오늘의 독서비행 (자정 작업이 채운다 · 1018 = 올해 291째 날 · 291 % 7 = 4 → 안데스) -->
+<header class="hero" aria-label="Today — 오늘의 독서비행 영상">
   <video id="flight" muted playsinline autoplay loop preload="auto"
          poster="media/today_flight_andes_poster.jpg?v=1018" aria-hidden="true"
          data-src-1920="media/today_flight_andes_1920.mp4?v=1018"
          data-src-1280="media/today_flight_andes_1280.mp4?v=1018"></video>
   <div class="plate">
-    <div class="tag">10월 18일(일)</div>
     <h2>Today</h2>
-    <p class="face">지금 EG유니버스 안에서 일어나는 일 — 아침부터 밤까지</p>
-    <p class="book">창밖 · 오늘의 비행 <b>안데스 우편비행</b></p>
+    <p class="face">오늘 EG유니버스에서 경험할 수 있는 생생한 현장을 소개합니다.<br>하루 10분, 마음 가는 한 곳이면 충분합니다.</p>
+    <p class="book">창밖 · 오늘의 독서비행 <b>안데스 우편비행</b></p>
   </div>
   <div class="credit">지도 · Google · Cesium</div>
 </header>
 <!-- ▲ -->
 
 <main>
-  <!-- ▼ 오늘의 비행 — 노선마다 한 편 (자정 작업이 그날 노선의 글을 꺼내 끼운다) -->
+  <!-- ▼ Epigraph — 하루의 첫머리 (daily_lines · show_on 이 오늘이거나 그 앞인 가장 최근 줄 · 앱 terra.html 과 같은 셈) -->
+  <section class="epigraph" aria-labelledby="epi-title">
+    <div class="slot-date">10/19(월)</div>
+    <h2 id="epi-title">Epigraph</h2>
+    <p class="epi-gloss">책의 첫머리에 인용해 두는 문장처럼, 하루의 첫머리에 놓이는 문장</p>
+    <blockquote>
+      <p>사람은 누구나 인간 조건의<br>온전한 모습을 지니고 다닌다.</p>
+      <cite>몽테뉴 · 『에세』</cite>
+    </blockquote>
+  </section>
+  <!-- ▲ -->
+
+  <!-- ▼ 오늘의 독서비행 — 노선마다 한 편 (자정 작업이 그날 노선의 글을 꺼내 끼운다) -->
   <article class="flight" aria-labelledby="flight-title">
-    <div class="eyebrow">오늘의 비행</div>
+    <div class="eyebrow">오늘의 독서비행 · 10/18(일)</div>
     <h1 id="flight-title">안데스 우편비행</h1>
     <p class="sub">아콩카과와 기요메의 계곡 · 1930년</p>
 
@@ -160,22 +181,17 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
   </article>
   <!-- ▲ -->
 
-  <div class="day">
-    <section><h3>아침</h3><ul>
-      <li>오늘의 한 줄<span>짓는 중</span></li>
-      <li>오늘의 교양한스푼<span>짓는 중</span></li>
-    </ul></section>
-    <section><h3>낮</h3><ul>
+  <div class="day" aria-label="짓는 중인 칸">
+    <ul>
+      <li>교양 한 스푼<span>짓는 중</span></li>
       <li>오늘의 미술관<span>짓는 중</span></li>
       <li>오늘의 음악관<span>짓는 중</span></li>
       <li>오늘의 스타디움<span>짓는 중</span></li>
       <li>오늘의 뮤세움<span>짓는 중</span></li>
       <li>오늘의 콜레주<span>짓는 중</span></li>
-    </ul></section>
-    <section><h3>밤</h3><ul>
       <li>오늘의 천문대<span>짓는 중</span></li>
       <li>오늘의 별자리<span>짓는 중</span></li>
-    </ul></section>
+    </ul>
   </div>
 </main>
 
