@@ -337,7 +337,7 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
     var off = 0;
     /* 바깥 — 소로 촬영 영상이 걸려 있으면 먼저 */
     var vsrc = (Math.max(screen.width, screen.height) * (window.devicePixelRatio || 1) > 2000 && window.innerWidth > 900)
-      ? st.dataset.video1920 : st.dataset.video1280;
+      ? st.getAttribute('data-video-1920') : st.getAttribute('data-video-1280');
     if (vsrc && !reduce){
       if (!vid.getAttribute('src')){ vid.src = vsrc; vid.preload = 'auto'; }
       vid.classList.add('on'); where.textContent = NAME + ' · 지구 위';
