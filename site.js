@@ -10,12 +10,51 @@
    ② 메뉴 띠
       body[data-nav="auto"]  현관 — 움직일 때만 내려오고, 2.6초 가만있으면 올라간다(1017 소로)
       그 밖                  하위 페이지 — 늘 떠 있다
-   ③ 지금 있는 페이지의 메뉴에 노란 밑줄(aria-current)
+   ③ 지금 있는 페이지의 메뉴에 노란 밑줄(aria-current) — 바닥 지도에도
+   ⓪ 바닥 지도 — 모든 페이지 끝에 메뉴의 얼개를 펼친다(1019 소로)
    ══════════════════════════════════════════════════════════════════════════ */
 (function(){
   'use strict';
   var APP_URL  = 'https://app.egsalon.com/';
   var LOOK_URL = '';   /* 입장 화면이 서기 전에는 비워 둔다 — 누르면 아무 데도 가지 않는다 */
+
+  /* ── ⓪ 바닥 지도 (1019 소로) — 모든 페이지 끝에 메뉴의 얼개를 펼쳐 둔다
+        「그 순간 꽂히는 곳으로」 · 순서는 메뉴 띠와 같다(Why 다음이 Today)
+        페이지에는 <footer class="eg-map"></footer> 빈 자리만 두고, 글은 여기 한 곳에서 고친다
+        ⚠ 아래 ①이 [data-gate]를 손질하므로 지도는 그보다 먼저 끼운다 ── */
+  var MAP = ''
+    + '<div class="map-in">'
+    +   '<p class="map-eyebrow">EG유니버스의 지도</p>'
+    +   '<ol class="map-main">'
+    +     '<li><a class="map-name" href="today.html"><b>Today</b><i>지금</i></a>'
+    +         '<p>오늘 펼쳐지는 독서비행, 그림 한 점, 곡 하나</p></li>'
+    +     '<li><a class="map-name" href="guide.html"><b>Guide</b><i>어떻게</i></a>'
+    +         '<p>일곱 차림을 누리는 법'
+    +         '<span class="map-chips">'
+    +           '<a href="guide.html#travel">여행</a><a href="guide.html#painting">회화</a><a href="guide.html#music">음악</a>'
+    +           '<a href="guide.html#stars">별</a><a href="guide.html#nature">자연</a><a href="guide.html#text">텍스트</a>'
+    +           '<a href="guide.html#dialogue">대화</a>'
+    +         '</span></p></li>'
+    +     '<li><a class="map-name" href="places.html"><b>Places</b><i>어디</i></a>'
+    +         '<p>지구 위에 세운 미술관 · 음악관 · 도서관 · 카페 · 천문대</p></li>'
+    +     '<li><a class="map-name" href="collection.html"><b>Collection</b><i>무엇</i></a>'
+    +         '<p>그림 · 곡 · 별 · 콜레주 273권</p></li>'
+    +   '</ol>'
+    +   '<ul class="map-minor">'
+    +     '<li><a href="letters.html">Letters <i>편지</i></a></li>'
+    +     '<li><a href="news.html">News <i>소식</i></a></li>'
+    +     '<li><a href="voices.html">Voices <i>후기</i></a></li>'
+    +     '<li><a href="making.html">Making <i>짓는 과정</i></a></li>'
+    +   '</ul>'
+    +   '<div class="map-end">'
+    +     '<a class="map-home" href="home.html">EG유니버스</a>'
+    +     '<span class="map-date">2026년 12월 25일(금) 개관</span>'
+    +     '<a class="map-door" data-gate href="#">EG 둘러보기</a>'
+    +   '</div>'
+    + '</div>';
+  document.querySelectorAll('footer.eg-map').forEach(function(f){
+    if (!f.children.length) f.innerHTML = MAP;
+  });
 
   /* ── ① 단추 두 얼굴 ── */
   var seen = /(?:^|;\s*)eg_seen=1(?:;|$)/.test(document.cookie);
@@ -72,7 +111,7 @@
 
     /* ── ③ 지금 페이지 ── */
     var here = (location.pathname.split('/').pop() || 'home.html').replace(/\.html$/, '');
-    nav.querySelectorAll('a[href]').forEach(function(a){
+    document.querySelectorAll('.eg-nav a[href], .eg-map .map-name, .eg-map .map-minor a').forEach(function(a){
       var name = a.getAttribute('href').split('/').pop().replace(/\.html$/, '');
       if (name && name === here) a.setAttribute('aria-current', 'page');
     });
