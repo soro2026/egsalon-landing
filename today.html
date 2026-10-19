@@ -352,6 +352,10 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
     at(off + 6400,  function(){ show('cup','오늘의 탁자'); steam.classList.add('on'); });
     at(off + 8200,  function(){ st.classList.add('dim'); lines[0].classList.add('on'); });
     for (var i = 1; i < lines.length; i++) (function(i){ at(off + 8200 + i*1900, function(){ lines[i].classList.add('on'); }); })(i);
+    /* 도돌이 (1019 소로) — 마지막 줄이 뜨고 7초 읽을 틈 → 글이 사라지고 → 처음부터 */
+    var end = off + 8200 + (lines.length - 1) * 1900;
+    at(end + 7000, function(){ lines.forEach(function(l){ l.classList.remove('on'); }); st.classList.remove('dim'); steam.classList.remove('on'); });
+    at(end + 8400, play);
   }
   if ('IntersectionObserver' in window){
     var inside = false;
