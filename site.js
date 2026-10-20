@@ -9,6 +9,8 @@
       ⚠ 휴대폰이면 앱으로 보내지 않고 안내를 띄운다 — 판정은 앱의 eg_device.js 한 벌(먼저 불러 둘 것).
    ② 메뉴 띠
       body[data-nav="auto"]  현관 — 움직일 때만 내려오고, 2.6초 가만있으면 올라간다(1017 소로)
+      body[data-nav="cover"] Today — 표지 영상 위에서는 현관처럼, 표지를 지나면 늘 떠 있다(1020 소로
+                             「3초 뒤 사라지니 시각적으로 혼란」 — 무대가 줄줄이 움직이는 긴 페이지라 띠까지 들락이면 어지럽다)
       그 밖                  하위 페이지 — 늘 떠 있다
    ③ 지금 있는 페이지의 메뉴에 노란 밑줄(aria-current) — 바닥 지도에도
    ⓪ 바닥 지도 — 모든 페이지 끝에 메뉴의 얼개를 펼친다(1019 소로)
@@ -94,13 +96,23 @@
   /* ── ② 메뉴 띠 ── */
   var nav = document.querySelector('.eg-nav');
   if (nav){
-    if (document.body.getAttribute('data-nav') === 'auto'){
+    var navMode = document.body.getAttribute('data-nav');
+    if (navMode === 'auto' || navMode === 'cover'){
       var t = 0, over = false;
       var show = function(){
         nav.classList.add('on');
         clearTimeout(t);
         t = setTimeout(function(){ if (!over && !nav.contains(document.activeElement)) nav.classList.remove('on'); }, 2600);
       };
+      /* cover — 표지를 벗어나면 하위 페이지처럼 늘 떠 있다(먹색) · 표지로 돌아오면 다시 현관처럼 */
+      var cover = navMode === 'cover' && document.querySelector('.hero');
+      if (cover && 'IntersectionObserver' in window){
+        new IntersectionObserver(function(es){
+          var past = !es[0].isIntersecting;
+          nav.classList.toggle('fixed', past);
+          if (!past) show();
+        }, { rootMargin:'-80px 0px 0px 0px', threshold:0 }).observe(cover);
+      } else if (navMode === 'cover') nav.classList.add('fixed');
       ['mousemove','scroll','touchstart','keydown'].forEach(function(e){ window.addEventListener(e, show, { passive:true }); });
       nav.addEventListener('mouseenter', function(){ over = true; nav.classList.add('on'); });
       nav.addEventListener('mouseleave', function(){ over = false; show(); });
