@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500&family=Cormorant+Garamond:wght@400;500&display=swap">
 <link rel="stylesheet" href="site.css?v=1019">
 <style>
 /* ══════════════════════════════════════════════════════════════════════════
@@ -276,7 +276,92 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
 @keyframes sblink{50%{opacity:0}}
 .sstage .halt{margin-top:24px;display:inline-flex;align-items:center;gap:12px;font-size:14.5px;letter-spacing:.03em;color:var(--paper)}
 .sstage .halt::before{content:'';width:22px;height:2px;background:var(--arrow)}
+.stadium[data-mode=game] .m-replay,.stadium[data-mode=replay] .m-game{display:none}
+
+/* ── 오늘의 뮤세움 (1020 소로) — 미술관 무대(gstage)에 앱 서고(bibliotheca.html)의 서가를 그대로 앉힌다
+   방 tour-assets/museum/<곳>_hall_<시간대> · 벽감 shelf_rect · 3단 × 12권 · 책등 book01~10(답 글자로 정해지는 같은 얼굴)
+   서가 = 홈페이지 자기 서가(DB home_shelf) — Today에 나온 스타디움 문제 · 한스푼이 시간순으로 · 빠지지 않는다 */
+.mstage .hall img.wall{height:auto;object-fit:initial}
+.mstage .mhead{position:absolute;z-index:3;left:0;right:0;top:clamp(14px,2.4vw,30px);text-align:center;pointer-events:none;
+  text-shadow:0 2px 16px rgba(0,0,0,.75);opacity:0;transition:opacity 1s ease}
+.mstage .mhead.on{opacity:1}
+@media (max-width:640px){.mstage .mhead{top:calc(var(--gutter) + 40px)}}   /* 좁은 화면 — 왼쪽 위 이름표 · 오른쪽 위 단추와 겹치지 않게 */
+.mstage .mhead b{display:block;font-family:'Cormorant Garamond',var(--serif);font-weight:500;font-size:clamp(12px,1.2vw,15px);letter-spacing:.3em;text-indent:.3em;color:rgba(233,207,156,.9)}
+.mstage .mhead span{display:block;margin-top:4px;font-size:clamp(11px,1vw,13px);letter-spacing:.08em;color:rgba(244,239,230,.72)}
+.mshelf{position:absolute;display:flex;flex-direction:column}
+.mshelf .rack{flex:1;display:flex;flex-direction:column;justify-content:flex-end;min-height:0}
+.mshelf .row{flex:1;display:flex;align-items:flex-end;justify-content:center;min-height:0}
+.mshelf .bk{position:relative;flex:none;transition:transform 1s cubic-bezier(.22,1,.36,1),opacity .8s ease}
+.mshelf .bk.new{transform:translateY(-38%);opacity:0}
+.mshelf .bk.new.in{transform:none;opacity:1}
+.mshelf .spine{display:block;height:100%;width:auto;filter:drop-shadow(0 3px 6px rgba(0,0,0,.6))}
+.mshelf .bkt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;text-orientation:mixed;
+  font-family:var(--serif);font-size:clamp(10px,1.05vw,20px);font-weight:500;color:rgba(255,255,255,.96);letter-spacing:.02em;line-height:1.18;
+  padding:7% 2px;overflow:hidden;text-shadow:0 1px 3px rgba(0,0,0,.98),0 0 6px rgba(0,0,0,.85),0 0 14px rgba(0,0,0,.6)}
+.mshelf .plank{height:11%;min-height:9px;border-radius:2px;position:relative;flex:none;
+  background:linear-gradient(180deg,#6b4a26 0%,#48311a 42%,#2f1f10 100%);box-shadow:0 5px 12px rgba(0,0,0,.55),inset 0 1px 0 rgba(201,162,74,.28)}
+.mshelf .plank::after{content:'';position:absolute;left:0;right:0;bottom:-4px;height:4px;background:linear-gradient(180deg,rgba(0,0,0,.42),transparent)}
+.mshelf .pl-when,.mshelf .pl-n{position:absolute;top:50%;transform:translateY(-50%);font-family:'Cormorant Garamond',var(--serif);
+  font-size:clamp(7px,.72vw,11px);letter-spacing:.16em;white-space:nowrap;color:rgba(226,192,126,.92);
+  text-shadow:0 -1px 0 rgba(0,0,0,.75),0 1px 0 rgba(255,232,180,.14)}
+.mshelf .pl-when{left:2.2%}
+.mshelf .pl-n{right:2.2%;color:rgba(226,192,126,.62)}
+/* ── 경기 없는 날 — 지난 경기 다시 보기 (1020 소로 「치고, 타격 결과가 보이고, 스코어가 올라가고」) ──
+   한 타석을 앱과 같은 타격 판으로 다시 튼다 · 하이라이트답게 득점 장면 */
+.sstage .lscore{position:absolute;z-index:5;left:50%;top:calc(var(--gutter) - 6px);transform:translateX(-50%);display:flex;align-items:center;gap:10px;
+  padding:7px 16px;border-radius:10px;background:rgba(8,10,16,.62);border:1px solid rgba(201,168,76,.38);opacity:0;transition:opacity .8s ease;white-space:nowrap}
+.sstage .lscore.on{opacity:1}
+.sstage .lscore .tm{font-size:11.5px;font-weight:700;letter-spacing:.12em;color:rgba(248,244,238,.82)}
+.sstage .lscore b{display:inline-block;min-width:.7em;text-align:center;font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:20px;color:#ffe9a6;text-shadow:0 0 12px rgba(242,201,76,.5)}
+.sstage .lscore .sep{color:rgba(255,233,166,.6);font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace}
+.sstage .lscore i{font-style:normal;margin-left:2px;padding-left:10px;border-left:1px solid rgba(201,168,76,.35);font-size:10.5px;letter-spacing:.14em;color:var(--gold)}
+.sstage .lscore b.up{animation:scoreup 1.4s cubic-bezier(.22,1,.36,1)}
+@keyframes scoreup{0%{transform:scale(1)}28%{transform:scale(1.9);color:#fff;text-shadow:0 0 22px rgba(255,233,166,.95)}100%{transform:scale(1)}}
+.sstage .q-ch li{transition:border-color .4s,background .4s,color .4s,box-shadow .4s}
+.sstage .q-ch li.pick{border-color:var(--gold);background:rgba(60,48,20,.78);color:var(--gold-l);box-shadow:0 0 16px rgba(201,168,76,.3)}
+.sstage .hitbadge{display:inline-block;margin-left:8px;padding:1px 7px;border-radius:4px;vertical-align:.1em;background:var(--gold);color:#14100a;
+  font-family:'Pretendard',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-shadow:none}
+/* 중계 */
+.sstage .call .calls{display:flex;flex-direction:column;align-items:center;gap:10px;min-height:9.5em}
+.sstage .call .cl{font-family:var(--serif);font-size:clamp(18px,2vw,27px);line-height:1.5;color:var(--paper);word-break:keep-all;
+  opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease,color .6s}
+.sstage .call .cl.on{opacity:1;transform:none}
+.sstage .call .cl.past{color:rgba(248,244,238,.42)}
+.sstage .call .res{margin-top:clamp(18px,2.4vw,30px);font-size:clamp(40px,6vw,84px);font-weight:900;letter-spacing:-.01em;color:#ffe9a6;
+  text-shadow:0 0 28px rgba(242,201,76,.6),0 4px 18px rgba(0,0,0,.6);opacity:0;transform:scale(.6);transition:opacity .5s ease,transform .7s cubic-bezier(.34,1.56,.64,1)}
+.sstage .call .res.on{opacity:1;transform:none}
+/* 담장을 넘는 공 — 가로는 고르게, 세로는 솟았다가 빨려 나간다 */
+.sstage .fly{position:absolute;z-index:4;left:18%;bottom:16%;pointer-events:none;opacity:0}
+.sstage .fly.go{opacity:1;animation:flyx 3.4s linear forwards}
+.sstage .fly span{display:block;width:34px;height:34px;border-radius:50%;background:#f4efe6 url('https://app.egsalon.com/ball_logo.webp') center/contain no-repeat;
+  box-shadow:0 6px 18px rgba(0,0,0,.45)}
+.sstage .fly.go span{animation:flyy 3.4s cubic-bezier(.15,.75,.35,1) forwards}
+@keyframes flyx{to{transform:translateX(min(70vw,1100px))}}
+@keyframes flyy{0%{transform:translateY(0) scale(1.5) rotate(0)}100%{transform:translateY(-62vh) scale(.18) rotate(-900deg);opacity:.2}}
+/* 이 문제, 돌아보기 → 서가 */
+.sstage .look .ln{opacity:0;transform:translateY(8px);transition:opacity 1s ease,transform 1s ease}
+.sstage .look .ln.on{opacity:1;transform:none}
+.sstage .look .ans{margin-top:12px;font-family:var(--serif);font-size:clamp(20px,2.2vw,30px);color:var(--paper)}
+.sstage .look .ans small{display:block;margin-bottom:4px;font-family:'Pretendard',sans-serif;font-size:12px;letter-spacing:.12em;color:rgba(248,244,238,.6)}
+.sstage .look .kn{margin-top:16px;font-size:clamp(14.5px,1.3vw,17px);line-height:1.9;color:rgba(248,244,238,.9);word-break:keep-all;position:relative}
+.sstage .look .kn .ghost{visibility:hidden}
+.sstage .look .kn .typed{position:absolute;left:0;top:0;right:0}
+.sstage .look .kn .cur{display:inline-block;width:2px;height:1.05em;margin-left:3px;vertical-align:-.15em;background:var(--gold);animation:sblink 1s step-end infinite}
+.sstage .shelf{margin-top:clamp(18px,2.4vw,28px);display:flex;align-items:flex-end;gap:4px;height:clamp(150px,14vw,184px);padding:0 4px 0;
+  border-bottom:3px solid rgba(201,168,76,.55);overflow:hidden}
+/* 먼저 꽂혀 있던 책들 — 가죽 장정의 책등 (금박 띠 둘) */
+.sstage .shelf .sp{flex:none;width:var(--w,24px);height:var(--h,80%);border-radius:2px 2px 0 0;background:var(--c,#2b3a2e);
+  box-shadow:inset 3px 0 0 rgba(255,255,255,.07),inset -3px 0 0 rgba(0,0,0,.25);position:relative;opacity:.86}
+.sstage .shelf .sp::before,.sstage .shelf .sp::after{content:'';position:absolute;left:3px;right:3px;height:2px;background:rgba(214,186,120,.55)}
+.sstage .shelf .sp::before{top:12%}.sstage .shelf .sp::after{bottom:14%}
+.sstage .shelf .new{flex:none;width:clamp(30px,2.8vw,38px);height:96%;padding:10px 0;border-radius:3px 3px 0 0;background:linear-gradient(90deg,#7a1f1a,#5a1512);
+  border:1px solid rgba(233,207,156,.55);border-bottom:none;display:flex;justify-content:center;
+  writing-mode:vertical-rl;font-family:var(--serif);font-size:clamp(11px,.95vw,13px);letter-spacing:.02em;color:#f2e2b8;white-space:nowrap;overflow:hidden;
+  transform:translateX(160%);opacity:0;transition:transform 1.3s cubic-bezier(.22,1,.36,1),opacity .6s ease}
+.sstage .shelf.in .new{transform:none;opacity:1}
+.sstage .look .note{margin-top:12px;font-size:13px;letter-spacing:.04em;color:rgba(248,244,238,.7)}
 @media (max-width:640px){
+  .sstage .lscore{top:calc(var(--gutter) + 30px)}
   .sstage{min-height:600px}
   .sstage .q-text{font-size:15px;line-height:1.75}
   .sstage .q-ch li{padding:10px 12px;font-size:13.5px}
@@ -480,13 +565,13 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
        ⚠ 표기는 선공이 앞 — 홈 경기는 「프루스트 vs SORO」, 원정은 「SORO vs 프루스트」 (1020 소로) · 앱 경기 인트로도 홈이면 왼쪽 = 상대
        9칸 = 앱 buildZoneBoard 와 같은 규칙(문학 · 철학 · 예술 고정 + 나머지 아홉 분야 가운데 여섯) · 문항은 정규(rookie) 풀의 객관식
        그림 = 앱 경기 인트로와 같은 파일 — 배경은 stadium_bg_01~30 가운데 하나를 한 바퀴 돌 때마다 새로(바로 앞 장면은 피함 · 1020 소로) · face_<팀>.webp (app.egsalon.com) -->
-  <section class="galerie stadium" aria-labelledby="stadium-title">
-    <div class="eyebrow">오늘의 스타디움 · 10/20(화) · 루키리그 경기</div>
+  <section class="galerie stadium" data-mode="game" aria-labelledby="stadium-title">
+    <div class="eyebrow">오늘의 스타디움 · <span class="m-game">10/20(화) · 루키리그 경기</span><span class="m-replay">10/20(화) 경기 다시 보기</span></div>
     <h1 id="stadium-title">소로파크</h1>
     <p class="place">BOSTON · 펜웨이파크를 본뜬 SORO의 홈</p>
     <p class="lede">펜웨이파크는 지금도 경기가 열리는 메이저리그 구장 가운데 가장 오래된 곳으로, 1912년에 문을 열었습니다. 화요일과 목요일마다 이 구장과 상대의 구장을 오가며 루키리그 경기가 열립니다. 상대는 소크라테스 · 프루스트 · 파스칼, 우리 편은 늘 SORO입니다.</p>
 
-    <div class="sstage" id="stadStage"
+    <div class="sstage m-game" id="stadStage"
          data-video-1920="media/today_stadium_fenway_1920.mp4?v=1020" data-video-1280="media/today_stadium_fenway_1280.mp4?v=1020"
          data-name="소로파크" data-bg-base="https://app.egsalon.com/stadium_bg_" data-bg-count="30"
          aria-label="소로파크 — 오늘의 대진에서 첫 타석까지">
@@ -551,12 +636,107 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
         </div>
       </div>
     </div>
+
+    <!-- 경기 없는 날(월 · 수 · 금 · 토 · 일) — 직전 경기의 한 타석을 다시 튼다 · 앱 타격 판(HIT_DIST · OUT_DIST)과 중계 문장(MSGS_POOL) 그대로
+         누구의 실제 기록도 아니다 — 홈페이지가 홈페이지의 대진으로 한 타석을 치고, 하이라이트답게 득점 장면을 고른다 -->
+    <div class="sstage m-replay" id="stadReplay"
+         data-video-1920="media/today_stadium_fenway_1920.mp4?v=1020" data-video-1280="media/today_stadium_fenway_1280.mp4?v=1020"
+         data-name="소로파크" data-bg-base="https://app.egsalon.com/stadium_bg_" data-bg-count="30"
+         aria-label="소로파크 — 지난 경기의 한 타석 다시 보기">
+      <video muted playsinline preload="none" aria-hidden="true"></video>
+      <div class="field"></div>
+      <div class="where" aria-hidden="true"></div>
+      <div class="lscore" aria-hidden="true"><span class="tm">PROUST</span><b class="sa">0</b><span class="sep">:</span><b class="sh">0</b><span class="tm">SORO</span><i>1회말</i></div>
+      <div class="fly" aria-hidden="true"><span></span></div>
+
+      <div class="scene hl">
+        <div class="mu-title">HIGHLIGHT</div>
+        <div class="mu-line"></div>
+        <div class="mu-sub">지난 경기 다시 보기 · 10/20(화) · 프루스트 vs SORO</div>
+      </div>
+
+      <div class="scene bat">
+        <div class="bat-in">
+          <p class="q-cat line">1회말 · ZONE 5 · 철학 · 생각의 탄생</p>
+          <p class="q-text line">로마의 곡물 공급을 맡아 바쁘게 살던 파울리누스에게, 세네카는 한 편의 글을 보냅니다. 사람들은 자연이 너무 짧은 생을 주었다고 불평하지만 — 「우리에게 시간이 적은 것이 아니라, 많이 잃어버린 것이다.」 인생은 쓸 줄만 알면 길다고 말한 이 글의 제목은 무엇일까요?</p>
+          <ul class="q-ch line">
+            <li>행복한 삶에 관하여</li>
+            <li data-hit>인생의 짧음에 관하여</li>
+            <li>섭리에 관하여</li>
+            <li>마음의 평정에 관하여</li>
+          </ul>
+          <div class="q-time line" aria-hidden="true">
+            <span class="ico"><svg viewBox="0 0 34 34"><circle cx="17" cy="9" r="5" fill="rgba(248,244,238,0.7)"/><rect x="12" y="14" width="10" height="10" rx="3" fill="rgba(248,244,238,0.7)"/><line x1="12" y1="16" x2="4" y2="10" stroke="rgba(248,244,238,0.7)" stroke-width="2.5" stroke-linecap="round"/><line x1="4" y1="10" x2="1" y2="6" stroke="rgba(248,244,238,0.7)" stroke-width="3" stroke-linecap="round"/><line x1="14" y1="24" x2="11" y2="32" stroke="rgba(248,244,238,0.7)" stroke-width="2.5" stroke-linecap="round"/><line x1="20" y1="24" x2="23" y2="32" stroke="rgba(248,244,238,0.7)" stroke-width="2.5" stroke-linecap="round"/></svg></span>
+            <span class="track"><i></i><b class="ball"></b></span>
+            <span class="ico"><svg viewBox="0 0 34 34"><circle cx="17" cy="9" r="5" fill="rgba(248,244,238,0.7)"/><rect x="12" y="14" width="10" height="10" rx="3" fill="rgba(248,244,238,0.7)"/><line x1="22" y1="16" x2="30" y2="10" stroke="rgba(248,244,238,0.7)" stroke-width="2.5" stroke-linecap="round"/><line x1="14" y1="24" x2="11" y2="32" stroke="rgba(248,244,238,0.7)" stroke-width="2.5" stroke-linecap="round"/><line x1="20" y1="24" x2="23" y2="32" stroke="rgba(248,244,238,0.7)" stroke-width="2.5" stroke-linecap="round"/></svg></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene call">
+        <div class="calls">
+          <p class="cl">스윙! 딱! 하는 타격음이 들립니다!</p>
+          <p class="cl">외야로 날아가는 공... 엄청난 타구!</p>
+          <p class="cl">외야수가 울타리 쪽으로 전력 질주!</p>
+          <p class="cl">손이 닿지 않습니다! 닿지 않아요!</p>
+          <p class="cl">홈런!! 이 교양은 담장을 넘었습니다!!!</p>
+        </div>
+        <p class="res">홈런!</p>
+      </div>
+
+      <div class="scene look">
+        <div class="bat-in">
+          <p class="q-cat">이 문제, 돌아보기</p>
+          <p class="ans"><small>정답</small>인생의 짧음에 관하여</p>
+          <p class="ln kn">『인생의 짧음에 관하여』는 세네카가 로마의 곡물 공급을 총괄하던 파울리누스에게 보낸 글이에요. 세네카의 아내 폼페이아 파울리나의 아버지로 여겨지는 사람이지요.</p>
+          <div class="ln shelf" aria-hidden="true">
+            <span class="sp" style="--h:76%;--w:24px;--c:#2f3d33"></span><span class="sp" style="--h:88%;--w:30px;--c:#3a2a24"></span><span class="sp" style="--h:70%;--w:20px;--c:#26324a"></span>
+            <span class="sp" style="--h:92%;--w:28px;--c:#4a3a1f"></span><span class="sp" style="--h:80%;--w:22px;--c:#3b2633"></span><span class="sp" style="--h:72%;--w:26px;--c:#2a3b3e"></span>
+            <span class="sp" style="--h:86%;--w:24px;--c:#433024"></span>
+            <span class="new">인생의 짧음에 관하여</span>
+          </div>
+          <p class="ln note">서가에 책 한 권이 꽂혔습니다 · 10/20</p>
+          <p class="ln halt">책의 네 장은 EG 안에서</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ▲ -->
+
+  <!-- ▼ 오늘의 뮤세움 (1020 소로) — 당번 = 도서관 일곱(sort)[ KST날수 % 7 ] (앱 terra · bibliotheca kstDay 와 같은 셈 · 1020 = 시애틀)
+       방은 앱 서고 그림 그대로 · 서가는 홈페이지 자기 서가(DB home_shelf) — 가장 새 책이 윗단 왼쪽 · 오늘 들어온 책은 위에서 내려와 꽂힌다
+       글 = terra_pins.meta (subtitle · lede · note) -->
+  <section class="galerie museum" aria-labelledby="museum-title">
+    <div class="eyebrow">오늘의 뮤세움 · 10/20(화)</div>
+    <h1 id="museum-title">시애틀 중앙도서관</h1>
+    <p class="place">SEATTLE · 책이 늘 것을 미리 계산한 집</p>
+    <p class="lede">설계자는 책이 사라질지부터 물었고, 사라지지 않는다는 답을 얻은 뒤에 짓기 시작했습니다. 지구 위 도서관 일곱 곳이 날마다 돌아가며 오늘의 도서관이 되고, 이 서가에는 Today에 나온 책이 차례로 꽂힙니다. 한 번 꽂힌 책은 빠지지 않습니다.</p>
+
+    <div class="gstage mstage" id="musStage"
+         data-video-1920="media/today_museum_seattle_1920.mp4?v=1020" data-video-1280="media/today_museum_seattle_1280.mp4?v=1020" data-video-off="4400"
+         data-code="seattle" data-tz="America/Los_Angeles" data-name="시애틀 중앙도서관" data-name-en="Seattle Central"
+         data-rect='{"L":23.66,"T":30.97,"W":54.7,"H":44.32}'
+         data-books='[{"a":"인생의 짧음에 관하여","k":"stadium","d":"2026-10-20"},{"a":"한스푼 · 장자","k":"spoon","d":"2026-10-19"}]'
+         data-new="2026-10-20"
+         aria-label="시애틀 중앙도서관 — 정문에서 서가까지">
+      <video muted playsinline preload="none" aria-hidden="true"></video>
+      <div class="ggate"></div>
+      <div class="hall">
+        <img class="wall" alt="" aria-hidden="true">
+        <div class="mshelf"></div>
+      </div>
+      <div class="mhead" aria-hidden="true"><b></b><span></span></div>
+      <div class="where" aria-hidden="true"></div>
+      <div class="know">
+        <p class="scene line">여기서는 책이 늘어도 아무도 당황하지 않습니다.</p>
+        <p class="halt line">내 서가는 EG 안에서</p>
+      </div>
+    </div>
   </section>
   <!-- ▲ -->
 
   <div class="day" aria-label="짓는 중인 칸">
     <ul>
-      <li>오늘의 뮤세움<span>짓는 중</span></li>
       <li>오늘의 콜레주<span>짓는 중</span></li>
       <li>오늘의 천문대<span>짓는 중</span></li>
       <li>오늘의 별자리<span>짓는 중</span></li>
@@ -932,6 +1112,257 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
     at(end + 7000,   function(){ lines.forEach(function(l){ l.classList.remove('on'); }); bat.classList.remove('on'); field.classList.remove('on'); st.classList.remove('deep'); });
     at(end + 1200,   ready);   /* 다음 바퀴의 장면을 미리 */
     at(end + 8400,   play);
+  }
+  if ('IntersectionObserver' in window){
+    var inside = false;
+    new IntersectionObserver(function(es){
+      var e = es[0];
+      if (e.intersectionRatio >= 0.5 && !inside){ inside = true; play(); }
+      else if (e.intersectionRatio === 0 && inside){ inside = false; reset(); }
+    }, { threshold:[0, 0.5] }).observe(st);
+  } else play();
+})();
+</script>
+<script>
+/* ── 지난 경기 다시 보기 (1020) — 하이라이트 → 타석(지문 타이핑 · 게이지) → 보기를 골라 타격 → 중계 · 공이 담장을 넘고 · 스코어가 오른다
+      → 이 문제, 돌아보기(해설 첫 두 문장 타이핑) → 서가에 책 한 권이 꽂힌다 → 멈춤 · 7초 뒤 처음부터 ── */
+(function(){
+  'use strict';
+  var st = document.getElementById('stadReplay');
+  if (!st) return;
+  var NAME = st.dataset.name;
+  var field = st.querySelector('.field'), where = st.querySelector('.where'), vid = st.querySelector('video');
+  var lscore = st.querySelector('.lscore'), sh = lscore.querySelector('.sh'), SH0 = sh.textContent, inn = lscore.querySelector('i'), INN0 = inn.textContent;
+  var fly = st.querySelector('.fly');
+  var hl = st.querySelector('.scene.hl'), bat = st.querySelector('.scene.bat'), call = st.querySelector('.scene.call'), look = st.querySelector('.scene.look');
+  var blines = bat.querySelectorAll('.line'), choices = bat.querySelectorAll('.q-ch li'), hitLi = bat.querySelector('.q-ch li[data-hit]');
+  var bar = bat.querySelector('.track i'), ball = bat.querySelector('.ball');
+  var cls = call.querySelectorAll('.cl'), res = call.querySelector('.res');
+  var lns = look.querySelectorAll('.ln'), shelf = look.querySelector('.shelf');
+  var TS = 40, KS = 30;   /* 다시 보기는 조금 더 빠르게 — 지문 0.04초 · 해설 0.03초 */
+
+  /* 글자 자리를 먼저 잡아 두고 그 위에 친다 — 상자가 출렁이지 않게 */
+  function typer(el){
+    var full = el.textContent; el.textContent = '';
+    var g = document.createElement('span'); g.className = 'ghost'; g.setAttribute('aria-hidden','true'); g.textContent = full;
+    var t = document.createElement('span'); t.className = 'typed'; t.textContent = full;
+    el.appendChild(g); el.appendChild(t);
+    return { full: full, el: t };
+  }
+  var Q = typer(bat.querySelector('.q-text')), K = typer(look.querySelector('.kn'));
+
+  var BGS = window.EG_STAD_BGS || (function(){ var a = [], n = Number(st.dataset.bgCount) || 30;
+    for (var i = 1; i <= n; i++) a.push(st.dataset.bgBase + (i < 10 ? '0' : '') + i + '.webp'); return a; })();
+  var lastBg = -1, nextBg = -1, warm = null;
+  function drawBg(){ var k; do { k = Math.floor(Math.random() * BGS.length); } while (BGS.length > 1 && k === lastBg); return k; }
+  function ready(){ nextBg = drawBg(); warm = new Image(); warm.src = BGS[nextBg]; }
+  ready();
+
+  var timers = [], raf = 0;
+  function at(ms, fn){ timers.push(setTimeout(fn, ms)); }
+  function scene(el, label){
+    [hl, bat, call, look].forEach(function(s){ s.classList.toggle('on', s === el); });
+    if (label) where.textContent = NAME + ' · ' + label;
+  }
+  function gauge(p, el){ bar.style.transform = 'scaleX(' + p + ')'; ball.style.left = (p * 100) + '%'; ball.style.transform = 'rotate(' + (-el * 0.3) + 'deg)'; }
+  /* 타이핑 — upto 글자에서 멈춘다(타격). onHalf 는 절반쯤에서 한 번 */
+  function type(o, ms, upto, onTick, onHalf, done){
+    var t0 = performance.now(), shown = -1, half = false, cur = document.createElement('span'); cur.className = 'cur';
+    (function step(now){
+      var el = Math.max(0, now - t0), n = Math.min(upto, Math.floor(el / ms));
+      if (n !== shown){ shown = n; o.el.textContent = o.full.slice(0, n); o.el.appendChild(cur); }
+      if (onTick) onTick(el);
+      if (!half && onHalf && n >= o.full.length / 2){ half = true; onHalf(); }
+      if (n >= upto){ raf = 0; if (done) done(cur); return; }
+      raf = requestAnimationFrame(step);
+    })(t0);
+  }
+  function reset(){
+    timers.forEach(clearTimeout); timers = [];
+    if (raf){ cancelAnimationFrame(raf); raf = 0; }
+    st.classList.remove('deep');
+    [field, vid, lscore, hl, bat, call, look, res].forEach(function(e){ e.classList.remove('on'); });
+    fly.classList.remove('go'); sh.classList.remove('up'); shelf.classList.remove('in');
+    [blines, cls, lns].forEach(function(L){ L.forEach(function(l){ l.classList.remove('on','past'); }); });
+    choices.forEach(function(c){ c.classList.remove('pick'); });
+    Q.el.textContent = Q.full; K.el.textContent = K.full; gauge(1, 0);
+    sh.textContent = SH0; inn.textContent = INN0;
+    try { vid.pause(); } catch(e){}
+  }
+  function play(){
+    reset();
+    if (nextBg === lastBg) ready();
+    lastBg = nextBg; field.style.backgroundImage = 'url("' + BGS[lastBg] + '")';
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce){ field.classList.add('on'); lscore.classList.add('on'); sh.textContent = '1'; st.classList.add('deep'); scene(look, '이 문제, 돌아보기');
+      shelf.classList.add('in'); lns.forEach(function(l){ l.classList.add('on'); }); return; }
+    var off = 0;
+    var vsrc = (Math.max(screen.width, screen.height) * (window.devicePixelRatio || 1) > 2000 && window.innerWidth > 900)
+      ? st.getAttribute('data-video-1920') : st.getAttribute('data-video-1280');
+    if (vsrc){
+      if (!vid.getAttribute('src')){ vid.src = vsrc; vid.preload = 'auto'; }
+      vid.classList.add('on'); where.textContent = NAME + ' · 지구 위';
+      try { vid.currentTime = 0; } catch(e){}
+      vid.play().catch(function(){});
+      off = 3400;
+    }
+    at(off,        function(){ vid.classList.remove('on'); field.classList.add('on'); lscore.classList.add('on'); scene(hl, '하이라이트'); });
+    /* 타석 — 지문이 85%쯤 들어왔을 때 보기를 골라 친다(앱도 지문이 다 나오기 전에 칠 수 있다) */
+    var upto = Math.floor(Q.full.length * 0.85), T = Q.full.length * TS;
+    at(off + 3200, function(){ st.classList.add('deep'); scene(bat, '1회말 타석'); blines[0].classList.add('on'); Q.el.textContent = ''; });
+    at(off + 3800, function(){
+      blines[1].classList.add('on'); blines[3].classList.add('on');
+      type(Q, TS, upto, function(el){ gauge(Math.max(0, 1 - 0.5 * el / T), el); },
+        function(){ blines[2].classList.add('on'); },
+        function(cur){ cur.remove(); var b = document.createElement('span'); b.className = 'hitbadge'; b.textContent = '■ 타격'; Q.el.appendChild(b); hitLi.classList.add('pick'); });
+    });
+    var H = off + 3800 + upto * TS;
+    /* 중계 — 담장 쪽으로 공이 날아가고, 한 줄씩 */
+    at(H + 1700,   function(){ st.classList.remove('deep'); scene(call, '중계'); fly.classList.add('go'); });
+    cls.forEach(function(c, i){ at(H + 1900 + i * 1150, function(){ if (i) cls[i-1].classList.add('past'); c.classList.add('on'); }); });
+    var R = H + 1900 + cls.length * 1150 + 300;
+    at(R,          function(){ res.classList.add('on'); sh.textContent = '1'; sh.classList.add('up'); });
+    /* 이 문제, 돌아보기 → 서가 */
+    at(R + 3200,   function(){ st.classList.add('deep'); scene(look, '이 문제, 돌아보기'); K.el.textContent = ''; });
+    at(R + 3900,   function(){ lns[0].classList.add('on'); type(K, KS, K.full.length, null, null, null); });
+    var E = R + 3900 + K.full.length * KS;
+    at(E + 900,    function(){ where.textContent = NAME + ' · 서가'; lns[1].classList.add('on'); });
+    at(E + 1500,   function(){ shelf.classList.add('in'); });
+    at(E + 3100,   function(){ lns[2].classList.add('on'); });
+    at(E + 3900,   function(){ lns[3].classList.add('on'); });
+    var end = E + 3900;
+    at(end + 1200, ready);
+    at(end + 7000, function(){ [look, lscore, field].forEach(function(e){ e.classList.remove('on'); }); st.classList.remove('deep'); });
+    at(end + 8400, play);
+  }
+  if ('IntersectionObserver' in window){
+    var inside = false;
+    new IntersectionObserver(function(es){
+      var e = es[0];
+      if (e.intersectionRatio >= 0.5 && !inside){ inside = true; play(); }
+      else if (e.intersectionRatio === 0 && inside){ inside = false; reset(); }
+    }, { threshold:[0, 0.5] }).observe(st);
+  } else play();
+})();
+</script>
+<script>
+/* ── 오늘의 뮤세움 무대 (1020) — 정문 → 서고 꼭대기 → 윗단까지 내려옴 → 오늘의 책이 위에서 내려와 꽂힘(권수가 하나 오른다)
+      → 서가 끝까지 천천히 훑음 → 맺는 말 → 멈춤 · 7초 뒤 처음부터 ── */
+(function(){
+  'use strict';
+  var st = document.getElementById('musStage');
+  if (!st) return;
+  var PUB = 'https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/tour-assets/museum/';
+  var APP = window.EG_APP_ASSETS || 'https://app.egsalon.com/';
+  var code = st.dataset.code, NAME = st.dataset.name;
+  var h = 12;
+  try { h = Number(new Intl.DateTimeFormat('en-GB',{hour:'2-digit',hour12:false,timeZone:st.dataset.tz}).format(new Date())) % 24; } catch(e){}
+  var t = (h>=5 && h<11) ? 'm' : (h>=11 && h<17) ? 'd' : (h>=17 && h<21) ? 'e' : 'n';
+  var gate = st.querySelector('.ggate'), hall = st.querySelector('.hall'), wall = hall.querySelector('img.wall'), shelf = st.querySelector('.mshelf');
+  var head = st.querySelector('.mhead'), hName = head.querySelector('b'), hSum = head.querySelector('span');
+  var where = st.querySelector('.where'), lines = st.querySelectorAll('.know .line'), vid = st.querySelector('video');
+  gate.style.backgroundImage = 'url("' + PUB + code + '_gate_' + t + '.webp")';
+  wall.src = PUB + code + '_hall_' + t + '.webp';
+  hName.textContent = st.dataset.nameEn;
+  var RECT = JSON.parse(st.dataset.rect);
+  shelf.style.left = RECT.L + '%'; shelf.style.top = RECT.T + '%'; shelf.style.width = RECT.W + '%'; shelf.style.height = RECT.H + '%';
+
+  /* ── 앱 서고와 같은 판짜기 (bibliotheca.html) — ⚠ 책등 해시 · 키 변주 · 글자 수는 앱과 글자 하나 다르지 않게 ── */
+  var RACKS = 3, PER_RACK = 12, PER_PAGE = RACKS * PER_RACK, SPINE_MAX = 13;
+  var BOOK_IMAGES = ['book01','book02','book03','book04','book05','book06','book07','book08','book09','book10'];
+  function bookImg(a){ var h = 0; for (var c of String(a)) h = (h*31 + c.charCodeAt(0)) & 0xfffff; return APP + BOOK_IMAGES[h % BOOK_IMAGES.length] + '.webp'; }
+  function bookScale(a){ var h = 0; for (var c of String(a)) h = (h*17 + c.charCodeAt(0)) & 0xfffff; var s = [.88,.92,.96,1,.94,.90,.98,.86,1,.93]; return s[h % s.length]; }
+  function shortTitle(s, m){ s = String(s || ''); return s.length > m ? s.slice(0, m - 1) + '…' : s; }
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function dt(d){ var p = d.split('-'); return { y:+p[0], m:+p[1], d:+p[2] }; }
+  function when(a, z){ a = dt(a); z = dt(z);
+    if (a.y === z.y && a.m === z.m && a.d === z.d) return a.y + '. ' + a.m + '. ' + a.d;
+    return a.y === z.y ? a.y + '. ' + a.m + '. ' + a.d + ' — ' + z.m + '. ' + z.d : a.y + '. ' + a.m + '. ' + a.d + ' — ' + z.y + '. ' + z.m + '. ' + z.d; }
+
+  var BOOKS = JSON.parse(st.dataset.books);               /* 가장 새 책이 맨 앞 — 윗단 왼쪽부터 */
+  var NEW = st.dataset.new || '';
+  var page = BOOKS.slice(0, PER_PAGE);
+  var racks = [];
+  for (var r = 0; r < RACKS; r++){
+    var seg = page.slice(r * PER_RACK, (r + 1) * PER_RACK);
+    if (!seg.length){ racks.push('<div class="rack"></div>'); continue; }
+    racks.push('<div class="rack" data-r="' + r + '"><div class="row">' + seg.map(function(b){
+      return '<div class="bk' + (b.d === NEW ? ' new' : '') + '" style="height:' + (94 * bookScale(b.a)).toFixed(1) + '%">' +
+             '<img class="spine" src="' + bookImg(b.a) + '" alt="' + esc(b.a) + '">' +
+             '<span class="bkt">' + esc(shortTitle(b.a, b.k === 'spoon' ? 18 : SPINE_MAX)) + '</span></div>';
+    }).join('') + '</div><div class="plank"><span class="pl-when"></span><span class="pl-n"></span></div></div>');
+  }
+  shelf.innerHTML = racks.join('');
+  var newBk = shelf.querySelectorAll('.bk.new');
+  var filled = racks.filter(function(x){ return x.indexOf('data-r') > 0; }).length;
+  /* 선반 널 각인 · 머리 — 오늘의 책을 셀지 말지(꽂히기 전 / 뒤) */
+  function count(withNew){
+    var vis = BOOKS.filter(function(b){ return withNew || b.d !== NEW; });
+    shelf.querySelectorAll('.rack[data-r]').forEach(function(rk){
+      var r = +rk.dataset.r, seg = page.slice(r * PER_RACK, (r + 1) * PER_RACK).filter(function(b){ return withNew || b.d !== NEW; });
+      var w = rk.querySelector('.pl-when'), n = rk.querySelector('.pl-n');
+      if (!seg.length){ w.textContent = ''; n.textContent = ''; return; }
+      w.textContent = when(seg[seg.length - 1].d, seg[0].d); n.textContent = seg.length;
+    });
+    hSum.textContent = vis.length + '권';
+  }
+
+  /* 방은 폭 100% — 세로로 긴 그림의 제 비율대로 */
+  var ratio = 16 / 9;
+  function fit(){ hall.style.height = (st.clientWidth * ratio) + 'px'; }
+  wall.addEventListener('load', function(){ if (wall.naturalWidth) ratio = wall.naturalHeight / wall.naturalWidth; fit(); });
+  /* 카메라 — at 은 서가 안의 높이(0 = 서가 꼭대기 · 1 = 서가 바닥)를 화면의 어디에 둘지 */
+  function aim(at, pos, ms){
+    var H = st.clientWidth * ratio, y = (RECT.T + RECT.H * at) / 100 * H;
+    var ty = Math.min(0, Math.max(st.clientHeight - H, st.clientHeight * pos - y));
+    hall.style.transition = 'opacity 1.4s ease, transform ' + (ms || 5500) + 'ms cubic-bezier(.45,.05,.25,1)';
+    hall.style.transform = 'translateY(' + ty + 'px)';
+  }
+  fit(); window.addEventListener('resize', fit);
+
+  var timers = [];
+  function at(ms, fn){ timers.push(setTimeout(fn, ms)); }
+  function reset(){
+    timers.forEach(clearTimeout); timers = [];
+    [gate, hall, head, vid].forEach(function(e){ e.classList.remove('on'); });
+    newBk.forEach(function(b){ b.classList.remove('in'); });
+    lines.forEach(function(l){ l.classList.remove('on'); });
+    st.classList.remove('dim'); hall.style.transition = 'none'; hall.style.transform = 'translateY(0)';
+    void hall.offsetWidth; hall.style.transition = '';
+    count(false);
+    try { vid.pause(); } catch(e){}
+  }
+  function play(){
+    reset(); fit();
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce){ hall.classList.add('on'); head.classList.add('on'); aim(1/6, .42, 1); newBk.forEach(function(b){ b.classList.add('in'); }); count(true);
+      st.classList.add('dim'); lines.forEach(function(l){ l.classList.add('on'); }); where.textContent = NAME + ' · 서가'; return; }
+    var off = 0;
+    var vsrc = (Math.max(screen.width, screen.height) * (window.devicePixelRatio || 1) > 2000 && window.innerWidth > 900)
+      ? st.getAttribute('data-video-1920') : st.getAttribute('data-video-1280');
+    if (vsrc){
+      if (!vid.getAttribute('src')){ vid.src = vsrc; vid.preload = 'auto'; }
+      vid.classList.add('on'); where.textContent = NAME + ' · 지구 위';
+      try { vid.currentTime = 0; } catch(e){}
+      vid.play().catch(function(){});
+      off = Number(st.dataset.videoOff) || 4000;
+    }
+    at(off,          function(){ vid.classList.remove('on'); gate.classList.add('on'); where.textContent = NAME + ' · 정문'; });
+    at(off + 3400,   function(){ gate.classList.remove('on'); hall.classList.add('on'); where.textContent = NAME + ' · 서고'; });
+    /* 윗단까지 내려온다 — 윗단 가운데를 화면 42% 높이에 */
+    at(off + 4000,   function(){ aim(1/6, .42); });
+    at(off + 8200,   function(){ head.classList.add('on'); });
+    /* 오늘의 책 — 위에서 내려와 꽂히고, 권수가 하나 오른다 */
+    if (newBk.length) at(off + 9400, function(){ newBk.forEach(function(b){ b.classList.add('in'); }); count(true); where.textContent = NAME + ' · 오늘 꽂힌 책'; });
+    /* 서가 끝까지 천천히 훑는다 — 빈 벽감도 이 서가가 자랄 자리다 */
+    var scan = off + (newBk.length ? 11800 : 9400);
+    /* 책이 한 단뿐이면 서가 꼭대기를 화면 위쪽에 두고 아래 빈 벽감까지 펼쳐 보인다(책이 화면 밖으로 나가지 않게) · 두 단 넘으면 바닥까지 */
+    at(scan,         function(){ if (filled <= 1) aim(0, .1, 6000); else aim(1, .92, 6000 + filled * 1200); where.textContent = NAME + ' · 서가'; });
+    at(scan + 6400,  function(){ st.classList.add('dim'); lines[0].classList.add('on'); });
+    at(scan + 8400,  function(){ lines[1].classList.add('on'); });
+    var end = scan + 8400;
+    at(end + 7000,   function(){ lines.forEach(function(l){ l.classList.remove('on'); }); st.classList.remove('dim'); head.classList.remove('on'); hall.classList.remove('on'); });
+    at(end + 8600,   play);
   }
   if ('IntersectionObserver' in window){
     var inside = false;
