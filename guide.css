@@ -1,0 +1,116 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   guide.css — Guide 첫 화면과 하위 일곱 페이지가 함께 쓰는 꼴 (2026.10.20 오후)
+   틀 — 맨 위 영상(.hero) → 어떻게(.gloss) → 여는 장면(.lede) → 방마다 [무엇 · 실제 화면 · 지키는 것 · 남는 것]
+        → 맺는 한 줄(.coda) → 일곱 가지(.g7 · site.css)
+   빗금 칸(figure.clip.pending · header.hero.pending) — 소로 촬영 대기 · 설명은 data-* 에 적고 guide.js 가 그린다
+   ⚠ 이 파일을 고치면 꼬리표(?v=)를 guide*.html 에서 함께 바꾼다 — grep "guide.css?v="
+   ══════════════════════════════════════════════════════════════════════════ */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--paper)}
+body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+  -webkit-font-smoothing:antialiased;color:var(--ink);min-height:100vh;min-height:100svh}
+main{max-width:1080px;margin:0 auto;padding:calc(var(--head-top) + 140px) var(--gutter) clamp(96px,14vh,140px)}
+.eyebrow{font-size:12.5px;letter-spacing:.3em;color:var(--ink-dim)}
+.eyebrow a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(11,9,7,.25)}
+.eyebrow a:hover{color:var(--ink);border-bottom-color:var(--arrow)}
+h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px,6.4vw,88px);
+  line-height:1.15;letter-spacing:-.025em;word-break:keep-all}
+.why{margin-top:clamp(24px,3.6vw,44px);max-width:30em;font-family:var(--serif);font-weight:400;
+  font-size:clamp(20px,2.1vw,28px);line-height:1.6;color:var(--ink);word-break:keep-all;text-wrap:pretty}
+.gloss{margin-top:clamp(24px,3.6vw,44px);max-width:34em;font-family:var(--serif);font-weight:300;
+  font-size:clamp(17px,1.7vw,22px);line-height:1.9;color:var(--ink-soft);word-break:keep-all;text-wrap:pretty}
+.rooms{margin-top:18px;font-size:14px;letter-spacing:.06em;color:var(--ink-dim);word-break:keep-all}
+.wip{display:inline-block;margin-top:clamp(36px,5vw,60px);padding:8px 16px;border-radius:999px;
+  border:1px dashed rgba(11,9,7,.3);font-size:13px;letter-spacing:.06em;color:var(--ink-dim)}
+.g7{margin-top:clamp(56px,8vw,96px)}
+.g7-head{margin-top:clamp(96px,14vh,150px);font-size:12.5px;letter-spacing:.3em;color:var(--ink-dim)}
+.g7-head + .g7{margin-top:clamp(20px,2.6vw,30px)}
+
+/* ── Guide 하위 페이지 본문 (1020 오후 · 여행이 첫 판) ──────────────────
+   틀 — 여는 장면 → 방마다 [무엇 · 실제 화면 · 지키는 것 · 남는 것] → 맺는 한 줄 → 일곱 가지
+   영상은 Today 와 같은 규격(1920 crf21 / 1280 crf23 · 소리 없음) · 화면에 들어오면 돌고 나가면 멈춘다
+   figure.clip.pending — 소로 촬영 대기 자리(촬영분이 오면 data-video-* 또는 img 로 바꾼다) */
+.lede{margin-top:clamp(88px,12vh,140px);max-width:36em}
+.lede p{font-family:var(--serif);font-weight:300;font-size:clamp(17px,1.6vw,20.5px);line-height:1.95;color:var(--ink-soft);
+  word-break:keep-all;text-wrap:pretty}
+.lede p + p{margin-top:1.2em}
+.lede strong{font-weight:500;color:var(--ink)}
+.clip{margin-top:clamp(36px,5vw,56px)}
+.clip .frame{position:relative;aspect-ratio:16/10;border-radius:6px;overflow:hidden;background:#1a1612}
+.clip video,.clip img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.clip figcaption{margin-top:12px;font-size:13.5px;line-height:1.6;color:var(--ink-dim);word-break:keep-all}
+.clip.still .frame{aspect-ratio:auto;background:none;box-shadow:0 1px 0 rgba(11,9,7,.08),0 10px 28px rgba(11,9,7,.12)}
+.clip.still img{position:static;width:100%;height:auto}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2.4vw,28px)}
+.pair .clip{margin-top:clamp(20px,2.6vw,28px)}
+/* 나란히 선 두 칸은 같은 높이로 — 영상 · 캡처 모두 16:9 틀에 */
+.pair .clip .frame{aspect-ratio:16/9}
+.pair .clip.still img{position:absolute;height:100%;object-fit:cover;object-position:50% 40%}
+
+.room{margin-top:clamp(110px,15vh,170px);padding-top:clamp(28px,3.4vw,40px);border-top:1px solid rgba(11,9,7,.16)}
+.room-head{display:flex;align-items:baseline;gap:clamp(14px,2vw,24px);flex-wrap:wrap}
+.room-num{font-size:13px;letter-spacing:.16em;color:var(--ink-dim);font-variant-numeric:tabular-nums}
+.room h2{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.8vw,50px);line-height:1.12;letter-spacing:-.015em}
+.room-sub{font-size:14.5px;letter-spacing:.04em;color:var(--ink-dim)}
+.room-body{margin-top:clamp(22px,2.8vw,32px);max-width:36em}
+.room-body p{font-size:clamp(16px,1.45vw,17.5px);line-height:1.9;color:var(--ink-soft);word-break:keep-all;text-wrap:pretty}
+.room-body p + p{margin-top:1em}
+.room-body a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--arrow)}
+.notes{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(24px,4vw,56px);margin-top:clamp(40px,5vw,60px)}
+.notes h3{font-size:12.5px;font-weight:500;letter-spacing:.3em;color:var(--ink-dim);margin-bottom:16px}
+.keep ul{list-style:none}
+.keep li{position:relative;padding-left:18px;font-size:15.5px;line-height:1.8;color:var(--ink-soft);word-break:keep-all}
+.keep li + li{margin-top:12px}
+.keep li::before{content:"";position:absolute;left:0;top:.72em;width:7px;height:7px;border-radius:50%;background:var(--arrow)}
+.keep li b{font-weight:600;color:var(--ink)}
+.remain p{font-family:var(--serif);font-size:16.5px;line-height:1.85;color:var(--ink);word-break:keep-all;text-wrap:pretty;
+  padding:20px 22px;background:var(--paper-2);border-radius:6px}
+.coda{margin-top:clamp(110px,15vh,170px);max-width:28em;font-family:var(--serif);font-weight:300;
+  font-size:clamp(20px,2.2vw,28px);line-height:1.7;color:var(--ink);word-break:keep-all;text-wrap:pretty}
+@media (max-width:760px){
+  .pair,.notes{grid-template-columns:1fr}
+}
+
+/* ── 맨 위 영상 (1020 오후 소로) — Guide 일곱도 현관 · Today 처럼 맨 위에 영상 하나
+   Today 가 「밖에서 본 오늘」이라면 Guide 는 「안에서 손이 하는 일」 · 여행은 크레덴시알 수첩 넘기기(소로 촬영) */
+.hero{position:relative;height:100vh;height:100svh;min-height:440px;overflow:hidden;color:var(--paper);
+  background:var(--ink) center/cover no-repeat}   /* 포스터 그림은 페이지마다 그 페이지 머리에서 .hero 의 background-image 로 */
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
+.hero::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(0deg, rgba(8,6,4,.74) 0%, rgba(8,6,4,.34) 26%, rgba(8,6,4,0) 50%)}
+.plate{position:absolute;z-index:3;left:var(--gutter);right:var(--gutter);
+  bottom:calc(var(--gutter) + env(safe-area-inset-bottom) + 6px);max-width:36em;text-shadow:0 1px 18px rgba(0,0,0,.4)}
+.plate .tag{display:flex;align-items:center;gap:10px;font-size:13px;letter-spacing:.1em;color:var(--dim)}
+.plate .tag::before{content:'';width:22px;height:2px;background:var(--arrow)}
+.plate .tag a{color:inherit;text-decoration:none}
+.plate .tag a:hover{color:var(--paper)}
+.plate h1{margin-top:14px;color:var(--paper);font-size:clamp(44px,6.4vw,92px)}
+.plate .face{margin-top:14px;font-family:var(--serif);font-size:clamp(17px,1.8vw,24px);line-height:1.6;color:rgba(244,239,230,.92);word-break:keep-all;text-wrap:pretty}
+.plate .book{margin-top:16px;font-size:clamp(14px,1.3vw,16px);line-height:1.7;color:var(--dim);word-break:keep-all}
+.plate .book b{font-weight:500;color:var(--paper)}
+.credit{position:absolute;z-index:3;right:var(--gutter);bottom:calc(10px + env(safe-area-inset-bottom));
+  font-size:10.5px;letter-spacing:.04em;color:rgba(244,239,230,.42)}
+main.after-hero{padding-top:clamp(72px,10vh,120px)}
+main.after-hero > .gloss:first-child{margin-top:0}
+
+/* ── 빗금 칸 — 촬영 대기 (1020 저녁 소로 「골격과 설명은 파이스, 영상은 소로가 보고 조달」) ──
+   figure.clip.pending[data-kind data-shot data-where data-len data-key data-must] → guide.js 가 칸 안에 적는다
+   같은 data-* 를 shots.html(촬영표)이 페이지마다 읽어 한 장으로 모은다 */
+.clip.pending .frame{background:repeating-linear-gradient(-45deg,rgba(11,9,7,.035) 0 12px,transparent 12px 24px),var(--paper-2);
+  border:1px dashed rgba(11,9,7,.28);display:flex;align-items:center;justify-content:center;padding:clamp(16px,2.4vw,28px)}
+.shot{max-width:30em;font-size:13.5px;line-height:1.65;color:var(--ink-dim);word-break:keep-all;text-align:left}
+.shot .shot-tag{display:inline-block;padding:3px 10px;border-radius:999px;background:var(--ink);color:var(--paper);
+  font-size:11.5px;letter-spacing:.08em}
+.shot .shot-what{display:block;margin-top:10px;font-size:15px;font-weight:500;color:var(--ink-soft)}
+.shot dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin-top:10px}
+.shot dt{color:var(--ink-dim);white-space:nowrap}
+.shot dd{color:var(--ink-soft)}
+.pair .shot{font-size:12.5px}
+.pair .shot .shot-what{font-size:14px}
+/* 맨 위 영상이 아직 없을 때 — 어두운 빗금 위에 같은 설명 */
+.hero.pending{background:repeating-linear-gradient(-45deg,rgba(244,239,230,.04) 0 14px,transparent 14px 28px),#1d1914}
+.hero.pending .shot{position:absolute;z-index:4;left:50%;top:42%;transform:translate(-50%,-50%);width:min(30em,calc(100% - 2 * var(--gutter)));
+  padding:18px 20px;border:1px dashed rgba(244,239,230,.3);border-radius:8px;color:rgba(244,239,230,.62)}
+.hero.pending .shot .shot-tag{background:var(--arrow);color:var(--ink)}
+.hero.pending .shot .shot-what,.hero.pending .shot dd{color:rgba(244,239,230,.88)}
+.hero.pending .shot dt{color:rgba(244,239,230,.5)}

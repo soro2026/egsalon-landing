@@ -58,6 +58,7 @@
       rooms:'교양 한 스푼 · 타벨라이 · 살롱 데 콩파뇽 · 에콜 노르말' }
   ];
   var gHref = function(g){ return 'guide-' + g.slug + '.html'; };
+  window.EG_GUIDE = GUIDE.map(function(g){ return { slug:g.slug, en:g.en, ko:g.ko, href:gHref(g) }; });   /* 촬영표(shots.html)가 페이지 목록으로 쓴다 */
   var here = (location.pathname.split('/').pop() || 'home.html').replace(/\.html$/, '');
 
   document.querySelectorAll('nav.g7').forEach(function(box){

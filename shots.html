@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>촬영표 · EG유니버스</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="site.css?v=1020h">
+<link rel="stylesheet" href="guide.css?v=1020h">
+<style>
+/* ══════════════════════════════════════════════════════════════════════════
+   촬영표 (1020 저녁 소로 「골격과 설명은 파이스가, 영상 · 캡처는 소로가 그걸 보고 조달」)
+   사이트의 빗금 칸(figure.clip.pending · header.hero.pending)을 페이지에서 직접 읽어 한 장으로 모은다.
+   설명은 각 페이지의 data-* 한 곳에만 적는다 — 이 표는 손으로 고치지 않는다.
+   영상을 끼우면(pending 을 떼면) 그 줄은 다음에 열 때 저절로 사라진다.
+   메뉴 · 바닥 지도에 걸지 않는다(손님용 아님) · 검색에 안 잡히게 noindex
+   ══════════════════════════════════════════════════════════════════════════ */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--paper)}
+body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;-webkit-font-smoothing:antialiased;color:var(--ink)}
+main{max-width:960px;margin:0 auto;padding:clamp(48px,8vh,88px) var(--gutter) 120px}
+.eyebrow{font-size:12.5px;letter-spacing:.3em;color:var(--ink-dim)}
+h1{margin-top:14px;font-family:var(--serif);font-weight:400;font-size:clamp(34px,5vw,56px);letter-spacing:-.02em}
+.lead{margin-top:16px;max-width:36em;font-size:15.5px;line-height:1.8;color:var(--ink-soft);word-break:keep-all}
+.sum{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px}
+.sum span{padding:6px 12px;border-radius:999px;background:var(--paper-2);font-size:13.5px;color:var(--ink-soft)}
+.sum b{font-weight:600;color:var(--ink)}
+.page{margin-top:56px;padding-top:18px;border-top:1px solid rgba(11,9,7,.16)}
+.page-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.page-head h2{font-family:var(--serif);font-weight:400;font-size:28px}
+.page-head a{font-size:13.5px;color:var(--ink-dim);text-decoration:none;border-bottom:1px solid var(--arrow)}
+.page-head .n{font-size:13px;color:var(--ink-dim)}
+.done{margin-top:12px;font-size:14px;color:var(--ink-dim)}
+ol.items{list-style:none;margin-top:14px;display:grid;gap:12px}
+ol.items li{padding:16px 18px;border:1px dashed rgba(11,9,7,.28);border-radius:8px;
+  background:repeating-linear-gradient(-45deg,rgba(11,9,7,.025) 0 12px,transparent 12px 24px),#f8f4ec}
+ol.items .where-in{display:block;margin-bottom:8px;font-size:12.5px;letter-spacing:.06em;color:var(--ink-dim)}
+ol.items .shot{max-width:none}
+.err{margin-top:12px;font-size:14px;color:#a3482f}
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">소로 몫 · 촬영 대기</div>
+  <h1>촬영표</h1>
+  <p class="lead">사이트의 빗금 칸을 페이지마다 직접 읽어 모읍니다. 찍어 보내 주시면 파이스가 그 자리에 끼우고, 그 줄은 이 표에서 저절로 사라집니다.</p>
+  <div class="sum" id="sum"></div>
+  <div id="list"></div>
+</main>
+<script src="site.js?v=1020h"></script>
+<script src="guide.js?v=1020h"></script>
+<script>
+(function(){
+  'use strict';
+  /* 읽을 페이지 — Guide 일곱(site.js 의 EG_GUIDE) + 앞으로 지을 페이지는 EXTRA 에 더한다 */
+  var EXTRA = [
+    /* { href:'places-orsay.html', en:'Orsay', ko:'오르세' } — Places 를 지으면 여기에 */
+  ];
+  var PAGES = (window.EG_GUIDE || []).map(function(g){ return { href:g.href, title:g.en + ' · ' + g.ko }; })
+    .concat(EXTRA.map(function(p){ return { href:p.href, title:p.en + ' · ' + p.ko }; }));
+  var list = document.getElementById('list'), sum = document.getElementById('sum');
+  var total = { 영상:0, 캡처:0 };
+
+  function placeOf(el){
+    if (el.matches('header.hero')) return '맨 위 영상';
+    var room = el.closest('section.room');
+    if (room){ var h = room.querySelector('h2'); return h ? h.textContent.trim() : '본문'; }
+    return '여는 장면';
+  }
+  function render(page, doc, err){
+    var box = document.createElement('section'); box.className = 'page';
+    var items = doc ? Array.prototype.slice.call(doc.querySelectorAll('header.hero.pending, figure.clip.pending')) : [];
+    box.innerHTML = '<div class="page-head"><h2>' + page.title + '</h2>'
+      + '<a href="' + page.href + '" target="_blank" rel="noopener">페이지 열기</a>'
+      + (doc ? '<span class="n">' + (items.length ? items.length + '칸' : '') + '</span>' : '') + '</div>';
+    if (err){ box.insertAdjacentHTML('beforeend', '<p class="err">읽지 못했습니다 — ' + err + '</p>'); }
+    else if (!items.length){ box.insertAdjacentHTML('beforeend', '<p class="done">' + (doc.querySelector('.wip') ? '파이스가 글과 틀을 짓는 중 — 빗금 칸은 그다음에 섭니다' : '빗금 칸 없음 — 다 찍었습니다') + '</p>'); }
+    else {
+      var ol = document.createElement('ol'); ol.className = 'items';
+      items.forEach(function(el){
+        var k = el.dataset.kind || '영상'; total[k] = (total[k] || 0) + 1;
+        var li = document.createElement('li');
+        li.innerHTML = '<span class="where-in">' + placeOf(el) + '</span>' + window.egShotHTML(el);
+        ol.appendChild(li);
+      });
+      box.appendChild(ol);
+    }
+    return box;
+  }
+  Promise.all(PAGES.map(function(pg){
+    return fetch(pg.href, { cache:'no-store' }).then(function(r){
+      if (!r.ok) throw new Error(r.status);
+      return r.text();
+    }).then(function(t){ return { pg:pg, doc:new DOMParser().parseFromString(t, 'text/html') }; },
+           function(e){ return { pg:pg, err:String(e && e.message || e) }; });
+  })).then(function(rs){
+    rs.forEach(function(r){ list.appendChild(render(r.pg, r.doc, r.err)); });
+    sum.innerHTML = '<span>영상 <b>' + (total['영상'] || 0) + '</b></span><span>캡처 <b>' + (total['캡처'] || 0) + '</b></span>'
+      + '<span>페이지 <b>' + PAGES.length + '</b></span>';
+  });
+})();
+</script>
+</body>
+</html>

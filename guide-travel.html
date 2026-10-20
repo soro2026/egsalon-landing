@@ -10,101 +10,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500&display=swap">
-<link rel="stylesheet" href="site.css?v=1020g">
-<style>
-/* ── Guide (1020 오후 소로) — 첫 화면에 일곱 가지를 펼치고, 하나마다 페이지 하나 ── */
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--paper)}
-body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
-  -webkit-font-smoothing:antialiased;color:var(--ink);min-height:100vh;min-height:100svh}
-main{max-width:1080px;margin:0 auto;padding:calc(var(--head-top) + 140px) var(--gutter) clamp(96px,14vh,140px)}
-.eyebrow{font-size:12.5px;letter-spacing:.3em;color:var(--ink-dim)}
-.eyebrow a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(11,9,7,.25)}
-.eyebrow a:hover{color:var(--ink);border-bottom-color:var(--arrow)}
-h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px,6.4vw,88px);
-  line-height:1.15;letter-spacing:-.025em;word-break:keep-all}
-.why{margin-top:clamp(24px,3.6vw,44px);max-width:30em;font-family:var(--serif);font-weight:400;
-  font-size:clamp(20px,2.1vw,28px);line-height:1.6;color:var(--ink);word-break:keep-all;text-wrap:pretty}
-.gloss{margin-top:clamp(24px,3.6vw,44px);max-width:34em;font-family:var(--serif);font-weight:300;
-  font-size:clamp(17px,1.7vw,22px);line-height:1.9;color:var(--ink-soft);word-break:keep-all;text-wrap:pretty}
-.rooms{margin-top:18px;font-size:14px;letter-spacing:.06em;color:var(--ink-dim);word-break:keep-all}
-.wip{display:inline-block;margin-top:clamp(36px,5vw,60px);padding:8px 16px;border-radius:999px;
-  border:1px dashed rgba(11,9,7,.3);font-size:13px;letter-spacing:.06em;color:var(--ink-dim)}
-.g7{margin-top:clamp(56px,8vw,96px)}
-.g7-head{margin-top:clamp(96px,14vh,150px);font-size:12.5px;letter-spacing:.3em;color:var(--ink-dim)}
-.g7-head + .g7{margin-top:clamp(20px,2.6vw,30px)}
-
-/* ── Guide 하위 페이지 본문 (1020 오후 · 여행이 첫 판) ──────────────────
-   틀 — 여는 장면 → 방마다 [무엇 · 실제 화면 · 지키는 것 · 남는 것] → 맺는 한 줄 → 일곱 가지
-   영상은 Today 와 같은 규격(1920 crf21 / 1280 crf23 · 소리 없음) · 화면에 들어오면 돌고 나가면 멈춘다
-   figure.pending — 소로 촬영 대기 자리(촬영분이 오면 data-video-* 또는 img 로 바꾼다) */
-.lede{margin-top:clamp(88px,12vh,140px);max-width:36em}
-.lede p{font-family:var(--serif);font-weight:300;font-size:clamp(17px,1.6vw,20.5px);line-height:1.95;color:var(--ink-soft);
-  word-break:keep-all;text-wrap:pretty}
-.lede p + p{margin-top:1.2em}
-.lede strong{font-weight:500;color:var(--ink)}
-.clip{margin-top:clamp(36px,5vw,56px)}
-.clip .frame{position:relative;aspect-ratio:16/10;border-radius:6px;overflow:hidden;background:#1a1612}
-.clip video,.clip img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.clip figcaption{margin-top:12px;font-size:13.5px;line-height:1.6;color:var(--ink-dim);word-break:keep-all}
-.clip.pending .frame{background:repeating-linear-gradient(-45deg,rgba(11,9,7,.035) 0 12px,transparent 12px 24px),var(--paper-2);
-  border:1px dashed rgba(11,9,7,.28);display:flex;align-items:center;justify-content:center;text-align:center;padding:20px}
-.clip.pending .frame span{font-size:13.5px;letter-spacing:.04em;line-height:1.7;color:var(--ink-dim);word-break:keep-all}
-.clip.pending .frame span b{display:block;font-weight:500;color:var(--ink-soft)}
-.clip.still .frame{aspect-ratio:auto;background:none;box-shadow:0 1px 0 rgba(11,9,7,.08),0 10px 28px rgba(11,9,7,.12)}
-.clip.still img{position:static;width:100%;height:auto}
-.pair{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2.4vw,28px)}
-.pair .clip{margin-top:clamp(20px,2.6vw,28px)}
-/* 나란히 선 두 칸은 같은 높이로 — 영상 · 캡처 모두 16:9 틀에 */
-.pair .clip .frame{aspect-ratio:16/9}
-.pair .clip.still img{position:absolute;height:100%;object-fit:cover;object-position:50% 40%}
-
-.room{margin-top:clamp(110px,15vh,170px);padding-top:clamp(28px,3.4vw,40px);border-top:1px solid rgba(11,9,7,.16)}
-.room-head{display:flex;align-items:baseline;gap:clamp(14px,2vw,24px);flex-wrap:wrap}
-.room-num{font-size:13px;letter-spacing:.16em;color:var(--ink-dim);font-variant-numeric:tabular-nums}
-.room h2{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.8vw,50px);line-height:1.12;letter-spacing:-.015em}
-.room-sub{font-size:14.5px;letter-spacing:.04em;color:var(--ink-dim)}
-.room-body{margin-top:clamp(22px,2.8vw,32px);max-width:36em}
-.room-body p{font-size:clamp(16px,1.45vw,17.5px);line-height:1.9;color:var(--ink-soft);word-break:keep-all;text-wrap:pretty}
-.room-body p + p{margin-top:1em}
-.room-body a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--arrow)}
-.notes{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(24px,4vw,56px);margin-top:clamp(40px,5vw,60px)}
-.notes h3{font-size:12.5px;font-weight:500;letter-spacing:.3em;color:var(--ink-dim);margin-bottom:16px}
-.keep ul{list-style:none}
-.keep li{position:relative;padding-left:18px;font-size:15.5px;line-height:1.8;color:var(--ink-soft);word-break:keep-all}
-.keep li + li{margin-top:12px}
-.keep li::before{content:"";position:absolute;left:0;top:.72em;width:7px;height:7px;border-radius:50%;background:var(--arrow)}
-.keep li b{font-weight:600;color:var(--ink)}
-.remain p{font-family:var(--serif);font-size:16.5px;line-height:1.85;color:var(--ink);word-break:keep-all;text-wrap:pretty;
-  padding:20px 22px;background:var(--paper-2);border-radius:6px}
-.coda{margin-top:clamp(110px,15vh,170px);max-width:28em;font-family:var(--serif);font-weight:300;
-  font-size:clamp(20px,2.2vw,28px);line-height:1.7;color:var(--ink);word-break:keep-all;text-wrap:pretty}
-@media (max-width:760px){
-  .pair,.notes{grid-template-columns:1fr}
-}
-
-/* ── 맨 위 영상 (1020 오후 소로) — Guide 일곱도 현관 · Today 처럼 맨 위에 영상 하나
-   Today 가 「밖에서 본 오늘」이라면 Guide 는 「안에서 손이 하는 일」 · 여행은 크레덴시알 수첩 넘기기(소로 촬영) */
-.hero{position:relative;height:100vh;height:100svh;min-height:440px;overflow:hidden;color:var(--paper);
-  background:var(--ink) url('media/guide_travel_credencial_poster.jpg?v=1020') center/cover no-repeat}
-.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
-.hero::after{content:'';position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(0deg, rgba(8,6,4,.74) 0%, rgba(8,6,4,.34) 26%, rgba(8,6,4,0) 50%)}
-.plate{position:absolute;z-index:3;left:var(--gutter);right:var(--gutter);
-  bottom:calc(var(--gutter) + env(safe-area-inset-bottom) + 6px);max-width:36em;text-shadow:0 1px 18px rgba(0,0,0,.4)}
-.plate .tag{display:flex;align-items:center;gap:10px;font-size:13px;letter-spacing:.1em;color:var(--dim)}
-.plate .tag::before{content:'';width:22px;height:2px;background:var(--arrow)}
-.plate .tag a{color:inherit;text-decoration:none}
-.plate .tag a:hover{color:var(--paper)}
-.plate h1{margin-top:14px;color:var(--paper);font-size:clamp(44px,6.4vw,92px)}
-.plate .face{margin-top:14px;font-family:var(--serif);font-size:clamp(17px,1.8vw,24px);line-height:1.6;color:rgba(244,239,230,.92);word-break:keep-all;text-wrap:pretty}
-.plate .book{margin-top:16px;font-size:clamp(14px,1.3vw,16px);line-height:1.7;color:var(--dim);word-break:keep-all}
-.plate .book b{font-weight:500;color:var(--paper)}
-.credit{position:absolute;z-index:3;right:var(--gutter);bottom:calc(10px + env(safe-area-inset-bottom));
-  font-size:10.5px;letter-spacing:.04em;color:rgba(244,239,230,.42)}
-main.after-hero{padding-top:clamp(72px,10vh,120px)}
-main.after-hero > .gloss:first-child{margin-top:0}
-</style>
+<link rel="stylesheet" href="site.css?v=1020h">
+<link rel="stylesheet" href="guide.css?v=1020h">
+<style>.hero{background-image:url('media/guide_travel_credencial_poster.jpg?v=1020')}</style>
 </head>
 <body data-nav="cover">
 
@@ -215,8 +123,10 @@ main.after-hero > .gloss:first-child{margin-top:0}
       <p>산티아고 순례길을 걷는 사람은 크레덴시알이라는 수첩을 지니고 갑니다. 알베르게와 성당에 들를 때마다 그 수첩을 내밀고 도장을 받습니다. EG유니버스의 손님도 같은 수첩을 하나 지닙니다. 미술관, 음악관, 천문대, 야구장, 학술원에 들어가면 화면 구석에 도장이 하나 놓이고, 누르면 찍힙니다.</p>
       <p>도장의 테두리는 그곳의 얼굴이고, 가운데에는 그날의 것이 새겨집니다. 오르세의 도장에는 그날 걸린 그림 이름이, 빈의 도장에는 그날의 곡 이름이, 마우나케아의 도장에는 그날 처음 만난 사람의 이름이 들어갑니다.</p>
     </div>
-    <figure class="clip pending" data-shot="미술관에서 도장을 누르는 순간">
-    <div class="frame"><span><b>촬영 대기 · 영상</b>미술관에서 도장을 누르는 순간</span></div></figure>
+    <figure class="clip pending" data-kind="영상" data-shot="미술관에서 도장을 누르는 순간"
+      data-where="아무 미술관 방 · 화면 구석의 도장" data-len="3~5초"
+      data-key="F9 — 방 안을 누르기 전에 먼저(방이 열려 있으면 탭 녹화로 갑니다)"
+      data-must="도장을 누르고, 잉크 자국이 크게 떴다가 사라지는 데까지"></figure>
     <div class="notes">
     <div class="keep"><h3>지키는 것</h3><ul>
       <li><b>도장은 손님이 누릅니다.</b> 저절로 찍히면 방문 기록이고, 내밀어야 찍히면 순례입니다. 안 눌러도 아무 손해가 없습니다.</li>
@@ -233,8 +143,9 @@ main.after-hero > .gloss:first-child{margin-top:0}
       <p>타륜의 「다른 도시」를 누르면 지금 서 있는 도시를 떠나 다른 도시 상공으로 날아갑니다. 파리에서 런던으로, 런던에서 뉴욕으로. 지금 EG유니버스에서 사람이 사는 도시는 이 셋이고, 입주자가 늘면 도시도 늘어납니다. 미술관과 음악관과 천문대는 마드리드에도, 시드니에도, 나미브 사구에도 서 있어 그날 문을 연 곳으로 찾아갑니다.</p>
       <p>앞의 셋이 가는 동안의 여행이라면 이것은 가서 머무는 여행입니다. 그 도시들에 무엇이 서 있는지는 <a href="places.html">Places</a>에서 이어집니다.</p>
     </div>
-    <figure class="clip pending" data-shot="파리에서 런던으로 넘어가는 장면">
-    <div class="frame"><span><b>촬영 대기 · 영상</b>파리에서 런던으로 넘어가는 장면</span></div></figure>
+    <figure class="clip pending" data-kind="영상" data-shot="파리에서 런던으로 넘어가는 장면"
+      data-where="타륜 › 다른 도시 › 런던" data-len="8~10초" data-key="F9"
+      data-must="파리 상공을 떠나 런던 상공에 닿는 데까지 · 템스강이 보이면 좋음"></figure>
     <div class="notes">
     <div class="keep"><h3>지키는 것</h3><ul>
       <li><b>바쁜 날에는 지구를 거치지 않아도 됩니다.</b> 지구는 목적지이지 통로가 아니라서, 어느 건물이든 타륜의 한 줄로 곧장 들어갑니다.</li>
@@ -253,44 +164,7 @@ main.after-hero > .gloss:first-child{margin-top:0}
 <footer class="eg-map" aria-label="EG유니버스의 지도"></footer>
 
 <script src="https://app.egsalon.com/eg_device.js?v=20260729"></script>
-<script src="site.js?v=1020g"></script>
-<script>
-(function(){
-  'use strict';
-  var v = document.getElementById('heroClip');
-  if (!v) return;
-  var big = Math.max(screen.width, screen.height) * (window.devicePixelRatio || 1) > 2000 && window.innerWidth > 900;
-  v.src = v.getAttribute(big ? 'data-src-1920' : 'data-src-1280');
-  var inView = true;
-  var kick = function(){ if (inView && !document.hidden) v.play().catch(function(){}); };
-  v.play().catch(function(){
-    ['pointerdown','touchstart','keydown'].forEach(function(e){ window.addEventListener(e, kick, { once:true, passive:true }); });
-  });
-  document.addEventListener('visibilitychange', function(){ if (document.hidden) v.pause(); else kick(); });
-  if ('IntersectionObserver' in window){
-    new IntersectionObserver(function(es){ inView = es[0].isIntersecting; inView ? kick() : v.pause(); }, { threshold:0 }).observe(v);
-  }
-})();
-</script>
-<script>
-/* 영상 — 화면에 반쯤 들어오면 돌고, 벗어나면 멈춘다 · 처음 들어올 때 주소를 단다(preload none)
-   폭이 넓고 화소가 많으면 1920, 아니면 1280 · 움직임 줄이기를 켠 분에게는 포스터만 */
-(function(){
-  var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var figs = document.querySelectorAll('figure.clip[data-video-1920]');
-  if (still || !('IntersectionObserver' in window)) return;
-  var big = (window.innerWidth * (window.devicePixelRatio || 1)) > 1400;
-  var io = new IntersectionObserver(function(es){
-    es.forEach(function(e){
-      var v = e.target.querySelector('video'); if (!v) return;
-      if (e.isIntersecting){
-        if (!v.getAttribute('src')) v.src = e.target.getAttribute(big ? 'data-video-1920' : 'data-video-1280');
-        var p = v.play(); if (p && p.catch) p.catch(function(){});
-      } else v.pause();
-    });
-  }, { threshold:0.5 });
-  figs.forEach(function(f){ io.observe(f); });
-})();
-</script>
+<script src="site.js?v=1020h"></script>
+<script src="guide.js?v=1020h"></script>
 </body>
 </html>
