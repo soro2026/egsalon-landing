@@ -306,6 +306,29 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
   text-shadow:0 -1px 0 rgba(0,0,0,.75),0 1px 0 rgba(255,232,180,.14)}
 .mshelf .pl-when{left:2.2%}
 .mshelf .pl-n{right:2.2%;color:rgba(226,192,126,.62)}
+
+/* ── 오늘의 콜레주 드 콤포스텔라 (1020 소로) — 개막 전에는 「오늘의 개막작」 포스터 · 날짜 없이 COMING SOON
+   방은 앱 1층 모집 홀(college_hall1_<시간대> · 941×1672) · 무대 · 벽 머리말 좌표는 앱과 같은 layout/hall1.json
+   포스터 college-assets/posters/<번호> · 인장은 앱 1층 포스터 무대의 그 톱니 인장(자리 = 책마다 sticker_x · y) */
+.cstage .hall img.wall{height:auto;object-fit:initial}
+.cstage .tgt{position:absolute;transform:translateX(-50%)}
+.cstage .chead{text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.75)}
+.cstage .chead .e{font-family:'Cormorant Garamond',var(--serif);font-size:clamp(9px,.95vw,13px);letter-spacing:.34em;text-indent:.34em;color:rgba(233,207,156,.9)}
+.cstage .chead .t{margin-top:10px;font-family:var(--serif);font-weight:500;font-size:clamp(15px,2vw,28px);letter-spacing:.08em;color:#f5efdd}
+.cstage .chead .s{margin-top:8px;font-size:clamp(10px,.95vw,13.5px);color:rgba(240,232,212,.72)}
+.cstage .chead .r{width:56px;height:1px;margin:16px auto 0;background:linear-gradient(to right,transparent,#C9A84C,transparent)}
+.cstage .cframe{position:relative;width:100%;aspect-ratio:3/4.1}
+.cstage .cframe .fr{position:absolute;inset:0;border:1px solid rgba(201,162,74,.4);border-radius:6px;
+  box-shadow:0 0 0 6px rgba(10,8,5,.25),0 18px 50px rgba(0,0,0,.55);background:rgba(14,18,32,.38)}
+.cstage .cframe .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:6px;opacity:0;transition:opacity 1.4s ease}
+.cstage .cframe .poster.on{opacity:1}
+.cstage .cframe .seal{position:absolute;z-index:4;left:var(--x,62%);top:var(--y,78%);opacity:0;
+  transform:translate(-50%,-50%) rotate(-12deg) scale(1.9);transition:transform .55s cubic-bezier(.34,1.56,.64,1),opacity .25s ease;
+  filter:drop-shadow(0 3px 6px rgba(0,0,0,.42))}
+.cstage .cframe .seal.on{opacity:1;transform:translate(-50%,-50%) rotate(-12deg) scale(1)}
+.cstage .cframe .seal b{display:grid;place-items:center;width:clamp(54px,7.4vw,104px);height:clamp(54px,7.4vw,104px);
+  background:#b99244;color:#231708;font-family:'Pretendard',sans-serif;font-size:clamp(8.5px,.92vw,14px);font-weight:800;line-height:1.12;
+  letter-spacing:.06em;text-align:center;clip-path:polygon(50.0% 0.0%,55.9% 8.9%,64.1% 2.0%,67.2% 12.3%,77.0% 7.9%,77.2% 18.6%,87.8% 17.3%,84.9% 27.6%,95.5% 29.2%,89.8% 38.3%,99.5% 42.9%,91.5% 50.0%,99.5% 57.1%,89.8% 61.7%,95.5% 70.8%,84.9% 72.4%,87.8% 82.7%,77.2% 81.4%,77.0% 92.1%,67.2% 87.7%,64.1% 98.0%,55.9% 91.1%,50.0% 100.0%,44.1% 91.1%,35.9% 98.0%,32.8% 87.7%,23.0% 92.1%,22.8% 81.4%,12.2% 82.7%,15.1% 72.4%,4.5% 70.8%,10.2% 61.7%,0.5% 57.1%,8.5% 50.0%,0.5% 42.9%,10.2% 38.3%,4.5% 29.2%,15.1% 27.6%,12.2% 17.3%,22.8% 18.6%,23.0% 7.9%,32.8% 12.3%,35.9% 2.0%,44.1% 8.9%)}
 /* ── 경기 없는 날 — 지난 경기 다시 보기 (1020 소로 「치고, 타격 결과가 보이고, 스코어가 올라가고」) ──
    한 타석을 앱과 같은 타격 판으로 다시 튼다 · 하이라이트답게 득점 장면 */
 .sstage .lscore{position:absolute;z-index:5;left:50%;top:calc(var(--gutter) - 6px);transform:translateX(-50%);display:flex;align-items:center;gap:10px;
@@ -735,9 +758,51 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
   </section>
   <!-- ▲ -->
 
+  <!-- ▼ 오늘의 콜레주 드 콤포스텔라 (1020 소로) — 개막 전: 오늘의 개막작 = 포스터 다섯 장[ KST날수 % 5 ] (포스터 번호 순 1 월든 · 2 플라톤 · 3 모비 딕 · 4 카라마조프 · 5 전쟁과 평화)
+       ⚠ 개막 날짜는 적지 않는다 — COMING SOON (1020 소로) · 개막 뒤에는 「지금 걷고 있는 책 · ○주째」로 바뀐다
+       273권 「오늘의 한 권」은 나중에 Places 나 Guide 의 텍스트 칸에서 (1020 소로) -->
+  <section class="galerie college" aria-labelledby="college-title">
+    <div class="eyebrow">오늘의 콜레주 드 콤포스텔라 · 10/20(화)</div>
+    <h1 id="college-title">Coming Soon</h1>
+    <p class="place">PARIS · LONDON · NEW YORK · 개막작 다섯 권</p>
+    <p class="lede">혼자서 끝내 완독하지 못한 책은 누구에게나 한 권쯤 있습니다. 콜레주 드 콤포스텔라는 그런 긴 책을 같은 주에 같은 대목을 읽는 사람들과 함께 걷는 학술원입니다. 273권의 서가에서 다섯 권이 먼저 문을 열 날을 기다리고 있습니다.</p>
+
+    <div class="gstage cstage" id="colStage"
+         data-video-1920="media/today_college_three_1920.mp4?v=1020" data-video-1280="media/today_college_three_1280.mp4?v=1020" data-video-off="5700"
+         data-tz="Europe/Paris" data-name="콜레주 드 콤포스텔라"
+         data-poster="https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/college-assets/posters/2.webp"
+         data-seal-x="31.83" data-seal-y="77.97"
+         aria-label="콜레주 드 콤포스텔라 — 정문에서 오늘의 개막작 포스터까지">
+      <video muted playsinline preload="none" aria-hidden="true"></video>
+      <div class="ggate"></div>
+      <div class="hall">
+        <img class="wall" alt="" aria-hidden="true">
+        <div class="tgt chead" data-k="head" aria-hidden="true">
+          <div class="e">COLLÈGE DE COMPOSTELLA</div>
+          <div class="t">콜레주 드 콤포스텔라</div>
+          <div class="s">273권의 서가에서 매달 새 클래스가 열립니다</div>
+          <div class="r"></div>
+        </div>
+        <div class="tgt" data-k="stage">
+          <div class="cframe">
+            <div class="fr"></div>
+            <img class="poster" alt="『소크라테스의 변론 · 크리톤 · 파이돈 · 향연』 개막작 포스터">
+            <div class="seal" aria-hidden="true"><b>COMING<br>SOON</b></div>
+          </div>
+        </div>
+      </div>
+      <div class="where" aria-hidden="true"></div>
+      <div class="know">
+        <p class="scene line"><span class="door">개막작</span>『소크라테스의 변론 · 크리톤 · 파이돈 · 향연』</p>
+        <p class="k line">플라톤 · 제1장 고대의 새벽 · 함께 걸으면 12주</p>
+        <p class="halt line">함께 걷는 일은 EG 안에서</p>
+      </div>
+    </div>
+  </section>
+  <!-- ▲ -->
+
   <div class="day" aria-label="짓는 중인 칸">
     <ul>
-      <li>오늘의 콜레주<span>짓는 중</span></li>
       <li>오늘의 천문대<span>짓는 중</span></li>
       <li>오늘의 별자리<span>짓는 중</span></li>
     </ul>
@@ -748,6 +813,16 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
 <footer class="eg-map" aria-label="EG유니버스의 지도"></footer>
 
 <script src="https://app.egsalon.com/eg_device.js?v=20260729"></script>
+<!-- 앱의 하늘 — 온 우주가 같은 시계로 돈다(서울 시각 + 서울의 실제 일출 · 일몰 · NOAA). 앱 terra · 서고 · 콜레주와 같은 판 -->
+<script src="https://app.egsalon.com/eg_sky.js?v=0806e"></script>
+<script>
+/* 무대 그림의 시간대 m 아침 · d 낮 · e 저녁 · n 밤 — egSky 가 못 오면 서울 시각 고정 구간으로 버틴다 */
+window.egPhase = function(){
+  try { if (window.egSky && egSky.phase) return egSky.phase(); } catch(e){}
+  var h = new Date(Date.now() + 9 * 3600000).getUTCHours();
+  return (h>=5 && h<9) ? 'm' : (h>=9 && h<17) ? 'd' : (h>=17 && h<20) ? 'e' : 'n';
+};
+</script>
 <script src="site.js?v=1019"></script>
 <script>
 (function(){
@@ -780,10 +855,8 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
   if (!st) return;
   var PUB = 'https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/tour-assets/hansfoon/';
   var code = st.dataset.code;
-  /* 시간대 — 그 카페의 현지 시각으로 (아침 m · 낮 d · 저녁 e · 밤 n) */
-  var h = 12;
-  try { h = Number(new Intl.DateTimeFormat('en-GB',{hour:'2-digit',hour12:false,timeZone:st.dataset.tz}).format(new Date())) % 24; } catch(e){}
-  var t = (h>=5 && h<11) ? 'm' : (h>=11 && h<17) ? 'd' : (h>=17 && h<21) ? 'e' : 'n';
+  /* 시간대 — 서울 시각 · 서울의 일출 · 일몰로 (아침 m · 낮 d · 저녁 e · 밤 n) · 앱과 같은 하늘 (1020 소로) */
+  var t = egPhase();   /* 1020 소로 — 그림의 시간대는 서울 시각 · 서울의 실제 일출 · 일몰 (앱 eg_sky.js 와 같은 하늘) */
   var bgs = {};
   st.querySelectorAll('.bg').forEach(function(el){
     var k = el.dataset.k;
@@ -856,9 +929,7 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
   if (!st) return;
   var PUB = 'https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/tour-assets/galerie/';
   var code = st.dataset.code, NAME = st.dataset.name;
-  var h = 12;
-  try { h = Number(new Intl.DateTimeFormat('en-GB',{hour:'2-digit',hour12:false,timeZone:st.dataset.tz}).format(new Date())) % 24; } catch(e){}
-  var t = (h>=5 && h<11) ? 'm' : (h>=11 && h<17) ? 'd' : (h>=17 && h<21) ? 'e' : 'n';
+  var t = egPhase();   /* 1020 소로 — 그림의 시간대는 서울 시각 · 서울의 실제 일출 · 일몰 (앱 eg_sky.js 와 같은 하늘) */
   var gate = st.querySelector('.ggate'), hall = st.querySelector('.hall'), wall = hall.querySelector('img.wall');
   var art = st.querySelector('.art'), artImg = art.querySelector('img'), plq = st.querySelector('.gplaque');
   var where = st.querySelector('.where'), lines = st.querySelectorAll('.know .line'), vid = st.querySelector('video');
@@ -944,9 +1015,7 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
   if (!st) return;
   var PUB = 'https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/tour-assets/concert/';
   var code = st.dataset.code, NAME = st.dataset.name;
-  var h = 12;
-  try { h = Number(new Intl.DateTimeFormat('en-GB',{hour:'2-digit',hour12:false,timeZone:st.dataset.tz}).format(new Date())) % 24; } catch(e){}
-  var t = (h>=5 && h<11) ? 'm' : (h>=11 && h<17) ? 'd' : (h>=17 && h<21) ? 'e' : 'n';
+  var t = egPhase();   /* 1020 소로 — 그림의 시간대는 서울 시각 · 서울의 실제 일출 · 일몰 (앱 eg_sky.js 와 같은 하늘) */
   var gate = st.querySelector('.ggate'), hall = st.querySelector('.hall'), wall = hall.querySelector('img.wall');
   var scr = st.querySelector('.screen'), thumb = scr.querySelector('.thumb');
   var where = st.querySelector('.where'), lines = st.querySelectorAll('.know .line'), vid = st.querySelector('video');
@@ -1255,9 +1324,7 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
   var PUB = 'https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/tour-assets/museum/';
   var APP = window.EG_APP_ASSETS || 'https://app.egsalon.com/';
   var code = st.dataset.code, NAME = st.dataset.name;
-  var h = 12;
-  try { h = Number(new Intl.DateTimeFormat('en-GB',{hour:'2-digit',hour12:false,timeZone:st.dataset.tz}).format(new Date())) % 24; } catch(e){}
-  var t = (h>=5 && h<11) ? 'm' : (h>=11 && h<17) ? 'd' : (h>=17 && h<21) ? 'e' : 'n';
+  var t = egPhase();   /* 1020 소로 — 그림의 시간대는 서울 시각 · 서울의 실제 일출 · 일몰 (앱 eg_sky.js 와 같은 하늘) */
   var gate = st.querySelector('.ggate'), hall = st.querySelector('.hall'), wall = hall.querySelector('img.wall'), shelf = st.querySelector('.mshelf');
   var head = st.querySelector('.mhead'), hName = head.querySelector('b'), hSum = head.querySelector('span');
   var where = st.querySelector('.where'), lines = st.querySelectorAll('.know .line'), vid = st.querySelector('video');
@@ -1362,6 +1429,93 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
     at(scan + 8400,  function(){ lines[1].classList.add('on'); });
     var end = scan + 8400;
     at(end + 7000,   function(){ lines.forEach(function(l){ l.classList.remove('on'); }); st.classList.remove('dim'); head.classList.remove('on'); hall.classList.remove('on'); });
+    at(end + 8600,   play);
+  }
+  if ('IntersectionObserver' in window){
+    var inside = false;
+    new IntersectionObserver(function(es){
+      var e = es[0];
+      if (e.intersectionRatio >= 0.5 && !inside){ inside = true; play(); }
+      else if (e.intersectionRatio === 0 && inside){ inside = false; reset(); }
+    }, { threshold:[0, 0.5] }).observe(st);
+  } else play();
+})();
+</script>
+<script>
+/* ── 오늘의 콜레주 드 콤포스텔라 무대 (1020) — 정문 → 1층 모집 홀 꼭대기 → 벽 머리말을 지나 포스터 무대까지 내려옴
+      → 오늘의 개막작 포스터가 걸림 → COMING SOON 인장이 찍힘 → 책 이름 · 지은이 · 진도 → 멈춤 · 7초 뒤 처음부터 ── */
+(function(){
+  'use strict';
+  var st = document.getElementById('colStage');
+  if (!st) return;
+  var APP = window.EG_APP_ASSETS || 'https://app.egsalon.com/';
+  var LAYOUT = 'https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/college-assets/layout/hall1.json';
+  var NAME = st.dataset.name;
+  var t = egPhase();   /* 1020 소로 — 그림의 시간대는 서울 시각 · 서울의 실제 일출 · 일몰 (앱 eg_sky.js 와 같은 하늘) */
+  var gate = st.querySelector('.ggate'), hall = st.querySelector('.hall'), wall = hall.querySelector('img.wall');
+  var poster = st.querySelector('.poster'), seal = st.querySelector('.seal'), stageT = st.querySelector('.tgt[data-k=stage]');
+  var where = st.querySelector('.where'), lines = st.querySelectorAll('.know .line'), vid = st.querySelector('video');
+  gate.style.backgroundImage = 'url("' + APP + 'college_gate_' + t + '.webp")';
+  wall.src = APP + 'college_hall1_' + t + '.webp';
+  poster.src = st.dataset.poster;
+  seal.style.setProperty('--x', st.dataset.sealX + '%'); seal.style.setProperty('--y', st.dataset.sealY + '%');
+
+  /* 벽 위 좌표 — 앱 college.html HALL_DEF 와 같은 기본값 · 살롱지기가 앱에서 맞춘 layout/hall1.json 이 있으면 그것이 이긴다 */
+  var HALL = { head:{x:50, y:46, w:80}, stage:{x:50, y:60, w:42} };
+  function place(){
+    st.querySelectorAll('.tgt').forEach(function(el){ var v = HALL[el.dataset.k]; if (!v) return;
+      el.style.left = v.x + '%'; el.style.top = v.y + '%'; el.style.width = v.w + '%'; });
+  }
+  place();
+  try { fetch(LAYOUT + '?v=' + Date.now()).then(function(r){ return r.ok ? r.json() : null; }).then(function(j){
+    if (!j) return; ['head','stage'].forEach(function(k){ if (j[k]) HALL[k] = Object.assign({}, HALL[k], j[k]); }); place(); }).catch(function(){}); } catch(e){}
+
+  var ratio = 1672 / 941;                            /* 앱 1층 그림판 941×1672 */
+  function fit(){ hall.style.height = (st.clientWidth * ratio) + 'px'; }
+  wall.addEventListener('load', function(){ if (wall.naturalWidth) ratio = wall.naturalHeight / wall.naturalWidth; fit(); });
+  /* 포스터 무대의 가운데를 화면 pos 높이에 */
+  function aim(pos, ms){
+    var H = st.clientWidth * ratio, y = stageT.offsetTop + stageT.offsetHeight / 2;
+    var ty = Math.min(0, Math.max(st.clientHeight - H, st.clientHeight * pos - y));
+    hall.style.transition = 'opacity 1.4s ease, transform ' + (ms || 5500) + 'ms cubic-bezier(.45,.05,.25,1)';
+    hall.style.transform = 'translateY(' + ty + 'px)';
+  }
+  fit(); window.addEventListener('resize', fit);
+
+  var timers = [];
+  function at(ms, fn){ timers.push(setTimeout(fn, ms)); }
+  function reset(){
+    timers.forEach(clearTimeout); timers = [];
+    [gate, hall, poster, seal, vid].forEach(function(e){ e.classList.remove('on'); });
+    lines.forEach(function(l){ l.classList.remove('on'); });
+    st.classList.remove('dim'); hall.style.transition = 'none'; hall.style.transform = 'translateY(0)';
+    void hall.offsetWidth; hall.style.transition = '';
+    try { vid.pause(); } catch(e){}
+  }
+  function play(){
+    reset(); fit();
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce){ hall.classList.add('on'); aim(.5, 1); poster.classList.add('on'); seal.classList.add('on'); st.classList.add('dim');
+      lines.forEach(function(l){ l.classList.add('on'); }); where.textContent = NAME + ' · 오늘의 개막작'; return; }
+    var off = 0;
+    var vsrc = (Math.max(screen.width, screen.height) * (window.devicePixelRatio || 1) > 2000 && window.innerWidth > 900)
+      ? st.getAttribute('data-video-1920') : st.getAttribute('data-video-1280');
+    if (vsrc){
+      if (!vid.getAttribute('src')){ vid.src = vsrc; vid.preload = 'auto'; }
+      vid.classList.add('on'); where.textContent = NAME + ' · 지구 위';
+      try { vid.currentTime = 0; } catch(e){}
+      vid.play().catch(function(){});
+      off = Number(st.dataset.videoOff) || 5500;
+    }
+    at(off,          function(){ vid.classList.remove('on'); gate.classList.add('on'); where.textContent = NAME + ' · 정문'; });
+    /* 1020 소로 — 포스터는 홀이 열릴 때부터 걸려 있다(미술관과 같이 · 빈 무대를 기다리게 하지 않는다) */
+    at(off + 3400,   function(){ gate.classList.remove('on'); hall.classList.add('on'); poster.classList.add('on'); where.textContent = NAME + ' · 1층 모집 홀'; });
+    at(off + 4000,   function(){ aim(.5); });
+    at(off + 9200,   function(){ seal.classList.add('on'); where.textContent = NAME + ' · 오늘의 개막작'; });
+    at(off + 10800,  function(){ st.classList.add('dim'); lines[0].classList.add('on'); });
+    for (var i = 1; i < lines.length; i++) (function(i){ at(off + 10800 + i * 2000, function(){ lines[i].classList.add('on'); }); })(i);
+    var end = off + 10800 + (lines.length - 1) * 2000;
+    at(end + 7000,   function(){ lines.forEach(function(l){ l.classList.remove('on'); }); st.classList.remove('dim'); seal.classList.remove('on'); poster.classList.remove('on'); hall.classList.remove('on'); });
     at(end + 8600,   play);
   }
   if ('IntersectionObserver' in window){
