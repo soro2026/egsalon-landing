@@ -4,27 +4,33 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Guide · EG유니버스</title>
-<meta name="description" content="여행 · 회화 · 음악 · 별 · 자연 · 텍스트 · 대화. EG유니버스의 일곱 가지 차림을 어떻게 누리는지, 실제 화면과 함께 보여 드립니다.">
+<meta name="description" content="여행 · 회화 · 고전음악 · 별 · 자연 · 텍스트 · 대화. EG유니버스의 일곱 가지를 하나씩 펼쳐 봅니다.">
 <meta name="theme-color" content="#0b0907">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500&display=swap">
-<link rel="stylesheet" href="site.css?v=1019">
+<link rel="stylesheet" href="site.css?v=1020g">
 <style>
-/* ── Guide — 골격만 선 자리 (1018 저녁) · 채우는 대로 이 아래가 바뀐다 ── */
+/* ── Guide (1020 오후 소로) — 첫 화면에 일곱 가지를 펼치고, 하나마다 페이지 하나 ── */
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--paper)}
 body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
   -webkit-font-smoothing:antialiased;color:var(--ink);min-height:100vh;min-height:100svh}
-main{max-width:1080px;margin:0 auto;padding:calc(var(--head-top) + 140px) var(--gutter) 120px}
+main{max-width:1080px;margin:0 auto;padding:calc(var(--head-top) + 140px) var(--gutter) clamp(96px,14vh,140px)}
 .eyebrow{font-size:12.5px;letter-spacing:.3em;color:var(--ink-dim)}
+.eyebrow a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(11,9,7,.25)}
+.eyebrow a:hover{color:var(--ink);border-bottom-color:var(--arrow)}
 h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px,6.4vw,88px);
   line-height:1.15;letter-spacing:-.025em;word-break:keep-all}
 .gloss{margin-top:clamp(24px,3.6vw,44px);max-width:34em;font-family:var(--serif);font-weight:300;
   font-size:clamp(17px,1.7vw,22px);line-height:1.9;color:var(--ink-soft);word-break:keep-all;text-wrap:pretty}
+.rooms{margin-top:18px;font-size:14px;letter-spacing:.06em;color:var(--ink-dim);word-break:keep-all}
 .wip{display:inline-block;margin-top:clamp(36px,5vw,60px);padding:8px 16px;border-radius:999px;
   border:1px dashed rgba(11,9,7,.3);font-size:13px;letter-spacing:.06em;color:var(--ink-dim)}
+.g7{margin-top:clamp(56px,8vw,96px)}
+.g7-head{margin-top:clamp(96px,14vh,150px);font-size:12.5px;letter-spacing:.3em;color:var(--ink-dim)}
+.g7-head + .g7{margin-top:clamp(20px,2.6vw,30px)}
 </style>
 </head>
 <body>
@@ -50,14 +56,15 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
 <main>
   <div class="eyebrow">3 · 어떻게 · 쓰는 법</div>
   <h1>Guide</h1>
-  <p class="gloss">여행 · 회화 · 음악 · 별 · 자연 · 텍스트 · 대화. EG유니버스의 일곱 가지 차림을 어떻게 누리는지, 실제 화면과 함께 보여 드립니다.</p>
-  <span class="wip">짓는 중</span>
+  <p class="gloss">EG유니버스에 차려 둔 일곱 가지를 하나씩 펼쳐 봅니다. 어떻게 지어져 있는지, 무엇을 지키는지, 거기서 무엇이 내 것으로 남는지. 마음이 가는 것 하나만 열어 보셔도 됩니다.</p>
+  <!-- 일곱 가지 — 글은 site.js 의 GUIDE 한 곳 -->
+  <nav class="g7" aria-label="일곱 가지"></nav>
 </main>
 
 <!-- 바닥 지도 — 글은 site.js 한 곳(1019) -->
 <footer class="eg-map" aria-label="EG유니버스의 지도"></footer>
 
 <script src="https://app.egsalon.com/eg_device.js?v=20260729"></script>
-<script src="site.js?v=1019"></script>
+<script src="site.js?v=1020g"></script>
 </body>
 </html>

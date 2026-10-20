@@ -20,10 +20,67 @@
   var APP_URL  = 'https://app.egsalon.com/';
   var LOOK_URL = '';   /* 입장 화면이 서기 전에는 비워 둔다 — 누르면 아무 데도 가지 않는다 */
 
+  /* ── Guide 일곱 가지 (1020 오후 소로) — 하나마다 페이지 하나 · 길게 이어 내려가지 않는다
+        「하나 소화하고 내려오면 다음 아이템이 이어 나오기보다 일곱이 쭉 펼쳐지게」
+        Guide 첫 화면과 하위 페이지 끝에 <nav class="g7"></nav> 빈 자리만 두면 여기서 채운다
+        바닥 지도의 일곱 칩도 이 목록 하나를 쓴다 — 글은 여기 한 곳에서 고친다
+        순서는 백서 Ⅳ장 그대로(분더카머는 Ⅴ-3 「내 집」이라 넣지 않는다)
+        ⚠ 홈페이지에서는 「차림」 「옛사람」을 쓰지 않는다 — 맥락 없이 읽으면 어색하거나 부정적으로 읽힌다(1020 소로)
+        글 — why 한 문장(왜 중요한가) + how(EG유니버스가 그것을 어떻게 스미게 하는가) · 음악은 고전음악만(1020 소로) ── */
+  var GUIDE = [
+    { slug:'travel', en:'Travel', ko:'여행',
+      why:'낯선 곳을 직접 보고 온 사람은 떠날 때와 조금 다른 사람이 되어 돌아옵니다.',
+      how:'EG유니버스는 실제 지구 위에 서 있어 어디든 날아서 갑니다. 비행기 창가에서 손에 든 책을 읽고, 해 지는 도시를 따라 날며 하루를 적고, 다녀온 곳마다 순례자의 수첩처럼 도장이 하나씩 쌓입니다.',
+      rooms:'독서비행 · 베스페르 · 크레덴시알 · 다른 도시' },
+    { slug:'painting', en:'Painting', ko:'회화',
+      why:'그림은 설명을 읽을 때보다 그 앞에 오래 서 있을 때 안으로 들어옵니다.',
+      how:'그래서 많이 걸지 않습니다. 오르세 · 루브르 · 프라도 · 우피치 · 시카고, 다섯 미술관이 돌아가며 하루 한 점씩만 겁니다. 같은 그림을 다른 도시에서 다시 만나는 날이 오고, 마음에 든 한 점은 내 집 거실 벽에 걸어 둘 수 있습니다.',
+      rooms:'오늘의 미술관' },
+    { slug:'classical', en:'Classical', ko:'고전음악',
+      why:'같은 곡도 무엇을 알고 듣느냐에 따라 전혀 다르게 들립니다.',
+      how:'시드니 · 함부르크 · 빈 · 파리 · 부에노스아이레스, 다섯 홀에 하루 한 곡이 걸립니다. 재생을 누르기 전에 누가 어떤 처지에서 그 곡을 썼는지 이야기를 먼저 읽습니다. 모르고 들으면 흘러가고, 알고 들으면 들립니다.',
+      rooms:'오늘의 음악관' },
+    { slug:'stars', en:'Stars', ko:'별',
+      why:'개념은 머리에 들어오지만 사람은 마음에 들어오고, 마음에 들어온 것만 오래 남습니다.',
+      how:'그래서 EG유니버스는 교양을 사람으로 지었습니다. 밤하늘의 별 하나에 한 사람 — 소로, 보들레르, 프리드리히. 다가가면 그 생애가 장면으로 펼쳐지고, 어느 별과 어느 별을 이을지는 내가 정합니다. 사랑하게 된 얼굴은 내 집 벽에 걸립니다.',
+      rooms:'천문대와 별의 정원 · 컴퍼니' },
+    { slug:'nature', en:'Nature', ko:'자연',
+      why:'높은 곳에서 내려다보면 나를 짓누르던 일이 제 크기로 돌아옵니다.',
+      how:'나미브 사구, 마추픽추, 그랜드 캐년 — 지금 밤인 땅 35곳에서 별을 보기 전에 잠시 그 땅 위에 서게 됩니다. 이름도 설명도 단추도 없는 화면입니다. 여기서만은 무언가를 하라고 하지 않고, 언젠가 진짜 밤하늘 아래로 나가 보시라고 밖을 가리킵니다.',
+      rooms:'천문대 35곳의 땅' },
+    { slug:'text', en:'Text', ko:'텍스트',
+      why:'사람은 말로 생각하고, 읽고 쓴 만큼 생각이 깊어집니다.',
+      how:'다만 「읽으세요」라는 말로는 아무도 시작하지 못합니다. EG유니버스는 순서를 뒤집어 10분짜리 야구 경기에서 문장 하나를 먼저 스치게 합니다. 스친 문장은 서가에 책 한 권으로 서고, 궁금해진 책은 학술원에서 여럿이 함께 몇 주에 걸쳐 끝까지 읽습니다.',
+      rooms:'야구장 · 서가 · 학술원 · 서고' },
+    { slug:'dialogue', en:'Dialogue', ko:'대화',
+      why:'어떤 생각은 누군가에게 말로 꺼내는 순간에야 모양을 갖춥니다.',
+      how:'EG유니버스에는 광장이 없는 대신 작은 자리들을 두었습니다. 이름난 카페의 탁자에 놓인 한 문장에 한 줄씩 얹는 자리, 한 사람에게만 부치는 편지, 그림 한 점을 가운데 두고 낯선 이와 90분 동안 마주 앉는 저녁.',
+      rooms:'교양 한 스푼 · 타벨라이 · 살롱 데 콩파뇽 · 에콜 노르말' }
+  ];
+  var gHref = function(g){ return 'guide-' + g.slug + '.html'; };
+  var here = (location.pathname.split('/').pop() || 'home.html').replace(/\.html$/, '');
+
+  document.querySelectorAll('nav.g7').forEach(function(box){
+    var html = '<ol class="g7-list">';
+    GUIDE.forEach(function(g, i){
+      var cur = (here === 'guide-' + g.slug);
+      html += '<li><a class="g7-item" href="' + gHref(g) + '"' + (cur ? ' aria-current="page"' : '') + '>'
+        +   '<span class="g7-num">0' + (i + 1) + '</span>'
+        +   '<span class="g7-name"><b>' + g.en + '</b><i>' + g.ko + '</i>'
+        +     (cur ? '<span class="g7-here-row"><span class="g7-here">지금 여기</span></span>' : '') + '</span>'
+        +   '<span class="g7-text"><span class="g7-why">' + g.why + '</span>'
+        +   '<span class="g7-how">' + g.how + '</span>'
+        +   '<span class="g7-rooms">' + g.rooms + '</span></span>'
+        + '</a></li>';
+    });
+    box.innerHTML = html + '</ol>';
+  });
+
   /* ── ⓪ 바닥 지도 (1019 소로) — 모든 페이지 끝에 메뉴의 얼개를 펼쳐 둔다
         「그 순간 꽂히는 곳으로」 · 순서는 메뉴 띠와 같다(Why 다음이 Today)
         페이지에는 <footer class="eg-map"></footer> 빈 자리만 두고, 글은 여기 한 곳에서 고친다
         ⚠ 아래 ①이 [data-gate]를 손질하므로 지도는 그보다 먼저 끼운다 ── */
+  var chips = GUIDE.map(function(g){ return '<a href="' + gHref(g) + '">' + g.ko + '</a>'; }).join('');
   var MAP = ''
     + '<div class="map-in">'
     +   '<p class="map-eyebrow">EG유니버스의 지도</p>'
@@ -31,12 +88,8 @@
     +     '<li><a class="map-name" href="today.html"><b>Today</b><i>지금</i></a>'
     +         '<p>오늘 펼쳐지는 독서비행, 그림 한 점, 곡 하나</p></li>'
     +     '<li><a class="map-name" href="guide.html"><b>Guide</b><i>어떻게</i></a>'
-    +         '<p>일곱 차림을 누리는 법'
-    +         '<span class="map-chips">'
-    +           '<a href="guide.html#travel">여행</a><a href="guide.html#painting">회화</a><a href="guide.html#music">음악</a>'
-    +           '<a href="guide.html#stars">별</a><a href="guide.html#nature">자연</a><a href="guide.html#text">텍스트</a>'
-    +           '<a href="guide.html#dialogue">대화</a>'
-    +         '</span></p></li>'
+    +         '<p>일곱 가지를 누리는 법'
+    +         '<span class="map-chips">' + chips + '</span></p></li>'
     +     '<li><a class="map-name" href="places.html"><b>Places</b><i>어디</i></a>'
     +         '<p>지구 위에 세운 미술관 · 음악관 · 도서관 · 카페 · 천문대</p></li>'
     +     '<li><a class="map-name" href="collection.html"><b>Collection</b><i>무엇</i></a>'
@@ -122,10 +175,11 @@
     }
 
     /* ── ③ 지금 페이지 ── */
-    var here = (location.pathname.split('/').pop() || 'home.html').replace(/\.html$/, '');
-    document.querySelectorAll('.eg-nav a[href], .eg-map .map-name, .eg-map .map-minor a').forEach(function(a){
+    /* Guide 하위 페이지(guide-travel 등)에서는 메뉴의 Guide 에 밑줄 · 바닥 지도의 그 칩에 노랑 */
+    var section = /^guide-/.test(here) ? 'guide' : here;
+    document.querySelectorAll('.eg-nav a[href], .eg-map .map-name, .eg-map .map-minor a, .eg-map .map-chips a').forEach(function(a){
       var name = a.getAttribute('href').split('/').pop().replace(/\.html$/, '');
-      if (name && name === here) a.setAttribute('aria-current', 'page');
+      if (name && (name === here || name === section)) a.setAttribute('aria-current', 'page');
     });
   }
 })();
