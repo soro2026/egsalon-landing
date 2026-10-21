@@ -1,0 +1,42 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   places.css — Places 첫 화면 (2026.10.21 저녁 · 파이스)
+   틀 — 4 · 어디 → Places → 어떻게(.gloss) → 종류 띠(.pl-kinds) → 종류마다 [이름 · 한 줄 · 대문 그림 칸들]
+   대문 그림은 앱 그림 그대로(tour-assets · app) · 시간대는 서울 시각(egPhase — Today 와 같은 하늘)
+   ⚠ 이 파일을 고치면 꼬리표(?v=)를 places*.html 에서 함께 바꾼다 — grep "places.css?v="
+   ══════════════════════════════════════════════════════════════════════════ */
+.pl-kinds{margin-top:clamp(36px,5vw,56px);display:flex;flex-wrap:wrap;gap:8px 10px}
+.pl-kinds a{display:inline-flex;align-items:baseline;gap:7px;padding:8px 14px;border-radius:999px;
+  border:1px solid rgba(11,9,7,.16);color:var(--ink-soft);text-decoration:none;font-size:14px;letter-spacing:.02em}
+.pl-kinds a b{font-weight:500;color:var(--ink)}
+.pl-kinds a i{font-style:normal;font-size:12.5px;color:var(--ink-dim);font-variant-numeric:tabular-nums}
+.pl-kinds a:hover{border-color:var(--arrow);background:var(--paper-2)}
+.pl-clock{margin-top:14px;font-size:13px;letter-spacing:.04em;color:var(--ink-dim)}
+
+.pl-sec{margin-top:clamp(88px,12vh,140px);scroll-margin-top:calc(var(--head-top) + 90px)}
+.pl-head{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 16px;padding-bottom:18px;border-bottom:1px solid rgba(11,9,7,.16)}
+.pl-head h2{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.6vw,48px);line-height:1.1;letter-spacing:-.01em}
+.pl-head .ko{font-size:15px;letter-spacing:.1em;color:var(--ink-dim)}
+.pl-head .n{margin-left:auto;font-size:13px;letter-spacing:.12em;color:var(--ink-dim);font-variant-numeric:tabular-nums}
+.pl-line{margin-top:20px;max-width:36em;font-family:var(--serif);font-weight:300;font-size:clamp(16px,1.5vw,19px);line-height:1.85;
+  color:var(--ink-soft);word-break:keep-all;text-wrap:pretty}
+.pl-line a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--arrow);white-space:nowrap}
+
+.pl-grid{list-style:none;margin-top:clamp(28px,3.6vw,40px);display:grid;gap:clamp(26px,3vw,40px) clamp(16px,2vw,26px);
+  grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))}
+.pl-grid.small{grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:22px 16px}
+.pl-grid.wide{grid-template-columns:1fr}
+.pl-card{min-width:0}
+.pl-img{position:relative;aspect-ratio:16/9;border-radius:6px;overflow:hidden;background:#1a1612}
+.pl-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s ease}
+.pl-card:hover .pl-img img{transform:scale(1.025)}
+.pl-card.face .pl-img img{object-position:50% 18%}
+.pl-grid.wide .pl-img{aspect-ratio:21/9}
+.pl-txt{margin-top:12px;display:flex;flex-direction:column;gap:4px}
+.pl-txt b{font-family:var(--serif);font-weight:500;font-size:clamp(17px,1.5vw,19.5px);line-height:1.35;color:var(--ink);word-break:keep-all}
+.pl-txt .en{font-size:12.5px;letter-spacing:.04em;color:var(--ink-dim)}
+.pl-txt .sub{font-family:var(--serif);font-weight:300;font-size:14.5px;line-height:1.6;color:var(--ink-soft);word-break:keep-all}
+.pl-grid.small .pl-txt b{font-size:15.5px}
+.pl-grid.small .pl-txt{margin-top:9px;gap:2px}
+
+.pl-coda{margin-top:clamp(96px,14vh,150px);max-width:34em;font-family:var(--serif);font-weight:300;
+  font-size:clamp(17px,1.6vw,20px);line-height:1.9;color:var(--ink-soft);word-break:keep-all}
