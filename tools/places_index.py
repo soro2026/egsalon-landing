@@ -4,7 +4,7 @@
 # 대문 그림은 앱 그림 그대로 — 촬영 없음(1021 소로 「콜」) · 나중에 영상 · 사진으로 바꿀 수 있게 집마다 자리 하나
 import json, os, html
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-V = '1021b'   # 1021 밤 — 집 한 곳 페이지가 선 칸은 눌린다(places.css 에 a.pl-link)
+V = '1021c'   # 1021 밤 — 집 한 곳 페이지가 선 칸은 눌린다(places.css 에 a.pl-link)
 PUB = 'https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/tour-assets/'
 APP = 'https://app.egsalon.com/'
 

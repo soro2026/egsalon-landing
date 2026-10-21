@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500&display=swap">
 <link rel="stylesheet" href="site.css?v=1020h">
 <link rel="stylesheet" href="guide.css?v=1020h">
-<link rel="stylesheet" href="places.css?v=1021b">
+<link rel="stylesheet" href="places.css?v=1021c">
 <style>.hero{background-image:url('https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/tour-assets/galerie/prado_gate_d.webp')}</style>
 </head>
 <body data-nav="cover">
@@ -65,7 +65,7 @@
       <p>이 방에 걸리는 그림은 이 관의 소장품이 아닙니다. 다섯 미술관이 같은 그림들을 같은 순서로, 서로 며칠씩 간격을 두고 하루 한 점씩 겁니다. 그래서 오늘 이 방에서 본 그림을 얼마 뒤 다른 도시의 방에서 다시 만나게 됩니다.</p>
     </div>
     <!-- 열나흘의 전시 — place.js 가 DB(heritage_items · terra_pins)를 읽어 그린다. 셈은 앱 terra.html showHallNote 와 한 벌 -->
-    <div class="ft" id="fortnight" data-code="prado" aria-live="polite"><p class="ft-note">오늘부터 14일 동안의 그림을 불러오고 있습니다.</p></div>
+    <div class="ft" id="fortnight" data-code="prado" data-kind="heritage" aria-live="polite"><p class="ft-note">오늘부터 14일 동안의 편성을 불러오고 있습니다.</p></div>
     <p class="ft-foot">앱에서 이 미술관 대문을 열면 옆에 뜨는 안내문과 같은 표입니다. 서울 시각 자정에 한 칸씩 넘어갑니다. 명패 뒤의 이야기는 EG 안에서.</p>
   </section>
 
@@ -103,7 +103,7 @@
 <script src="site.js?v=1021a"></script>
 <!-- 앱의 하늘 — 서울 시각 + 서울의 실제 일출 · 일몰(Today · Places 첫 화면과 같은 판) -->
 <script src="https://app.egsalon.com/eg_sky.js?v=0806e"></script>
-<script src="place.js?v=1021b"></script>
+<script src="place.js?v=1021c"></script>
 <script src="guide.js?v=1020h"></script>
 </body>
 </html>

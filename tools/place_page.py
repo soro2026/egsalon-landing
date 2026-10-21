@@ -4,15 +4,22 @@
 # 글은 tools/places.json 한 곳 — DB terra_pins.meta(lede · body · note) 를 옮겨 둔 것. DB 글이 바뀌면 json 을 다시 받는다.
 # 맨 위 자리(Places 결정문 §5 · 1021 소로) — media/place_<code>_1920.mp4 · _1280.mp4 · _poster.jpg 가 있으면 영상,
 #   media/place_<code>.webp 가 있으면 사진, 둘 다 없으면 앱 대문 그림(서울 시각 아침 · 낮 · 저녁 · 밤). 파일만 넣고 다시 돌리면 바뀐다.
-# 지금 집 페이지가 서는 종류 — 미술관(열나흘의 전시). 음악관(열나흘의 공연) · 도서관 · 카페는 같은 틀에 칸을 더해 차례로.
+# 지금 집 페이지가 서는 종류 — 미술관(열나흘의 전시) · 음악관(열나흘의 공연 · 곡마다 작곡가 액자 초상). 도서관 · 카페는 같은 틀에 칸을 더해 차례로.
 import json, os, html
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-V = '1021b'
+V = '1021c'
 PUB = 'https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/tour-assets/'
 KIND = {
   'heritage': {'ko': '미술관', 'folder': 'galerie',                'story_sub': '그림이 들어오기 전의 일',
                'fort_body': '이 방에 걸리는 그림은 이 관의 소장품이 아닙니다. 다섯 미술관이 같은 그림들을 같은 순서로, 서로 며칠씩 간격을 두고 하루 한 점씩 겁니다. 그래서 오늘 이 방에서 본 그림을 얼마 뒤 다른 도시의 방에서 다시 만나게 됩니다.',
+               'room': '방', 'fort_title': '열나흘의 전시', 'fort_sub': '오늘부터 14일, 이 방에 걸릴 그림',
+               'fort_foot': '앱에서 이 미술관 대문을 열면 옆에 뜨는 안내문과 같은 표입니다. 서울 시각 자정에 한 칸씩 넘어갑니다. 명패 뒤의 이야기는 EG 안에서.',
                'guide': ('guide-painting.html', '그림은 이렇게 봅니다')},
+  'concert':  {'ko': '음악관', 'folder': 'concert',                'story_sub': '이 홀이 서기까지',
+               'fort_body': '이 홀에 오르는 곡은 이 홀의 것이 아닙니다. 다섯 음악관이 같은 곡들을 같은 순서로, 서로 며칠씩 간격을 두고 하루 한 곡씩 겁니다. 그래서 오늘 이 홀에서 들은 곡을 얼마 뒤 다른 도시의 홀에서 다시 만나게 됩니다. 곡마다 곁에 걸린 얼굴은 그 곡을 지은 사람이고, 모두 천문대 하늘에 별로 떠 있는 사람들입니다.',
+               'room': '홀', 'fort_title': '열나흘의 공연', 'fort_sub': '오늘부터 14일, 이 홀에 오를 곡',
+               'fort_foot': '앱에서 이 음악관 대문을 열면 옆에 뜨는 안내문과 같은 표입니다. 서울 시각 자정에 한 칸씩 넘어갑니다. 연주는 EG 안에서.',
+               'guide': ('guide-classical.html', '곡은 이렇게 듣습니다')},
 }
 
 def esc(t): return html.escape(str(t or ''), quote=True)
@@ -32,7 +39,7 @@ def other_card(p):
             '    </a></li>')
 
 def hero(p, K):
-    c = p['c']; where = ' · '.join(x for x in [p.get('en'), p.get('city'), p.get('co')] if x)
+    c = p['c']; where = ' · '.join(x for x in [p.get('en'), p.get('city'), p.get('co'), p.get('y')] if x)
     plate = ('  <div class="plate">\n'
              f'    <p class="tag"><span><a href="places.html">Places</a> · {K["ko"]} · {esc(p.get("city"))}</span></p>\n'
              f'    <h1>{esc(p["n"])}</h1>\n'
@@ -67,9 +74,9 @@ def build(p, P, tmpl):
     head = head[:i] + head[i:j] + f'\n<link rel="stylesheet" href="places.css?v={V}">' + head[j:]
     gate = tmpl[tmpl.index('<a class="gate"'):tmpl.index('<header')]
 
-    body = ['<main class="after-hero">',
-            f'  <p class="gloss">{esc(p.get("lede"))}</p>',
-            '  <p class="rooms">이 집 이야기 · 열나흘의 전시</p>', '',
+    body = ['<main class="after-hero">']
+    if p.get('lede'): body += [f'  <p class="gloss">{esc(p["lede"])}</p>']          # 음악관 내력에는 첫 줄이 없다 — 곧장 이야기로
+    body += [f'  <p class="rooms">이 집 이야기 · {K["fort_title"]}</p>', '',
             '  <section class="room" id="story">',
             f'    <div class="room-head"><span class="room-num">01</span><h2>이 집 이야기</h2><span class="room-sub">{K["story_sub"]}</span></div>',
             '    <div class="room-body">']
@@ -80,15 +87,16 @@ def build(p, P, tmpl):
                  f'<span class="v-ico" aria-hidden="true"></span><span class="v-lab">이 집 이야기 듣기</span><span class="v-dur">{dur(p.get("vdur"))}</span></button>']
     body += ['  </section>', '',
              '  <section class="room" id="fortnight-room">',
-             '    <div class="room-head"><span class="room-num">02</span><h2>열나흘의 전시</h2><span class="room-sub">오늘부터 14일, 이 방에 걸릴 그림</span></div>',
+             f'    <div class="room-head"><span class="room-num">02</span><h2>{K["fort_title"]}</h2><span class="room-sub">{K["fort_sub"]}</span></div>',
              '    <div class="room-body">',
              f'      <p>{K["fort_body"]}</p>',
              '    </div>',
-             f'    <!-- 열나흘의 전시 — place.js 가 DB(heritage_items · terra_pins)를 읽어 그린다. 셈은 앱 terra.html showHallNote 와 한 벌 -->',
-             f'    <div class="ft" id="fortnight" data-code="{esc(p["c"])}" aria-live="polite"><p class="ft-note">오늘부터 14일 동안의 그림을 불러오고 있습니다.</p></div>',
-             '    <p class="ft-foot">앱에서 이 미술관 대문을 열면 옆에 뜨는 안내문과 같은 표입니다. 서울 시각 자정에 한 칸씩 넘어갑니다. 명패 뒤의 이야기는 EG 안에서.</p>',
-             '  </section>', '',
-             f'  <p class="coda">{esc(p.get("note"))}</p>', '',
+             f'    <!-- {K["fort_title"]} — place.js 가 DB(heritage_items · terra_pins)를 읽어 그린다. 셈은 앱 terra.html showHallNote 와 한 벌 -->',
+             f'    <div class="ft" id="fortnight" data-code="{esc(p["c"])}" data-kind="{p["k"]}" aria-live="polite"><p class="ft-note">오늘부터 14일 동안의 편성을 불러오고 있습니다.</p></div>',
+             f'    <p class="ft-foot">{K["fort_foot"]}</p>',
+             '  </section>', '']
+    if p.get('note'): body += [f'  <p class="coda">{esc(p["note"])}</p>', '']
+    body += [
              '  <section class="pl-others" aria-label="다른 ' + K['ko'] + '">',
              f'    <h2>다른 {K["ko"]}</h2>',
              '    <ul class="pl-grid small">']

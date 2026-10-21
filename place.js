@@ -2,12 +2,14 @@
    place.js — Places 집 한 곳 페이지가 함께 쓰는 손 (2026.10.21 밤 · 파이스)
    ① 맨 위 대문 그림 — 서울 시각 아침 · 낮 · 저녁 · 밤(egPhase — Places 첫 화면 · Today 와 같은 하늘)
    ② 「이 집 이야기 듣기」 — 앱 대문 안내문과 같은 낭독 파일(voice_takes · scope place)
-   ③ 열나흘의 전시 — ⭐ 홈페이지에서 처음으로 손님 브라우저가 DB 를 직접 읽는 칸(1021 소로)
+   ③ 열나흘의 전시 · 공연 — ⭐ 홈페이지에서 처음으로 손님 브라우저가 DB 를 직접 읽는 칸(1021 소로)
       셈은 앱 terra.html showHallNote 와 한 벌 — 그림 = 배열[ (D + k + floor(no × N ÷ H)) mod N ]
         D  서울 날수 floor((지금 + 9시간) ÷ 하루)            (앱 concertDay)
         H  미술관 전부(terra_pins kind heritage · sort 순 · 잠든 관 포함)   (앱 loadGalerieHallsAll)
         N  그림 전부(heritage_items visual · active · hang_order → id 순) (앱 loadGalerieArts)
         no 그 관의 meta.museum_no
+      음악관(1021 밤) — 홀 = 깨어 있는 음악관(sort 순) · 곡 = heritage_items record(id 순) · no = meta.hall_no
+        곡마다 지은 사람의 액자 초상(stars.framed_url · 1021 소로 「작곡가의 액자를 대신하면」) — 없으면 연주 영상 미리보기
       ⚠⚠ 앱 공식을 고치면 여기도 함께 — 한 곳만 고치면 앱은 티치아노, 홈페이지는 프리드리히가 된다
    ══════════════════════════════════════════════════════════════════════════ */
 (function(){
@@ -47,36 +49,62 @@
     });
   });
 
-  /* ── ③ 열나흘의 전시 ── */
+  /* ── ③ 열나흘의 전시 · 열나흘의 공연 ── */
   var box = document.getElementById('fortnight');
   if (!box) return;
   var CODE = box.getAttribute('data-code');
+  var KIND = box.getAttribute('data-kind') || 'heritage';
+  /* 종류마다 다른 것은 읽는 표 · 번호 칸 · 동사뿐이다 — 셈은 하나 */
+  var K = {
+    heritage: {   /* 앱 loadGalerieHallsAll · loadGalerieArts — 잠든 관도 편성에 선다 · 거는 순서(hang_order)가 축 */
+      halls: 'terra_pins?select=code,name,active,sort,meta&kind=eq.heritage&order=sort',
+      list:  'heritage_items?select=id,name,artist,period,movement,img,scene:layers->>scene&category=eq.visual&status=eq.active&order=hang_order.asc.nullslast,id.asc',
+      no: 'museum_no', meta: ['artist', 'period', 'movement'], room: '방', again: '에 다시 걸립니다.', what: '그림'
+    },
+    concert: {    /* 앱 concertHalls(깨어 있는 홀 · sort 순) · loadConcertSongs(id 순) */
+      halls: 'terra_pins?select=code,name,active,sort,meta&kind=eq.concert&active=is.true&order=sort',
+      list:  'heritage_items?select=id,name,artist,period,origin,video_id,scene:liner_note->>scene&category=eq.record&status=eq.active&order=id',
+      no: 'hall_no', meta: ['artist', 'period', 'origin'], room: '홀', again: '에서 다시 울립니다.', what: '곡'
+    }
+  }[KIND];
 
   function kstDay(){ return Math.floor((Date.now() + 9 * 3600000) / DAY); }
   function label(dayNo){ var d = new Date(dayNo * DAY); return (d.getUTCMonth() + 1) + '/' + d.getUTCDate() + '(' + WD[d.getUTCDay()] + ')'; }
   function esc(t){ return String(t == null ? '' : t).replace(/[&<>"']/g, function(c){ return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]; }); }
-  /* 받침 — 「우르비노의 비너스」는 · 루브르 박물관으로 */
-  function jong(s){ s = String(s || '').replace(/[」』"'\s)]+$/, ''); var c = s.charCodeAt(s.length - 1); return (c >= 0xAC00 && c <= 0xD7A3) ? (c - 0xAC00) % 28 : -1; }
+  /* 받침 — 「우르비노의 비너스」는 · 「… 21번」은 · 「… D. 960」은(영) · 「… BWV 1068」은(팔) */
+  function jong(s){
+    s = String(s || '').replace(/[」』〉》"'\s).]+$/, '');
+    var ch = s.charAt(s.length - 1), c = s.charCodeAt(s.length - 1);
+    if (c >= 0xAC00 && c <= 0xD7A3) return (c - 0xAC00) % 28;
+    if (/[0-9]/.test(ch)) return '013678'.indexOf(ch) >= 0 ? 1 : 0;   /* 영 일 삼 육 칠 팔 · 이 사 오 구 */
+    if (/[a-z]/i.test(ch)) return 'LMNRlmnr'.indexOf(ch) >= 0 ? 1 : 0;   /* 엘 엠 엔 알 */
+    return -1;
+  }
   function eun(s){ var j = jong(s); return j < 0 ? '은(는)' : j ? '은' : '는'; }
   function get(path){
     return fetch(SUPA + '/rest/v1/' + path, { headers:{ apikey:KEY, Authorization:'Bearer ' + KEY } })
       .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
   }
-  var halls = null, arts = null;
+  var halls = null, list = null, faces = {};
 
-  function meta(w){ return [w.artist, w.period, w.movement].filter(Boolean).join(' · '); }
+  function meta(w){ return K.meta.map(function(k){ return w[k]; }).filter(Boolean).join(' · '); }
+  /* 그림은 액자 그림 그대로 · 곡은 지은 사람의 액자 초상(별 사진실 framed_url) — 없으면 그날 연주 영상의 미리보기 */
+  function pic(w, big){
+    if (KIND === 'heritage') return w.img || '';
+    return faces[w.artist] || (w.video_id ? 'https://i.ytimg.com/vi/' + encodeURIComponent(w.video_id) + (big ? '/hqdefault.jpg' : '/mqdefault.jpg') : '');
+  }
 
   function render(){
-    var H = halls.length, N = arts.length;
+    var H = halls.length, N = list.length;
     var me = halls.filter(function(h){ return h.code === CODE; })[0];
     if (!H || !N || !me){ box.innerHTML = '<p class="ft-note">편성을 준비하고 있습니다.</p>'; return; }
-    var off = function(h){ return Math.floor(Number((h.meta || {}).museum_no || 0) * N / H); };
+    var off = function(h){ return Math.floor(Number((h.meta || {})[K.no] || 0) * N / H); };
     var D = kstDay(), o = off(me);
-    var at = function(k){ return arts[((D + k + o) % N + N) % N]; };
+    var at = function(k){ return list[((D + k + o) % N + N) % N]; };
 
-    var w0 = at(0), out = [];
+    var w0 = at(0), p0 = pic(w0, true), out = [];
     out.push('<div class="ft-today">',
-      '<div class="ft-wall">' + (w0.img ? '<img src="' + esc(w0.img) + '" alt="' + esc(w0.artist + ' 「' + w0.name + '」') + '">' : '') + '</div>',
+      '<div class="ft-wall' + (faces[w0.artist] || KIND === 'heritage' ? '' : ' screen') + '">' + (p0 ? '<img src="' + esc(p0) + '" alt="' + esc(w0.artist + ' 「' + w0.name + '」') + '">' : '') + '</div>',
       '<div class="ft-plaque"><span class="ft-when">오늘 · ' + label(D) + '</span>',
       '<h3>「' + esc(w0.name) + '」</h3>',
       '<span class="ft-meta">' + esc(meta(w0)) + '</span>',
@@ -85,14 +113,14 @@
 
     out.push('<ol class="ft-list">');
     for (var k = 1; k < 14; k++){
-      var w = at(k);
+      var w = at(k), p = pic(w, false);
       out.push('<li><span class="ft-d">' + label(D + k) + '</span>',
-        '<span class="ft-th">' + (w.img ? '<img src="' + esc(w.img) + '" alt="" loading="lazy">' : '') + '</span>',
+        '<span class="ft-th' + (faces[w.artist] || KIND === 'heritage' ? '' : ' screen') + '">' + (p ? '<img src="' + esc(p) + '" alt="" loading="lazy">' : '') + '</span>',
         '<span class="ft-t"><b>「' + esc(w.name) + '」</b><i>' + esc(meta(w)) + '</i>' + (w.scene ? '<em>' + esc(w.scene) + '</em>' : '') + '</span></li>');
     }
     out.push('</ol>');
 
-    /* 오늘 이 방의 그림이 다음에 걸리는 관 — 관마다 floor(N ÷ H)날씩 떨어져 같은 줄을 따라간다 */
+    /* 오늘 이 방(홀)의 것이 다음에 걸리는 곳 — 관마다 floor(N ÷ H)날씩 떨어져 같은 차례를 따라간다 */
     var best = null;
     halls.forEach(function(h){
       if (h.code === CODE) return;
@@ -101,23 +129,27 @@
     });
     if (best){
       var hn = (best.h.meta && best.h.meta.title_ko) || best.h.name;
-      out.push('<p class="ft-leave">오늘 이 방의 「' + esc(w0.name) + '」' + eun(w0.name) + ' <b>' + label(D + best.d) + '</b> '
-        + '<a href="place-' + esc(best.h.code) + '.html">' + esc(hn) + '</a>에 다시 걸립니다.</p>');
+      out.push('<p class="ft-leave">오늘 이 ' + K.room + '의 「' + esc(w0.name) + '」' + eun(w0.name) + ' <b>' + label(D + best.d) + '</b> '
+        + '<a href="place-' + esc(best.h.code) + '.html">' + esc(hn) + '</a>' + K.again + '</p>');
     }
     box.innerHTML = out.join('');
     box.setAttribute('data-day', D);
   }
 
   Promise.all([
-    get('terra_pins?select=code,name,active,sort,meta&kind=eq.heritage&order=sort'),
-    get('heritage_items?select=id,name,artist,period,movement,img,scene:layers->>scene&category=eq.visual&status=eq.active&order=hang_order.asc.nullslast,id.asc')
+    get(K.halls), get(K.list),
+    KIND === 'concert' ? get('stars?select=name,framed_url,aliases&framed_url=not.is.null').catch(function(){ return []; }) : Promise.resolve([])
   ]).then(function(r){
-    halls = Array.isArray(r[0]) ? r[0] : []; arts = Array.isArray(r[1]) ? r[1] : [];
+    halls = Array.isArray(r[0]) ? r[0] : []; list = Array.isArray(r[1]) ? r[1] : [];
+    (Array.isArray(r[2]) ? r[2] : []).forEach(function(s){
+      faces[s.name] = s.framed_url;
+      (Array.isArray(s.aliases) ? s.aliases : []).forEach(function(a){ if (!faces[a]) faces[a] = s.framed_url; });
+    });
     render();
     /* 서울 자정을 넘기면 한 칸 넘긴다 — 창을 밤새 켜 두어도 앱과 같은 날을 가리킨다 */
     setInterval(function(){ if (String(kstDay()) !== box.getAttribute('data-day')) render(); }, 60 * 1000);
   }).catch(function(e){
-    console.warn('[EG] 열나흘의 전시 로드 실패:', e);
+    console.warn('[EG] 열나흘 표 로드 실패:', e);
     box.innerHTML = '<p class="ft-note">편성을 불러오지 못했습니다. 잠시 뒤 다시 열어 주세요.</p>';
   });
 })();

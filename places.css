@@ -99,3 +99,10 @@ a.pl-link:focus-visible{outline:2px solid var(--arrow);outline-offset:6px;border
   .ft-th{height:48px}
   .ft-d{font-size:13px;padding-top:4px}
 }
+/* 1021 밤 — 음악관: 곡마다 지은 사람의 액자 초상을 붉은 벨벳 벽에 건다(소로 「작곡가의 액자를 대신하면」)
+   초상이 없는 곡(여러 작곡가)만 그날 연주 영상의 미리보기 그림 — .screen */
+.ft[data-kind="concert"] .ft-wall{aspect-ratio:4/3;background:radial-gradient(120% 95% at 50% 32%, #6b2a24 0%, #4a1a17 55%, #2c0f0d 100%)}
+.ft[data-kind="concert"] .ft-wall img{max-height:86%;filter:drop-shadow(0 16px 26px rgba(0,0,0,.5)) drop-shadow(0 2px 4px rgba(0,0,0,.35))}
+.ft-wall.screen{padding:0;overflow:hidden}
+.ft-wall.screen img{width:100%;height:100%;max-height:none;object-fit:cover;filter:none}
+.ft-th.screen img{width:100%;height:auto;max-height:100%;object-fit:cover;border-radius:3px;filter:none}
