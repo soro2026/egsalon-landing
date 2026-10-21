@@ -1,16 +1,14 @@
 [
-{"k":"heritage","c":"orsay","n":"오르세 미술관","en":"Musée d'Orsay","city":"PARIS","co":"FRANCE","sub":"기차가 끊긴 뒤 남은 유리 천장"},
-{"k":"heritage","c":"louvre","n":"루브르 박물관","en":"Musée du Louvre","city":"PARIS","co":"FRANCE","sub":"성이었다가 궁이었다가 미술관"},
-{"k":"heritage","c":"prado","n":"프라도 미술관","en":"Museo del Prado","city":"MADRID","co":"SPAIN","sub":"자연사 표본을 두려고 지은 집"},
-{"k":"heritage","c":"uffizi","n":"우피치 미술관","en":"Galleria degli Uffizi","city":"FLORENCE","co":"ITALY","sub":"이름 그대로 사무실이던 곳"},
-{"k":"heritage","c":"artic","n":"시카고 미술관","en":"Art Institute of Chicago","city":"CHICAGO","co":"USA","sub":"잿더미 위에 세운 미술관"},
-
+{"k":"heritage","c":"orsay","n":"오르세 미술관","en":"Musée d'Orsay","city":"PARIS","co":"FRANCE","sub":"기차가 끊긴 뒤 남은 유리 천장","lede":"이 건물은 그림을 걸려고 지은 것이 아니라, 기차를 받으려고 지은 것입니다.","body":["1871년 파리 코뮌 때 불탄 회계원 폐허를 철도 회사가 사들여, 빅토르 랄루의 설계로 1900년 만국박람회에 맞춰 역을 세웠습니다. 세계 최초로 전기 열차만 받는 역이라 연기가 나지 않았고, 그래서 지붕 전체를 유리로 덮을 수 있었지요.","1939년 열차가 길어지면서 승강장이 짧아 쓸모를 잃었고, 그 뒤로는 우편 취급소와 영화 촬영지로 떠돌았습니다. 1970년대에는 헐고 호텔을 올리려는 계획이 섰는데, 파리 시민들이 들고일어나 1973년 역사기념물로 올랐지요. 미술관으로 다시 문을 연 것은 1986년 12월입니다.","지금 서 계신 이 긴 방이 열차가 들어오던 곳입니다. 길이 백삼십팔 미터, 높이 서른두 미터의 아치형 유리 볼트가 그때 그대로 남아 빛을 들이지요. 안쪽 끝의 커다란 시계도 역의 물건이고, 미술관은 1848년부터 1914년까지 예순여섯 해만 다룹니다."],"note":"떠나는 곳이었던 방이, 지금은 머무는 방입니다.","tz":"Europe/Paris","no":0,"voice":"https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/tour-assets/voice/place/heritage_orsay.mp3?v=1786061294309","vdur":86.39},
+{"k":"heritage","c":"louvre","n":"루브르 박물관","en":"Musée du Louvre","city":"PARIS","co":"FRANCE","sub":"성이었다가 궁이었다가 미술관","lede":"팔백 년 동안 이 건물의 일은 세 번 바뀌었습니다. 막는 일, 사는 일, 보여주는 일.","body":["1190년 필리프 오귀스트가 파리를 지키려고 센 강가에 요새를 세웠습니다. 해자를 두르고 벽 두께 사 미터짜리 원통 아성을 올린, 아름다움과는 무관한 건물이었지요. 샤를 5세가 이 곳을 왕의 거처로 바꾸었고, 프랑수아 1세는 중세 부분을 헐고 르네상스 궁전을 올렸습니다.","1793년 혁명 정부가 왕궁을 시민에게 열면서, 몰수한 그림 오백여 점으로 미술관이 시작됐습니다. 나폴레옹은 이 곳을 자기 이름으로 부르며 정복지의 물건으로 채웠으나, 그가 무너지자 오천 점이 돌아갔지요. 1911년에는 잡역부 하나가 유니폼을 입고 들어와 그림 한 점을 떼어 갔습니다.","지금 걷고 계신 방들은 원래 왕이 살던 곳이라, 천장에 그림이 있고 벽에 금박 몰딩이 있습니다. 지하로 내려가면 필리프 오귀스트의 요새 벽이 아직 서 있어요. 안뜰 한가운데 유리 피라미드는 1989년에 올렸는데, 그때는 흉하다는 말을 많이 들었습니다."],"note":"막으려고 지은 벽 안에서, 지금은 아무나 걷습니다.","tz":"Europe/Paris","no":1,"voice":"https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/tour-assets/voice/place/heritage_louvre.mp3?v=1786061322442","vdur":85.42},
+{"k":"heritage","c":"prado","n":"프라도 미술관","en":"Museo del Prado","city":"MADRID","co":"SPAIN","sub":"자연사 표본을 두려고 지은 집","lede":"카를로스 3세가 이 건물에 두려던 것은 그림이 아니라 광물과 표본이었습니다.","body":["1785년 카를로스 3세는 후안 데 비야누에바에게 왕립 자연사 캐비닛을 짓게 했습니다. 옆에 천문대와 식물원을 나란히 두어 마드리드에 과학의 언덕을 만들 생각이었지요. 그러나 나폴레옹 전쟁이 터지며 공사가 멈췄고, 다 짓지 못한 건물은 한동안 군대가 썼습니다.","건물의 쓸모를 바꾼 것은 카를로스 3세의 손자 페르난도 7세와 아내 마리아 이사벨이었습니다. 1819년 11월, 왕실이 모아 온 그림을 걸어 회화·조각 왕립 미술관으로 문을 열었지요. 1868년 왕실이 무너지며 국유화되었고, 내전 때는 소장품을 실어 내 다른 곳에 숨겨 지켰습니다.","이 방에는 위에서 들어오는 빛이 없습니다. 자연사 표본을 두려고 지은 건물이라 천창을 내지 않았고, 그림은 옆에서 드는 빛과 실내등으로 봅니다. 비야누에바가 세운 이 신고전주의 건물은 2007년에 라파엘 모네오의 새 동이 뒤에 붙으며 크게 넓어졌지요."],"note":"위에서 빛이 안 들면, 눈이 조금 더 오래 머물지요.","tz":"Europe/Madrid","no":2,"voice":"https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/tour-assets/voice/place/heritage_prado.mp3?v=1786060801930","vdur":87.09},
+{"k":"heritage","c":"uffizi","n":"우피치 미술관","en":"Galleria degli Uffizi","city":"FLORENCE","co":"ITALY","sub":"이름 그대로 사무실이던 곳","lede":"우피치는 사무실이라는 뜻입니다. 이 건물의 첫 손님은 그림이 아니라 서류였지요.","body":["1560년 토스카나 대공 코시모 1세가 조르조 바사리에게 피렌체의 열세 개 관청을 한 곳에 모을 건물을 짓게 했습니다. 집들을 헐고 십일 세기 성당 하나를 건물 안에 가둔 뒤 U자 모양으로 세웠지요. 1574년 바사리가 죽고 부온탈렌티와 파리지가 1580년 무렵 마무리했습니다.","이듬해 바사리는 베키오 궁에서 피티 궁까지 칠백육십 미터 통로를 지었습니다. 메디치가 거리로 내려오지 않고 폰테 베키오 위를 건너 다니던 길이지요. 1581년 프란체스코 1세가 꼭대기 층을 갤러리로 바꾸었고, 마지막 메디치는 소장품이 피렌체를 떠나지 않는다는 조건으로 시에 넘겼습니다.","지금 서 계신 이 방에는 오른쪽 아치창 하나로만 빛이 듭니다. 관청 복도로 지은 건물이라 넓은 방이 없고, 좁고 긴 통로가 계속 이어지지요. 1993년 5월 마피아가 옆 골목에 차량 폭탄을 터뜨려 다섯 사람이 죽고 그림 몇 점이 사라졌는데, 이 건물은 그 자국까지 안고 다시 열었습니다."],"note":"서류를 나르던 복도에, 지금은 사람이 지나갑니다.","tz":"Europe/Rome","no":3,"voice":"https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/tour-assets/voice/place/heritage_uffizi.mp3?v=1786061352391","vdur":85.66},
+{"k":"heritage","c":"artic","n":"시카고 미술관","en":"Art Institute of Chicago","city":"CHICAGO","co":"USA","sub":"잿더미 위에 세운 미술관","lede":"도시가 통째로 불타고 여덟 해 뒤, 시카고 사람들은 미술관을 짓기로 했습니다.","body":["1871년 대화재가 시카고를 태운 뒤, 도시를 다시 세우던 사람들이 1879년 미술관과 미술학교를 함께 만들었습니다. 처음 소장품은 대부분 석고 모형이었어요. 1893년 컬럼비아 박람회를 앞두고 시와 손잡아 미시간 애비뉴에 건물을 올렸는데, 원래는 박람회 회의장으로 지은 것이었습니다.","박람회가 끝나자 그 건물이 미술관의 집이 되었고, 이듬해 봄 에드워드 케미스가 만든 청동 사자 두 마리가 계단 앞에 앉았습니다. 두 마리는 똑같아 보이지만 고개를 든 모습이 서로 다르지요. 이후 백삼십 년 동안 건물은 여덟 번 넓어졌고, 2009년에는 모던 윙이 붙었습니다.","지금 서 계신 방은 천장 전체가 확산 유리라 빛이 고르게 떨어집니다. 박람회 회의장으로 지은 덕에 천장이 높고 기둥이 적어, 그림을 걸기에 오히려 알맞았지요. 미시간 애비뉴 쪽 옛 정문은 백삼십 년이 지난 지금도 이 미술관의 얼굴이고, 사자 둘은 그 곳을 떠난 적이 없습니다."],"note":"모두 잃은 도시가 다시 세우며 지은 것이 미술관이었어요.","tz":"America/Chicago","no":4,"voice":"https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/tour-assets/voice/place/heritage_artic.mp3?v=1786061380759","vdur":89.84},
 {"k":"concert","c":"wien","n":"무지크페어아인","en":"Musikverein","city":"VIENNA","co":"AUSTRIA","sub":"음향학보다 먼저 완벽해진 홀","y":"1870"},
 {"k":"concert","c":"garnier","n":"오페라 가르니에","en":"Palais Garnier","city":"PARIS","co":"FRANCE","sub":"무대보다 계단이 큰 극장","y":"1875"},
 {"k":"concert","c":"colon","n":"콜론 극장","en":"Teatro Colón","city":"BUENOS AIRES","co":"ARGENTINA","sub":"스무 해를 지어 백 해를 울린 홀","y":"1908"},
 {"k":"concert","c":"sydney","n":"시드니 오페라하우스","en":"Sydney Opera House","city":"SYDNEY","co":"AUSTRALIA","sub":"건축가가 끝내 보지 못한 집","y":"1973"},
 {"k":"concert","c":"elbphi","n":"엘프필하모니","en":"Elbphilharmonie","city":"HAMBURG","co":"GERMANY","sub":"창고 위에 얹은 유리 왕관","y":"2017"},
-
 {"k":"museum","c":"trinity","n":"트리니티칼리지 롱룸","en":"Trinity Long Room","city":"DUBLIN","co":"IRELAND","sub":"책이 늘어나 지붕을 들어올린 방"},
 {"k":"museum","c":"genevieve","n":"생트 준비에브 도서관","en":"Sainte-Geneviève","city":"PARIS","co":"FRANCE","sub":"벽에 이름 팔백열 개를 새긴 집"},
 {"k":"museum","c":"kings","n":"킹스 칼리지","en":"King's College","city":"CAMBRIDGE","co":"UNITED KINGDOM","sub":"육백 년째 같은 노래가 나는 곳"},
@@ -18,7 +16,6 @@
 {"k":"museum","c":"widener","n":"와이드너 도서관","en":"Widener","city":"CAMBRIDGE MA","co":"UNITED STATES","sub":"배가 가라앉아 세워진 도서관"},
 {"k":"museum","c":"seattle","n":"시애틀 중앙도서관","en":"Seattle Central","city":"SEATTLE","co":"UNITED STATES","sub":"책이 늘 것을 미리 계산한 집"},
 {"k":"museum","c":"strahov","n":"슈트라호프 도서관","en":"Strahov","city":"PRAGUE","co":"CZECH REPUBLIC","sub":"서가에 맞춰 방을 지은 수도원"},
-
 {"k":"hansfoon","c":"procope","n":"르 프로코프","en":"Le Procope","city":"PARIS","co":"FRANCE","sub":"볼테르의 탁자가 아직 있는 집"},
 {"k":"hansfoon","c":"cheshire","n":"예 올드 체셔 치즈","en":"Ye Olde Cheshire Cheese","city":"LONDON","co":"UNITED KINGDOM","sub":"존슨의 의자가 남은 플리트가의 펍"},
 {"k":"hansfoon","c":"coupole","n":"라 쿠폴","en":"La Coupole","city":"PARIS","co":"FRANCE","sub":"기둥 서른셋이 모두 그림인 곳"},
@@ -32,7 +29,6 @@
 {"k":"hansfoon","c":"closerie","n":"클로즈리 데 릴라","en":"La Closerie des Lilas","city":"PARIS","co":"FRANCE","sub":"헤밍웨이가 연필로 쓰던 구석"},
 {"k":"hansfoon","c":"caferoyal","n":"카페 로열 그릴 룸","en":"Café Royal Grill Room","city":"LONDON","co":"UNITED KINGDOM","sub":"빈손으로 건너온 사내가 지은 방"},
 {"k":"hansfoon","c":"odeon","n":"카페 바 오데온","en":"Café Bar Odeon","city":"ZURICH","co":"SWITZERLAND","sub":"레닌과 체스를 두던 카페"},
-
 {"k":"constellatio","c":"everest","n":"에베레스트","en":"Everest","co":"NEPAL"},
 {"k":"constellatio","c":"kilimanjaro","n":"킬리만자로","en":"Kilimanjaro","co":"TANZANIA"},
 {"k":"constellatio","c":"madeline","n":"매들린 산","en":"Mount Madeline","co":"NEW ZEALAND"},
@@ -68,12 +64,10 @@
 {"k":"constellatio","c":"grandcanyon","n":"그랜드캐니언","en":"Grand Canyon","co":"UNITED STATES"},
 {"k":"constellatio","c":"machupicchu","n":"마추픽추","en":"Machu Picchu","co":"PERU"},
 {"k":"constellatio","c":"willis","n":"시카고 윌리스타워","en":"Willis Tower","city":"CHICAGO","co":"UNITED STATES"},
-
 {"k":"stadium","c":"fenway","n":"펜웨이파크","en":"Fenway Park","city":"BOSTON","co":"UNITED STATES","sub":"SORO의 홈 구장 · 소로파크","team":"soro"},
 {"k":"stadium","c":"yankee","n":"양키스타디움","en":"Yankee Stadium","city":"NEW YORK","co":"UNITED STATES","sub":"소크라테스의 홈 구장","team":"socrates"},
 {"k":"stadium","c":"wrigley","n":"리글리필드","en":"Wrigley Field","city":"CHICAGO","co":"UNITED STATES","sub":"파스칼의 홈 구장","team":"pascal"},
 {"k":"stadium","c":"oracle","n":"오라클파크","en":"Oracle Park","city":"SAN FRANCISCO","co":"UNITED STATES","sub":"프루스트의 홈 구장","team":"proust"},
-
 {"k":"college","c":"compostella","n":"콜레주 드 콤포스텔라 · 파리","en":"Collège de Compostella","city":"PARIS","co":"FRANCE","sub":"콜레주 드 프랑스가 서 있는 라탱 지구의 그 좌표"},
 {"k":"college","c":"compostella_ldn","n":"콜레주 드 콤포스텔라 · 런던","en":"Collège de Compostella","city":"LONDON","co":"UNITED KINGDOM","sub":"담쟁이 덮인 붉은 벽돌 집","gate":"london"},
 {"k":"college","c":"compostella_nyc","n":"콜레주 드 콤포스텔라 · 뉴욕","en":"Collège de Compostella","city":"NEW YORK","co":"UNITED STATES","sub":"단풍 든 담쟁이 아래 돌계단","gate":"newyork"}

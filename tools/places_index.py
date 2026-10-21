@@ -4,7 +4,7 @@
 # 대문 그림은 앱 그림 그대로 — 촬영 없음(1021 소로 「콜」) · 나중에 영상 · 사진으로 바꿀 수 있게 집마다 자리 하나
 import json, os, html
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-V = '1021a'
+V = '1021b'   # 1021 밤 — 집 한 곳 페이지가 선 칸은 눌린다(places.css 에 a.pl-link)
 PUB = 'https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/tour-assets/'
 APP = 'https://app.egsalon.com/'
 
@@ -42,12 +42,14 @@ def card(p):
     src = tpl.replace('{t}', 'd').replace('{g}', 'd')
     where = ' · '.join(x for x in [p.get('city'), p.get('co'), p.get('y')] if x)
     cls = 'pl-card face' if p['k'] == 'stadium' else 'pl-card'
-    out = [f'    <li class="{cls}" data-code="{esc(p["c"])}">',
+    page = 'place-' + p['c'] + '.html'          # 1021 밤 — 집 한 곳 페이지가 서 있으면 칸이 그리로 이어진다
+    link = os.path.exists(os.path.join(ROOT, page))
+    out = [f'    <li class="{cls}" data-code="{esc(p["c"])}">' + (f'<a class="pl-link" href="{page}">' if link else ''),
            f'      <div class="pl-img"><img src="{esc(src)}"' + (f' data-tpl="{esc(tpl)}"' if ('{t}' in tpl or '{g}' in tpl) else '') +
            f' alt="{esc(p["n"])}" loading="lazy" width="1672" height="941"></div>',
            f'      <div class="pl-txt"><b>{esc(p["n"])}</b><span class="en">{esc(p.get("en"))}{" · " + esc(where) if where else ""}</span>']
     if p.get('sub'): out.append(f'        <span class="sub">{esc(p["sub"])}</span>')
-    out.append('      </div></li>')
+    out.append('      </div>' + ('</a>' if link else '') + '</li>')
     return '\n'.join(out)
 
 def build():
