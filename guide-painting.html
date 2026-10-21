@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500&display=swap">
 <link rel="stylesheet" href="site.css?v=1020h">
 <link rel="stylesheet" href="guide.css?v=1020h">
-
+<style>.hero{background-image:url('media/guide_painting_monet_poster.jpg?v=1020h')}</style>
 </head>
 <body data-nav="cover">
 
@@ -34,7 +34,11 @@
   </ul>
 </nav>
 
-<header class="hero pending" aria-label="Painting — 맨 위 영상 자리" data-kind="영상" data-shot="그림을 눌러 붓 자국까지 다가가는 장면" data-where="아무 미술관 방 · 오늘의 그림" data-len="10~12초" data-key="Shift+F9 — 방 안을 누르기 전에 미리 켜 두기" data-must="그림 전체에서 시작해 → 그림을 눌러 → 붓 자국이 보일 만큼 천천히 다가가기 · 붓 터치가 굵은 그림(반 고흐 · 모네 등)이면 더 좋음">
+<header class="hero" aria-label="Painting — 맨 위 영상">
+  <video id="heroClip" muted playsinline autoplay loop preload="auto"
+         poster="media/guide_painting_monet_poster.jpg?v=1020h" aria-hidden="true"
+         data-src-1920="media/guide_painting_monet_1920.mp4?v=1020h"
+         data-src-1280="media/guide_painting_monet_1280.mp4?v=1020h"></video>
   <div class="plate">
     <p class="tag"><span><a href="guide.html">Guide</a> · 02 · 회화</span></p>
     <h1>Painting</h1>
