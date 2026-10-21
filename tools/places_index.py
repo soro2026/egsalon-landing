@@ -23,7 +23,7 @@ KINDS = [
   ('stadium', 'Ballparks', '야구장',
    '화요일과 목요일, 10분짜리 1이닝. 내 홈은 소로파크이고, 원정을 가면 세 사람의 구장에 섭니다. <a href="guide-text.html#stadium">경기는 이렇게 합니다 →</a>', ''),
   ('college', 'Collège', '학술원',
-   '혼자서는 끝내 못 읽던 책을 여럿이 몇 주에 걸쳐 끝까지 읽는 집입니다. <a href="guide-text.html#college">학술원은 이렇게 걷습니다 →</a>', 'wide'),
+   '혼자서는 끝내 못 읽던 책을 여럿이 몇 주에 걸쳐 끝까지 읽는 집입니다. 파리 · 런던 · 뉴욕에 한 채씩, 대문은 도시마다 다릅니다. <a href="guide-text.html#college">학술원은 이렇게 걷습니다 →</a>', ''),
 ]
 FOLDER = {'heritage': 'galerie', 'concert': 'concert', 'museum': 'museum', 'hansfoon': 'hansfoon'}
 
@@ -34,15 +34,16 @@ def img_tpl(p):
     if k in FOLDER: return PUB + FOLDER[k] + '/' + c + '_gate_{t}.webp'
     if k == 'constellatio': return PUB + 'observatory/' + c + '_n.webp'
     if k == 'stadium': return APP + 'face_' + p['team'] + '.webp'
-    if k == 'college': return APP + 'college_gate_{t}.webp'
+    # 1021 소로 — 학술원 대문은 도시마다 제 것. 런던 · 뉴욕은 낮 · 밤 두 판({g} — 아침은 낮판 · 저녁은 밤판, 앱 college.html gateForHere 와 같은 셈)
+    if k == 'college': return APP + ('college_gate_' + p['gate'] + '_{g}.webp' if p.get('gate') else 'college_gate_{t}.webp')
 
 def card(p):
     tpl = img_tpl(p)
-    src = tpl.replace('{t}', 'd')
+    src = tpl.replace('{t}', 'd').replace('{g}', 'd')
     where = ' · '.join(x for x in [p.get('city'), p.get('co'), p.get('y')] if x)
     cls = 'pl-card face' if p['k'] == 'stadium' else 'pl-card'
     out = [f'    <li class="{cls}" data-code="{esc(p["c"])}">',
-           f'      <div class="pl-img"><img src="{esc(src)}"' + (f' data-tpl="{esc(tpl)}"' if '{t}' in tpl else '') +
+           f'      <div class="pl-img"><img src="{esc(src)}"' + (f' data-tpl="{esc(tpl)}"' if ('{t}' in tpl or '{g}' in tpl) else '') +
            f' alt="{esc(p["n"])}" loading="lazy" width="1672" height="941"></div>',
            f'      <div class="pl-txt"><b>{esc(p["n"])}</b><span class="en">{esc(p.get("en"))}{" · " + esc(where) if where else ""}</span>']
     if p.get('sub'): out.append(f'        <span class="sub">{esc(p["sub"])}</span>')
@@ -59,9 +60,9 @@ def build():
     i = head.index('<link rel="stylesheet" href="guide.css'); j = head.index('>', i) + 1
     head = head[:i] + head[i:j] + f'\n<link rel="stylesheet" href="places.css?v={V}">' + head[j:]
 
-    total = sum(1 for p in P) - 1 + 3   # 학술원은 세 도시에 한 채씩 — 한 칸으로 보이되 셋으로 센다
+    total = len(P)
     by = {k[0]: [p for p in P if p['k'] == k[0]] for k in KINDS}
-    cnt = {k: (3 if k == 'college' else len(v)) for k, v in by.items()}
+    cnt = {k: len(v) for k, v in by.items()}
     body = ['<main>',
             '  <div class="eyebrow">4 · 어디 · 장소</div>',
             '  <h1>Places</h1>',
@@ -91,8 +92,8 @@ def build():
            "  return (h>=5 && h<9) ? 'm' : (h>=9 && h<17) ? 'd' : (h>=17 && h<20) ? 'e' : 'n';\n"
            '};\n'
            '(function(){\n'
-           "  var t = egPhase();\n"
-           "  document.querySelectorAll('.pl-img img[data-tpl]').forEach(function(im){ im.src = im.getAttribute('data-tpl').replace('{t}', t); });\n"
+           "  var t = egPhase(), g = (t === 'e' || t === 'n') ? 'n' : 'd';\n"
+           "  document.querySelectorAll('.pl-img img[data-tpl]').forEach(function(im){ im.src = im.getAttribute('data-tpl').replace('{t}', t).replace('{g}', g); });\n"
            '})();\n'
            '</script>\n')
     tail = tail.replace('<script src="guide.js', sky + '<script src="guide.js', 1)

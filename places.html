@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Places · EG유니버스</title>
-<meta name="description" content="지구 위 제자리에 선 집 70곳 — 미술관 · 음악관 · 도서관 · 카페 · 천문대 · 야구장 · 학술원.">
+<meta name="description" content="지구 위 제자리에 선 집 72곳 — 미술관 · 음악관 · 도서관 · 카페 · 천문대 · 야구장 · 학술원.">
 <meta name="theme-color" content="#0b0907">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -403,12 +403,22 @@
 
   <section class="pl-sec" id="college" aria-label="학술원">
     <div class="pl-head"><h2>Collège</h2><span class="ko">학술원</span><span class="n">3곳</span></div>
-    <p class="pl-line">혼자서는 끝내 못 읽던 책을 여럿이 몇 주에 걸쳐 끝까지 읽는 집입니다. <a href="guide-text.html#college">학술원은 이렇게 걷습니다 →</a></p>
-    <ul class="pl-grid wide">
+    <p class="pl-line">혼자서는 끝내 못 읽던 책을 여럿이 몇 주에 걸쳐 끝까지 읽는 집입니다. 파리 · 런던 · 뉴욕에 한 채씩, 대문은 도시마다 다릅니다. <a href="guide-text.html#college">학술원은 이렇게 걷습니다 →</a></p>
+    <ul class="pl-grid">
     <li class="pl-card" data-code="compostella">
-      <div class="pl-img"><img src="https://app.egsalon.com/college_gate_d.webp" data-tpl="https://app.egsalon.com/college_gate_{t}.webp" alt="콜레주 드 콤포스텔라" loading="lazy" width="1672" height="941"></div>
-      <div class="pl-txt"><b>콜레주 드 콤포스텔라</b><span class="en">Collège de Compostelle · PARIS · LONDON · NEW YORK</span>
-        <span class="sub">273권을 여럿이 끝까지 읽는 집 · 세 도시에 한 채씩</span>
+      <div class="pl-img"><img src="https://app.egsalon.com/college_gate_d.webp" data-tpl="https://app.egsalon.com/college_gate_{t}.webp" alt="콜레주 드 콤포스텔라 · 파리" loading="lazy" width="1672" height="941"></div>
+      <div class="pl-txt"><b>콜레주 드 콤포스텔라 · 파리</b><span class="en">Collège de Compostella · PARIS · FRANCE</span>
+        <span class="sub">콜레주 드 프랑스가 서 있는 라탱 지구의 그 좌표</span>
+      </div></li>
+    <li class="pl-card" data-code="compostella_ldn">
+      <div class="pl-img"><img src="https://app.egsalon.com/college_gate_london_d.webp" data-tpl="https://app.egsalon.com/college_gate_london_{g}.webp" alt="콜레주 드 콤포스텔라 · 런던" loading="lazy" width="1672" height="941"></div>
+      <div class="pl-txt"><b>콜레주 드 콤포스텔라 · 런던</b><span class="en">Collège de Compostella · LONDON · UNITED KINGDOM</span>
+        <span class="sub">담쟁이 덮인 붉은 벽돌 집</span>
+      </div></li>
+    <li class="pl-card" data-code="compostella_nyc">
+      <div class="pl-img"><img src="https://app.egsalon.com/college_gate_newyork_d.webp" data-tpl="https://app.egsalon.com/college_gate_newyork_{g}.webp" alt="콜레주 드 콤포스텔라 · 뉴욕" loading="lazy" width="1672" height="941"></div>
+      <div class="pl-txt"><b>콜레주 드 콤포스텔라 · 뉴욕</b><span class="en">Collège de Compostella · NEW YORK · UNITED STATES</span>
+        <span class="sub">단풍 든 담쟁이 아래 돌계단</span>
       </div></li>
     </ul>
   </section>
@@ -432,8 +442,8 @@ window.egPhase = window.egPhase || function(){
   return (h>=5 && h<9) ? 'm' : (h>=9 && h<17) ? 'd' : (h>=17 && h<20) ? 'e' : 'n';
 };
 (function(){
-  var t = egPhase();
-  document.querySelectorAll('.pl-img img[data-tpl]').forEach(function(im){ im.src = im.getAttribute('data-tpl').replace('{t}', t); });
+  var t = egPhase(), g = (t === 'e' || t === 'n') ? 'n' : 'd';
+  document.querySelectorAll('.pl-img img[data-tpl]').forEach(function(im){ im.src = im.getAttribute('data-tpl').replace('{t}', t).replace('{g}', g); });
 })();
 </script>
 <script src="guide.js?v=1020h"></script>

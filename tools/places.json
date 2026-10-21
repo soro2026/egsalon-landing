@@ -74,5 +74,7 @@
 {"k":"stadium","c":"wrigley","n":"리글리필드","en":"Wrigley Field","city":"CHICAGO","co":"UNITED STATES","sub":"파스칼의 홈 구장","team":"pascal"},
 {"k":"stadium","c":"oracle","n":"오라클파크","en":"Oracle Park","city":"SAN FRANCISCO","co":"UNITED STATES","sub":"프루스트의 홈 구장","team":"proust"},
 
-{"k":"college","c":"compostella","n":"콜레주 드 콤포스텔라","en":"Collège de Compostelle","city":"PARIS · LONDON · NEW YORK","sub":"273권을 여럿이 끝까지 읽는 집 · 세 도시에 한 채씩"}
+{"k":"college","c":"compostella","n":"콜레주 드 콤포스텔라 · 파리","en":"Collège de Compostella","city":"PARIS","co":"FRANCE","sub":"콜레주 드 프랑스가 서 있는 라탱 지구의 그 좌표"},
+{"k":"college","c":"compostella_ldn","n":"콜레주 드 콤포스텔라 · 런던","en":"Collège de Compostella","city":"LONDON","co":"UNITED KINGDOM","sub":"담쟁이 덮인 붉은 벽돌 집","gate":"london"},
+{"k":"college","c":"compostella_nyc","n":"콜레주 드 콤포스텔라 · 뉴욕","en":"Collège de Compostella","city":"NEW YORK","co":"UNITED STATES","sub":"단풍 든 담쟁이 아래 돌계단","gate":"newyork"}
 ]
