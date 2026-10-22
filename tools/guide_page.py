@@ -107,7 +107,7 @@ def build(P):
              '  <p class="g7-head">일곱 가지</p>', '  <nav class="g7" aria-label="일곱 가지"></nav>', '</main>']
     tail = tmpl[tmpl.index('</main>') + len('</main>'):]
     if USES.get('hall'):
-        tail = tail.replace('</body>', '<script src="hallroom.js?v=1022a"></script>\n</body>', 1)
+        tail = tail.replace('</body>', '<script src="hallroom.js?v=1022b"></script>\n</body>', 1)
     page = head + '<body data-nav="cover">\n\n' + gate + hero + '\n'.join(body) + tail
     out = os.path.join(ROOT, f'guide-{P["slug"]}.html')
     open(out, 'w', encoding='utf-8').write(page)

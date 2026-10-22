@@ -8,7 +8,9 @@
          (이 칸이 말하려는 것이 그 방의 빛이라서 — 오르세 유리 지붕 · 우피치 옆 창)
    ② 걸이 = 앱 콘솔 값 그대로 terra_pins.meta.frame_rect · plaque_pos
          크기 셈은 앱 galerie.html hangBox · 홈페이지 today.html 미술관 무대와 한 벌(같은 면적 · 그림 비율)
-   ③ 그림 = place.js 열나흘 표의 「오늘」과 같은 셈
+         명패 잉크 = 앱 galerie.html paintPlaqueInk 와 한 벌 — 명패가 앉은 곳의 벽 밝기를 재서 상아색 · 먹색 중
+         대비가 큰 쪽 · 못 재면 meta.plaque_ink(우피치 · 시카고 = dark) (1022 소로 「우피치 그림 소개가 묻혀」)
+   ③ 그림 = place.js 2주 전시일정 표의 「오늘」과 같은 셈
          배열[ (D + floor(no × N ÷ H)) mod N ]
            D  서울 날수 floor((지금 + 9시간) ÷ 하루)
            H  미술관 전부(terra_pins kind heritage · sort 순 · 잠든 관 포함)
@@ -44,6 +46,9 @@
     '.hallroom .hp.on{opacity:1}' +
     '.hallroom .hp b{display:block;font-weight:400;font-size:max(9px,2.5cqw);color:#f2ead6;letter-spacing:.04em}' +
     '.hallroom .hp span{display:block;margin-top:.35em;font-size:max(8px,1.95cqw);color:rgba(242,234,214,.66);letter-spacing:.06em}' +
+    '.hallroom .hp.dark{text-shadow:0 1px 2px rgba(255,255,255,.3)}' +
+    '.hallroom .hp.dark b{color:#2a2318}' +
+    '.hallroom .hp.dark span{color:rgba(42,35,24,.62)}' +
     '.hallroom figcaption a{color:inherit;text-decoration:underline;text-underline-offset:3px}';
   document.head.appendChild(css);
 
@@ -52,6 +57,44 @@
   function get(path){
     return fetch(SUPA + '/rest/v1/' + path, { headers:{ apikey:KEY, Authorization:'Bearer ' + KEY } })
       .then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); });
+  }
+
+  /* 명패 잉크 — 앱 galerie.html 과 같은 셈(#f2ead6 · #2a2318 의 상대 휘도) */
+  var INK_IVORY = 0.82, INK_DARK = 0.02;
+  function lum8(r, g, b){
+    var f = function(v){ v /= 255; return v <= .04045 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); };
+    return .2126 * f(r) + .7152 * f(g) + .0722 * f(b);
+  }
+  function contrast(a, b){ var hi = Math.max(a, b), lo = Math.min(a, b); return (hi + .05) / (lo + .05); }
+  function wallLum(im, P){
+    try{
+      var W = 120, H = Math.max(1, Math.round(120 * im.naturalHeight / im.naturalWidth));
+      var c = document.createElement('canvas'); c.width = W; c.height = H;
+      var g = c.getContext('2d', { willReadFrequently:true }); g.drawImage(im, 0, 0, W, H);
+      var x0 = Math.max(0, Math.round((P.X - 9) / 100 * W)), x1 = Math.min(W, Math.round((P.X + 9) / 100 * W));
+      var y0 = Math.max(0, Math.round((P.Y - 0.5) / 100 * H)), y1 = Math.min(H, Math.round((P.Y + 6) / 100 * H));
+      if (x1 <= x0 || y1 <= y0) return null;
+      var d = g.getImageData(x0, y0, x1 - x0, y1 - y0).data, s = 0, n = 0;
+      for (var i = 0; i < d.length; i += 4){ s += lum8(d[i], d[i + 1], d[i + 2]); n++; }
+      return n ? s / n : null;
+    }catch(e){ return null; }   /* 교차출처로 막히면 고정값으로 */
+  }
+  function ink(hp, wall, m){
+    var dark = m.plaque_ink === 'dark';
+    var L = m.plaque_pos ? wallLum(wall, m.plaque_pos) : null;
+    if (L != null) dark = contrast(L, INK_DARK) > contrast(L, INK_IVORY);
+    hp.classList.toggle('dark', dark);
+  }
+
+  /* 벽을 재려면 교차출처로 받아야 한다 — 막히면 맨살로 한 번 더(그림이 안 뜨는 것보다 잉크 자동이 쉬는 편이 낫다 · 앱 bgChain 함정 AE) */
+  function loadWall(im, src, done){
+    im.crossOrigin = 'anonymous';
+    im.onload = done;
+    im.onerror = function(){
+      if (!im.hasAttribute('crossorigin')) return;
+      im.removeAttribute('crossorigin'); im.onerror = null; im.src = src + (src.indexOf('?') < 0 ? '?' : '&') + 'nc=1';
+    };
+    im.src = src;
   }
 
   var halls = [], list = [], dayNo = -1;
@@ -63,8 +106,8 @@
     var hr = fig.querySelector('.hr'), wall = hr.querySelector('img.wall');
     var art = hr.querySelector('.art'), img = art.querySelector('img'), hp = hr.querySelector('.hp');
     var m = me.meta || {}, R = m.frame_rect, P = m.plaque_pos;
-    wall.onload = function(){ hr.classList.add('on'); };
-    wall.src = PUB + me.code + '_hall_d.webp';
+    hp.classList.toggle('dark', m.plaque_ink === 'dark');   /* 폴백 먼저 — 재면 갈아 끼운다 */
+    loadWall(wall, PUB + me.code + '_hall_d.webp', function(){ hr.classList.add('on'); ink(hp, wall, m); });
     if (!R || !w){ hr.classList.add('on'); return; }
 
     function hang(){
@@ -105,7 +148,7 @@
       if (w){
         fig.querySelector('figcaption').innerHTML = baseCap[i] +
           ' 오늘 이 방에 걸린 그림은 ' + esc(w.artist) + ' 「' + esc(w.name) + '」입니다. ' +
-          '<a href="place-' + esc(code) + '.html">' + esc(me.name) + '의 열나흘 →</a>';
+          '<a href="place-' + esc(code) + '.html">' + esc(me.name) + '의 2주 전시일정 →</a>';
       }
     });
   }
@@ -122,8 +165,7 @@
     /* DB가 안 오면 빈 방이라도 — 낮의 빛은 보인다 */
     figs.forEach(function(fig){
       var code = fig.getAttribute('data-hall'), hr = fig.querySelector('.hr'), wall = hr.querySelector('img.wall');
-      wall.onload = function(){ hr.classList.add('on'); };
-      wall.src = PUB + code + '_hall_d.webp';
+      loadWall(wall, PUB + code + '_hall_d.webp', function(){ hr.classList.add('on'); });
     });
   });
 })();
