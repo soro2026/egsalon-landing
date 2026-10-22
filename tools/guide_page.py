@@ -10,7 +10,7 @@
 #   'rooms_list': [ {'id','title','sub','body':[...], 'media':[...], 'keep':[(굵게, 이어서)...], 'remain': '...'} ],
 #   'coda': '맺는 한 줄',
 # }
-# 미디어 하나 = {'video': 'guide_x_y', 'cap': '...'}  · {'img': 'guide_x_y', 'cap': '...', 'w':1920, 'h':1080}
+# 미디어 하나 = {'video': 'guide_x_y', 'cap': '...', 'ratio': '3/4'(있으면 그 칸만 그 비율 · 1022)}  · {'img': 'guide_x_y', 'cap': '...', 'w':1920, 'h':1080}
 #             · {'shot': {'kind','shot','where','len','key','must'}}  · {'pair': [미디어, 미디어]}
 #             · {'hall': 'orsay', 'cap': '...', 'voice': True, 'view': 0.75}  — 미술관 방 낮 판 + 오늘 그 관에 걸린 그림(hallroom.js · DB 직접 · 1022)
 #               voice = 명패 아래 「▶ 설명 듣기」(앱과 같은 낭독) · view = 칸의 세로 ÷ 가로(기본 1.25)
@@ -25,8 +25,9 @@ def media(m, ind='  '):
         return ind + '<div class="pair">\n' + '\n'.join(media(x, ind + '  ') for x in m['pair']) + '\n' + ind + '</div>'
     if 'video' in m:
         n = m['video']
+        ratio = f' style="aspect-ratio:{esc(m["ratio"])}"' if m.get('ratio') else ''   # 1022 파이스2 — 세로 영상 칸(인라인이라 guide.css 꼬리표 안 건드림)
         return (f'{ind}<figure class="clip" data-video-1920="media/{n}_1920.mp4" data-video-1280="media/{n}_1280.mp4">\n'
-                f'{ind}  <div class="frame"><video muted playsinline loop preload="none" poster="media/{n}_poster.jpg"></video></div>\n'
+                f'{ind}  <div class="frame"{ratio}><video muted playsinline loop preload="none" poster="media/{n}_poster.jpg"></video></div>\n'
                 f'{ind}  <figcaption>{m.get("cap","")}</figcaption></figure>')
     if 'img' in m:
         return (f'{ind}<figure class="clip still">\n'
