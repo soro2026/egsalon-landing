@@ -14,6 +14,8 @@
 #             · {'shot': {'kind','shot','where','len','key','must'}}  · {'pair': [미디어, 미디어]}
 #             · {'hall': 'orsay', 'cap': '...', 'voice': True, 'view': 0.75}  — 미술관 방 낮 판 + 오늘 그 관에 걸린 그림(hallroom.js · DB 직접 · 1022)
 #               voice = 명패 아래 「▶ 설명 듣기」(앱과 같은 낭독) · view = 칸의 세로 ÷ 가로(기본 1.25)
+#             · {'concert': 'colon', 'show': 'walk|gate|hall', 'cap': '...', 'voice': True, 'view': 0.75}  — 앱 공연장 그림 + 오늘 그 홀의 곡(concertroom.js · DB 직접 · 1022 파이스2)
+#               walk = 정문 → 홀 안 → 스크린 · gate = 정문과 문설주 한 줄 · hall = 스크린의 오늘의 연주 · voice = 아래 띠 「▶ 이 곡 이야기」
 import sys, os, html, runpy
 V = '1020h'
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,6 +42,13 @@ def media(m, ind='  '):
         return (f'{ind}<figure class="clip hallroom" data-hall="{esc(m["hall"])}"{extra}>\n'
                 f'{ind}  <div class="frame"><div class="hr"><img class="wall" alt="" aria-hidden="true">'
                 f'<div class="art"><img alt=""></div><div class="hp"><b></b><span></span></div></div></div>\n'
+                f'{ind}  <figcaption>{m.get("cap","")}</figcaption></figure>')
+    if 'concert' in m:   # 1022 소로 · 파이스2 — 캡처 · 영상 대신 앱 공연장 그림 + 오늘 그 홀에 걸린 곡을 페이지가 직접 짓는다(concertroom.js)
+        USES['concert'] = True
+        extra = (f' data-show="{esc(m.get("show", "hall"))}"' + (' data-voice="1"' if m.get('voice') else '')
+                 + (f' data-view="{m["view"]}"' if m.get('view') else ''))
+        return (f'{ind}<figure class="clip concertroom" data-hall="{esc(m["concert"])}"{extra}>\n'
+                f'{ind}  <div class="frame"></div>\n'
                 f'{ind}  <figcaption>{m.get("cap","")}</figcaption></figure>')
     s = m['shot']
     attrs = ' '.join(f'data-{k}="{esc(s[k])}"' for k in ['kind', 'shot', 'where', 'len', 'key', 'must'] if s.get(k))
@@ -112,6 +121,8 @@ def build(P):
     tail = tmpl[tmpl.index('</main>') + len('</main>'):]
     if USES.get('hall'):
         tail = tail.replace('</body>', '<script src="hallroom.js?v=1022c"></script>\n</body>', 1)
+    if USES.get('concert'):
+        tail = tail.replace('</body>', '<script src="concertroom.js?v=1022a"></script>\n</body>', 1)
     page = head + '<body data-nav="cover">\n\n' + gate + hero + '\n'.join(body) + tail
     out = os.path.join(ROOT, f'guide-{P["slug"]}.html')
     open(out, 'w', encoding='utf-8').write(page)
