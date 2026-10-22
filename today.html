@@ -920,6 +920,7 @@ window.egPhase = function(){
   var lines = st.querySelectorAll('.line');
   var vid = st.querySelector('video');
   var NAME = '클로즈리 데 릴라';
+  var FROM_CAFE = /[?&]from=cafe(&|$)/.test(location.search);
   var timers = [];
   function at(ms, fn){ timers.push(setTimeout(fn, ms)); }
   function show(k, label){
@@ -937,6 +938,14 @@ window.egPhase = function(){
     reset();
     var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     var off = 0;
+    /* 카페 집 페이지(place-<곳>.html 「대화는 이렇게 시작됩니다 →」)에서 건너온 손님 — 방금 본 카페와 다른 집의 바깥 · 정문 · 실내는 건너뛰고
+       탁자 위 오늘의 문장부터 · 마지막 줄에서 그대로 멈춤 · 도돌이 없음 (1022 소로) */
+    if (FROM_CAFE){
+      show('cup','오늘의 탁자'); steam.classList.add('on'); st.classList.add('dim');
+      if (reduce){ lines.forEach(function(l){ l.classList.add('on'); }); return; }
+      for (var j = 0; j < lines.length; j++) (function(j){ at(900 + j*1900, function(){ lines[j].classList.add('on'); }); })(j);
+      return;
+    }
     /* 바깥 — 소로 촬영 영상이 걸려 있으면 먼저 */
     var vsrc = (Math.max(screen.width, screen.height) * (window.devicePixelRatio || 1) > 2000 && window.innerWidth > 900)
       ? st.getAttribute('data-video-1920') : st.getAttribute('data-video-1280');
