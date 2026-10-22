@@ -37,16 +37,15 @@
     show(now);
   }
 
-  /* ── 탁자 — 잔과 디저트 한 접시 · 잔 입에서 김이 오른다 ── */
-  var tab = document.querySelector('.ct-table');
-  if (!tab) return;
-  var tcode = tab.getAttribute('data-code');
-  var frame = tab.querySelector('.ct-frame'), inner = tab.querySelector('.ct-in');
-  var timg = tab.querySelector('.ct-in img'), steam = tab.querySelector('.steam');
+  /* ── 탁자 — 잔과 디저트 한 접시 · 잔 입에서 김이 오른다 (위 「탁자에 앉으면」 · 아래 「탁자 위의 한 스푼」 두 칸이 같은 그림 · 같은 김) ── */
+  var figs = [].slice.call(document.querySelectorAll('.ct-table, .ct-spoon'));
+  if (!figs.length) return;
+  var tcode = figs[0].getAttribute('data-code');
   var st = null;
-  timg.src = PUB + tcode + '_cup_1.webp';
+  figs.forEach(function(f){ f.querySelector('.ct-in img').src = PUB + tcode + '_cup_1.webp'; });
 
-  function place(){
+  function place(f){
+    var frame = f.querySelector('.ct-frame'), steam = f.querySelector('.steam');
     if (!st || !st.on) { steam.style.display = 'none'; return; }
     var w = frame.clientWidth, h = frame.clientHeight; if (!w || !h) return;
     var k = Math.max(w / IW, h / IH), rw = IW * k, rh = IH * k;     /* object-fit:cover 와 같은 셈 */
@@ -56,23 +55,63 @@
     steam.style.top  = (oy + rh * st.y / 100) + 'px';
     steam.style.transform = 'translate(-50%,-100%) scale(' + ((st.s || 1) * rw / BASE).toFixed(3) + ')';
   }
-  fetch(SUPA + '/rest/v1/terra_pins?select=steam:meta->cup_steam&kind=eq.hansfoon&code=eq.' + encodeURIComponent(tcode),
-        { headers: { apikey: KEY, Authorization: 'Bearer ' + KEY } })
+  function placeAll(){ figs.forEach(place); }
+  var H = { headers: { apikey: KEY, Authorization: 'Bearer ' + KEY } };
+  fetch(SUPA + '/rest/v1/terra_pins?select=steam:meta->cup_steam&kind=eq.hansfoon&code=eq.' + encodeURIComponent(tcode), H)
     .then(function(r){ return r.json(); })
     .then(function(L){
       var s = L && L[0] && L[0].steam && L[0].steam['1'];
       if (s && s.on !== false) st = { x: +s.x, y: +s.y, s: +s.s || 1, on: true };
-      place();
+      placeAll();
     }).catch(function(){});
-  window.addEventListener('resize', place);
+  window.addEventListener('resize', placeAll);
 
-  /* 화면에 들어오면 — 그림이 천천히 다가앉고(1.05 → 1) 김이 피어오른다 · 나가면 김을 거둔다 */
-  if ('IntersectionObserver' in window){
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function watch(f, enter, leave){
+    var frame = f.querySelector('.ct-frame');
+    if (!('IntersectionObserver' in window)) { enter(); return; }
     new IntersectionObserver(function(es){
       es.forEach(function(e){
-        if (e.intersectionRatio >= .3){ inner.classList.add('in'); steam.classList.add('on'); place(); }
-        else if (!e.isIntersecting){ steam.classList.remove('on'); }
+        if (e.intersectionRatio >= .3 || (e.isIntersecting && e.intersectionRect.height >= innerHeight * .6)) enter();
+        else if (!e.isIntersecting && leave) leave();
       });
-    }, { threshold: [0, .35] }).observe(frame);
-  } else { inner.classList.add('in'); steam.classList.add('on'); }
+    }, { threshold: [0, .3, .5] }).observe(frame);
+  }
+
+  /* 「탁자에 앉으면」 — 화면에 들어오면 그림이 천천히 다가앉고(1.05 → 1) 김이 피어오른다 · 나가면 김을 거둔다 */
+  var tab = document.querySelector('.ct-table');
+  if (tab) watch(tab,
+    function(){ tab.querySelector('.ct-in').classList.add('in'); tab.querySelector('.steam').classList.add('on'); place(tab); },
+    function(){ tab.querySelector('.steam').classList.remove('on'); });
+
+  /* 「탁자 위의 한 스푼」 — 지금 열려 있는 회차(spoons · open_on 이 오늘이거나 그 앞인 가장 최근 — 앱 hello_spoon fetchSpoon · Today 와 같은 셈)
+     탁자가 어두워지고 → 오늘의 문장 → 이야기 첫 두 단락 → 「이어지는 이야기와 퀴즈는 EG 안에서」 → 그대로 멈춤 · 도돌이 없음 (1022 소로) */
+  var sp = document.querySelector('.ct-spoon');
+  if (!sp) return;
+  var WD = '일월화수목금토';
+  function esc(t){ return String(t == null ? '' : t).replace(/[&<>"]/g, function(c){ return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]; }); }
+  function br(t){ return esc(t).replace(/\n/g, '<br>'); }
+  var today = new Date(Date.now() + 9 * 36e5).toISOString().slice(0, 10);   /* 서울 날짜 */
+  var ready = false, wanted = false, done = false;
+  function play(){
+    if (done) return; done = true;
+    var frame = sp.querySelector('.ct-frame'), lines = sp.querySelectorAll('.line');
+    sp.querySelector('.ct-in').classList.add('in'); sp.querySelector('.steam').classList.add('on'); place(sp);
+    frame.classList.add('dim');
+    if (reduce){ [].forEach.call(lines, function(l){ l.classList.add('on'); }); return; }
+    [].forEach.call(lines, function(l, i){ setTimeout(function(){ l.classList.add('on'); }, 1100 + i * 1900); });
+  }
+  fetch(SUPA + '/rest/v1/spoons?select=headline,story,open_on&status=eq.published&open_on=lte.' + today + '&order=open_on.desc,spoon_no.desc&limit=1', H)
+    .then(function(r){ return r.json(); })
+    .then(function(L){
+      var x = L && L[0]; if (!x || !x.headline) { sp.hidden = true; return; }
+      sp.querySelector('.head').innerHTML = br(x.headline);
+      var paras = (x.story || []).filter(function(b){ return b && b.type === 'text' && b.text; }).slice(0, 2);
+      sp.querySelector('.story').innerHTML = paras.map(function(b){ return '<p class="line">' + br(b.text) + '</p>'; }).join('');
+      var d = new Date(x.open_on + 'T00:00:00Z');
+      sp.querySelector('.ct-where').textContent = sp.getAttribute('data-name') + ' · 지금 열려 있는 한 스푼 · ' +
+        (d.getUTCMonth() + 1) + '/' + d.getUTCDate() + '(' + WD[d.getUTCDay()] + ') 열림';
+      ready = true; if (wanted) play();
+    }).catch(function(){ sp.hidden = true; });
+  watch(sp, function(){ wanted = true; if (ready) play(); });
 })();

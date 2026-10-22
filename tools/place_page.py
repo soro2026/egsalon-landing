@@ -32,7 +32,7 @@ KIND = {
                'room': '탁자', 'fort_title': '오늘의 카페가 되는 날', 'fort_sub': '열세 곳이 날마다 돌아가며',
                'fort_body': '지구 위 카페 열세 곳이 날마다 한 곳씩 돌아가며 오늘의 카페가 됩니다. 그날 이 탁자에는 그 무렵 열린 교양 한 스푼이 놓이고, 사람들이 그 위에 한 줄씩 얹습니다.',
                'story': True,
-               'guide': ('today.html?from=cafe#spoonStage', '대화는 이렇게 시작됩니다')},   # 1022 소로 — Guide 대화 대신 Today 교양 한 스푼 무대로 곧장(무대가 화면에 반 넘게 들어와야 돈다 · 칸 머리로 가면 데스크톱에서 32~42%만 보여 서 있음) · from=cafe — 다른 카페의 바깥 · 정문 · 실내는 건너뛰고 오늘의 문장부터 한 번 · 끝나면 멈춤(1022 소로)
+               'guide': ('guide-dialogue.html', '대화는 이렇게 시작됩니다')},
 }
 
 CAFE_CSS = ('<style>'
@@ -73,8 +73,20 @@ CAFE_CSS = ('<style>'
     'background:radial-gradient(ellipse at center,rgba(255,255,255,.34),rgba(255,255,255,0) 70%);filter:blur(7px);animation:rise 4.2s ease-in infinite}'
   '.steam i:nth-child(2){left:38%;animation-delay:1.4s}.steam i:nth-child(3){left:62%;animation-delay:2.8s}'
   '@keyframes rise{0%{transform:translateY(20px) scaleX(.7);opacity:0}25%{opacity:.9}100%{transform:translateY(-70px) scaleX(1.5);opacity:0}}'
-  '@media (max-width:760px){.ct-frame{margin:0 calc(-1 * var(--gutter));border-radius:0}.ct-fig figcaption{font-size:13.5px}.ct-chips button{padding:5px 10px;font-size:12px}}'
-  '@media (prefers-reduced-motion:reduce){.ct-in{transition:none;transform:none}.steam i{animation:none}}'
+  # 1022 소로 「링크로 보내지 말고 거기에 그 장면 구현 · places 카페 설명 맨 아래에 늘」 — 이 집 탁자 + 지금 열려 있는 한 스푼(Today 한 스푼 무대의 글 판과 한 벌) · 한 번 돌고 멈춤
+  '.ct-spoon{margin-top:clamp(30px,4vw,44px)}.ct-spoon .ct-frame{aspect-ratio:auto;height:clamp(540px,56vw,600px);color:var(--paper)}'   # 비율 + 최소 높이를 함께 주면 폭이 따라 늘어난다(휴대폰 1066px) — 높이만
+  '.ct-spoon .ct-frame::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity 1.4s ease;'
+    'background:linear-gradient(0deg,rgba(8,6,4,.8) 0%,rgba(8,6,4,.52) 45%,rgba(8,6,4,.4) 100%)}.ct-spoon .ct-frame.dim::after{opacity:1}'
+  '.ct-where{position:absolute;z-index:3;left:clamp(14px,2vw,24px);top:clamp(12px,1.8vw,20px);font-size:12.5px;letter-spacing:.12em;color:rgba(244,239,230,.8);text-shadow:0 1px 12px rgba(0,0,0,.55)}'
+  '.ct-say{position:absolute;z-index:3;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px var(--gutter) 32px}'
+  '.ct-say .line{opacity:0;transform:translateY(8px);transition:opacity 1s ease,transform 1s ease}.ct-say .line.on{opacity:1;transform:none}'
+  '.ct-say .head{font-family:var(--serif);font-weight:400;font-size:clamp(23px,2.9vw,38px);line-height:1.6;letter-spacing:-.01em;text-shadow:0 1px 22px rgba(0,0,0,.55);word-break:keep-all}'
+  '.ct-say .story{margin-top:clamp(24px,3vw,40px);display:flex;flex-direction:column;gap:14px;max-width:30em}'
+  '.ct-say .story p{font-size:clamp(15px,1.3vw,17px);line-height:1.85;color:rgba(244,239,230,.88);word-break:keep-all;text-shadow:0 1px 14px rgba(0,0,0,.6)}'
+  '.ct-say .halt{margin-top:clamp(28px,3.4vw,44px);display:inline-flex;align-items:center;gap:12px;font-size:14.5px;letter-spacing:.03em;color:var(--paper)}'
+  '.ct-say .halt::before{content:"";width:22px;height:2px;background:var(--arrow)}'
+  '@media (max-width:760px){.ct-frame{margin:0 calc(-1 * var(--gutter));border-radius:0}.ct-spoon .ct-frame{height:600px}.ct-fig figcaption{font-size:13.5px}.ct-chips button{padding:5px 10px;font-size:12px}}'
+  '@media (prefers-reduced-motion:reduce){.ct-in{transition:none;transform:none}.steam i{animation:none}.ct-say .line{transition:none}}'
   '</style>')
 
 def scene_media(sc, ind):
@@ -245,8 +257,14 @@ def build_cafe(p, P, K, head, gate, h, body, tmpl):
              '  <section class="room" id="day-room">',
              f'    <div class="room-head"><span class="room-num">02</span><h2>{K["fort_title"]}</h2><span class="room-sub">{K["fort_sub"]}</span></div>',
              '    <div class="room-body">',
-             f'      <p>{K["fort_body"]}</p>',
+             f'      <p>{K["fort_body"]} 아래는 지금 열려 있는 한 스푼을 이 집 탁자에 놓아 본 모습입니다.</p>',
              '    </div>',
+             '    <!-- 탁자 위의 한 스푼 — cafetable.js 가 DB(spoons · 지금 열려 있는 회차 = open_on 이 오늘이거나 그 앞인 가장 최근)를 읽어 이 집 탁자 그림 위에 펼친다 · 한 번 돌고 멈춤 (1022 소로) -->',
+             f'    <figure class="ct-fig ct-spoon" data-code="{esc(p["c"])}" data-name="{esc(p["n"])}">',
+             '      <div class="ct-frame"><div class="ct-in"><img alt="" aria-hidden="true"><div class="steam" aria-hidden="true"><i></i><i></i><i></i></div></div>',
+             '        <div class="ct-where" aria-hidden="true"></div>',
+             '        <div class="ct-say"><p class="head line"></p><div class="story"></div><p class="halt line">이어지는 이야기와 퀴즈는 EG 안에서</p></div></div>',
+             '    </figure>',
              f'    <p class="ft-foot" id="cafeday" data-code="{esc(p["c"])}"></p>',
              '  </section>', '']
     if p.get('note'): body += [f'  <p class="coda">{esc(p["note"])}</p>', '']
@@ -268,7 +286,7 @@ def build_cafe(p, P, K, head, gate, h, body, tmpl):
            'el.textContent=(ds[0]===D?"오늘이 그날입니다. 다음은 "+ds.slice(1).map(lab).join(" · ")+".":"다음에 오늘의 카페가 되는 날 — "+ds.map(lab).join(" · "));}).catch(function(){});})();</script>\n')
     sky = ('<!-- 앱의 하늘 — 서울 시각 + 서울의 실제 일출 · 일몰(Today · Places 첫 화면과 같은 판) -->\n'
            '<script src="https://app.egsalon.com/eg_sky.js?v=0806e"></script>\n'
-           f'<script src="place.js?v={V}"></script>\n' + day + '<script src="cafetable.js?v=1022a"></script>\n')
+           f'<script src="place.js?v={V}"></script>\n' + day + '<script src="cafetable.js?v=1022b"></script>\n')
     tail = tail.replace('<script src="guide.js', sky + '<script src="guide.js', 1)
     page = head + '<body data-nav="cover">\n\n' + gate + h + '\n'.join(body) + tail
     out = os.path.join(ROOT, f'place-{p["c"]}.html')
