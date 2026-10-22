@@ -4,7 +4,7 @@
 # 글은 tools/places.json 한 곳 — DB terra_pins.meta(lede · body · note) 를 옮겨 둔 것. DB 글이 바뀌면 json 을 다시 받는다.
 # 맨 위 자리(Places 결정문 §5 · 1021 소로) — media/place_<code>_1920.mp4 · _1280.mp4 · _poster.jpg 가 있으면 영상,
 #   media/place_<code>.webp 가 있으면 사진, 둘 다 없으면 앱 대문 그림(서울 시각 아침 · 낮 · 저녁 · 밤). 파일만 넣고 다시 돌리면 바뀐다.
-# 지금 집 페이지가 서는 종류 — 미술관(2주 전시일정) · 음악관(2주 공연일정 · 곡마다 작곡가 액자 초상) — 「열나흘」은 1022 소로가 「2주 일정」으로 바꿈. 도서관 · 카페는 같은 틀에 칸을 더해 차례로.
+# 지금 집 페이지가 서는 종류 — 미술관(2주 전시일정) · 음악관(2주 공연일정 · 곡마다 작곡가 액자 초상) · 도서관(이 방의 서가 · 1022) — 「열나흘」은 1022 소로가 「2주 일정」으로 바꿈. 카페는 같은 틀에 칸을 더해 차례로.
 import json, os, html
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 V = '1021c'
@@ -20,6 +20,13 @@ KIND = {
                'room': '홀', 'fort_title': '2주 공연일정', 'fort_sub': '오늘부터 14일, 이 홀에 오를 곡',
                'fort_foot': '앱에서 이 음악관 대문을 열면 옆에 뜨는 안내문과 같은 표입니다. 서울 시각 자정에 한 칸씩 넘어갑니다. 연주는 EG 안에서.',
                'guide': ('guide-classical.html', '곡은 이렇게 듣습니다')},
+  # 1022 소로 — 도서관은 서가가 사람마다 달라 표 대신 「이 방의 서가」(홈페이지 서가를 이 방의 벽감에) · 책을 뽑아 펼쳐 넘김(libshelf.js)
+  'museum':   {'ko': '도서관', 'folder': 'museum',                 'story_sub': '이 서가가 서기까지',
+               'fort_body': 'EG 안의 서가는 사람마다 다릅니다. 스타디움에서 만난 문제 하나, 아침 카페에서 퀴즈까지 푼 한 스푼 하나가 그 사람의 서가에 책 한 권씩으로 꽂히니까요. 홈페이지에도 서가가 하나 있습니다. Today에 나온 문제와 한 스푼이 날마다 여기 꽂힙니다. 서가는 하나라서 일곱 도서관 어디에 들어가도 같은 책들이 서고, 바뀌는 것은 방의 얼굴뿐입니다. 책등을 누르면 그 책이 펼쳐집니다.',
+               'room': '방', 'fort_title': '이 방의 서가', 'fort_sub': '홈페이지 서가 · 가장 새 책이 윗단 왼쪽',
+               'fort_foot': '책을 펼치면 네 장이 이어집니다. 지식, 사유, 연결, 큐레이션. 이 서가의 책은 홈페이지에 나온 것들이라 누구에게나 같고, 내 서가는 EG 안에서 자랍니다.',
+               'shelf': True,
+               'guide': ('guide-text.html', '책은 이렇게 만납니다')},
 }
 
 def esc(t): return html.escape(str(t or ''), quote=True)
@@ -85,7 +92,20 @@ def build(p, P, tmpl):
     if p.get('voice'):
         body += [f'    <button class="voice" type="button" data-src="{esc(p["voice"])}">'
                  f'<span class="v-ico" aria-hidden="true"></span><span class="v-lab">이 집 이야기 듣기</span><span class="v-dur">{dur(p.get("vdur"))}</span></button>']
-    body += ['  </section>', '',
+    if K.get('shelf'):
+      body += ['  </section>', '',
+             '  <section class="room" id="shelf-room">',
+             f'    <div class="room-head"><span class="room-num">02</span><h2>{K["fort_title"]}</h2><span class="room-sub">{K["fort_sub"]}</span></div>',
+             '    <div class="room-body">',
+             f'      <p>{K["fort_body"]}</p>',
+             '    </div>',
+             '    <!-- 이 방의 서가 — libshelf.js 가 DB(terra_pins · home_shelf · questions · spoons)를 읽어 그린다. 판짜기는 today.html 오늘의 뮤세움 · 앱 bibliotheca.html 과 한 벌 -->',
+             f'    <div class="ls" id="libshelf" data-code="{esc(p["c"])}" aria-live="polite"><p class="ft-note">서가를 불러오고 있습니다.</p></div>',
+             '    <p class="ft-foot" id="libday"></p>',
+             f'    <p class="ft-foot">{K["fort_foot"]}</p>',
+             '  </section>', '']
+    else:
+      body += ['  </section>', '',
              '  <section class="room" id="fortnight-room">',
              f'    <div class="room-head"><span class="room-num">02</span><h2>{K["fort_title"]}</h2><span class="room-sub">{K["fort_sub"]}</span></div>',
              '    <div class="room-body">',
@@ -111,7 +131,8 @@ def build(p, P, tmpl):
     tail = tmpl[tmpl.index('</main>') + len('</main>'):]
     sky = ('<!-- 앱의 하늘 — 서울 시각 + 서울의 실제 일출 · 일몰(Today · Places 첫 화면과 같은 판) -->\n'
            '<script src="https://app.egsalon.com/eg_sky.js?v=0806e"></script>\n'
-           f'<script src="place.js?v={V}"></script>\n')
+           f'<script src="place.js?v={V}"></script>\n'
+           + ('<script src="libshelf.js?v=1022a"></script>\n' if K.get('shelf') else ''))
     tail = tail.replace('<script src="guide.js', sky + '<script src="guide.js', 1)
     page = head + '<body data-nav="cover">\n\n' + gate + h + '\n'.join(body) + tail
     out = os.path.join(ROOT, f'place-{p["c"]}.html')
