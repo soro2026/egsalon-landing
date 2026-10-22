@@ -12,6 +12,7 @@
 # }
 # 미디어 하나 = {'video': 'guide_x_y', 'cap': '...'}  · {'img': 'guide_x_y', 'cap': '...', 'w':1920, 'h':1080}
 #             · {'shot': {'kind','shot','where','len','key','must'}}  · {'pair': [미디어, 미디어]}
+#             · {'hall': 'orsay', 'cap': '...'}  — 미술관 방 낮 판 + 오늘 그 관에 걸린 그림(hallroom.js · DB 직접 · 1022)
 import sys, os, html, runpy
 V = '1020h'
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -30,9 +31,17 @@ def media(m, ind='  '):
         return (f'{ind}<figure class="clip still">\n'
                 f'{ind}  <div class="frame"><img src="media/{m["img"]}.webp" alt="{esc(m.get("alt", m.get("cap","")))}" loading="lazy" width="{m.get("w",1920)}" height="{m.get("h",1080)}"></div>\n'
                 f'{ind}  <figcaption>{m.get("cap","")}</figcaption></figure>')
+    if 'hall' in m:   # 1022 소로 — 캡처 대신 낮 판 방 + 오늘 그 관에 걸린 그림을 페이지가 직접 건다(hallroom.js)
+        USES['hall'] = True
+        return (f'{ind}<figure class="clip hallroom" data-hall="{esc(m["hall"])}">\n'
+                f'{ind}  <div class="frame"><div class="hr"><img class="wall" alt="" aria-hidden="true">'
+                f'<div class="art"><img alt=""></div><div class="hp"><b></b><span></span></div></div></div>\n'
+                f'{ind}  <figcaption>{m.get("cap","")}</figcaption></figure>')
     s = m['shot']
     attrs = ' '.join(f'data-{k}="{esc(s[k])}"' for k in ['kind', 'shot', 'where', 'len', 'key', 'must'] if s.get(k))
     return f'{ind}<figure class="clip pending" {attrs}></figure>'
+
+USES = {}
 
 def notes(keep, remain):
     if not keep and not remain: return ''
@@ -97,6 +106,8 @@ def build(P):
              '  <!-- 이 페이지를 다 읽고 내려오면 다음 것이 이어 나오지 않고 일곱이 펼쳐진다(1020 오후 소로) -->',
              '  <p class="g7-head">일곱 가지</p>', '  <nav class="g7" aria-label="일곱 가지"></nav>', '</main>']
     tail = tmpl[tmpl.index('</main>') + len('</main>'):]
+    if USES.get('hall'):
+        tail = tail.replace('</body>', '<script src="hallroom.js?v=1022a"></script>\n</body>', 1)
     page = head + '<body data-nav="cover">\n\n' + gate + hero + '\n'.join(body) + tail
     out = os.path.join(ROOT, f'guide-{P["slug"]}.html')
     open(out, 'w', encoding='utf-8').write(page)
