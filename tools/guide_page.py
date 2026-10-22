@@ -16,6 +16,8 @@
 #               voice = 명패 아래 「▶ 설명 듣기」(앱과 같은 낭독) · view = 칸의 세로 ÷ 가로(기본 1.25)
 #             · {'concert': 'colon', 'show': 'walk|gate|hall', 'cap': '...', 'voice': True, 'view': 0.75}  — 앱 공연장 그림 + 오늘 그 홀의 곡(concertroom.js · DB 직접 · 1022 파이스2)
 #               walk = 정문 → 홀 안 → 스크린 · gate = 정문과 문설주 한 줄 · hall = 스크린의 오늘의 연주 · voice = 아래 띠 「▶ 이 곡 이야기」
+#             · {'star': '니콜로 마키아벨리', 'show': 'frame|scenes|link', 'cap': '...'}  — 별 칸(starroom.js · DB 직접 · 1022 파이스2)
+#               frame = 액자 초상(누르면 화면 가득) · scenes = 교양의 풍경(한 줄 → 네 겹) · link = 오늘의 별과 별 사이 한 장(star 는 쓰지 않음)
 import sys, os, html, runpy
 V = '1020h'
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -48,6 +50,11 @@ def media(m, ind='  '):
         extra = (f' data-show="{esc(m.get("show", "hall"))}"' + (' data-voice="1"' if m.get('voice') else '')
                  + (f' data-view="{m["view"]}"' if m.get('view') else ''))
         return (f'{ind}<figure class="clip concertroom" data-hall="{esc(m["concert"])}"{extra}>\n'
+                f'{ind}  <div class="frame"></div>\n'
+                f'{ind}  <figcaption>{m.get("cap","")}</figcaption></figure>')
+    if 'star' in m:   # 1022 소로 · 파이스2 — 캡처 · 영상 대신 별 칸을 페이지가 직접 짓는다(starroom.js · DB 직접)
+        USES['star'] = True
+        return (f'{ind}<figure class="clip starroom" data-show="{esc(m.get("show", "frame"))}" data-star="{esc(m["star"])}">\n'
                 f'{ind}  <div class="frame"></div>\n'
                 f'{ind}  <figcaption>{m.get("cap","")}</figcaption></figure>')
     s = m['shot']
@@ -121,6 +128,8 @@ def build(P):
     tail = tmpl[tmpl.index('</main>') + len('</main>'):]
     if USES.get('hall'):
         tail = tail.replace('</body>', '<script src="hallroom.js?v=1022c"></script>\n</body>', 1)
+    if USES.get('star'):
+        tail = tail.replace('</body>', '<script src="starroom.js?v=1022a"></script>\n</body>', 1)
     if USES.get('concert'):
         tail = tail.replace('</body>', '<script src="concertroom.js?v=1022a"></script>\n</body>', 1)
     page = head + '<body data-nav="cover">\n\n' + gate + hero + '\n'.join(body) + tail
