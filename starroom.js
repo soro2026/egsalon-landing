@@ -10,6 +10,7 @@
               한 줄을 누르면 네 겹(지식 · 사유 · 연결 · 큐레이션). 화면에 처음 들어오면 첫 줄 하나를 펼쳐 보이고, 그다음은 손님 몫
               ⚠ 콩파뇽의 글(응답의 정원)은 싣지 않는다 — 회원의 글이라 동의 없이 홈페이지에 걸지 않는다(1018)
      link   = 별과 별 사이 — star_links(active · id 순) 가운데 오늘의 한 장 = [ 서울 날수 % 개수 ] · 카드 뒷면처럼 머리말 · 이야기 · 출처
+              data-star 가 있으면 그 별에서 뻗은 선들만(소로 여섯 갈래)
    ══════════════════════════════════════════════════════════════════════════ */
 (function(){
   'use strict';
@@ -173,7 +174,11 @@
   /* ── link — 오늘의 별과 별 사이 한 장 ── */
   function link(fig, capBase){
     var box = fig.querySelector('.frame');
-    api('star_links?select=id,star_a,star_b,head,story,source&active=is.true&order=id').then(function(links){
+    var only = fig.getAttribute('data-star') || '';   /* 별 이름이 있으면 그 별에서 뻗은 선들 안에서만 돈다(1022 소로 — 위의 소로 별자리와 짝) */
+    (only ? getStar(only) : Promise.resolve(null)).then(function(me){
+      return api('star_links?select=id,star_a,star_b,head,story,source&active=is.true&order=id' +
+        (me ? '&or=(star_a.eq.' + me.id + ',star_b.eq.' + me.id + ')' : ''));
+    }).then(function(links){
       if (!links || !links.length) return;
       var L = links[((kstDay() % links.length) + links.length) % links.length];
       return api('stars?select=id,name,birth,death,photo_url&id=in.(' + L.star_a + ',' + L.star_b + ')').then(function(ss){
