@@ -257,7 +257,7 @@ def build_cafe(p, P, K, head, gate, h, body, tmpl):
              '  <section class="room" id="day-room">',
              f'    <div class="room-head"><span class="room-num">02</span><h2>{K["fort_title"]}</h2><span class="room-sub">{K["fort_sub"]}</span></div>',
              '    <div class="room-body">',
-             f'      <p>{K["fort_body"]} 아래는 지금 열려 있는 한 스푼을 이 집 탁자에 놓아 본 모습입니다.</p>',
+             f'      <p>{K["fort_body"]} <span id="spoonsay">아래는 지금 열려 있는 한 스푼을 이 집 탁자에 놓아 본 모습입니다.</span></p>',   # 오늘의 카페인 날 · 아닌 날 — cafetable.js 가 고쳐 쓴다(1022 소로)
              '    </div>',
              '    <!-- 탁자 위의 한 스푼 — cafetable.js 가 DB(spoons · 지금 열려 있는 회차 = open_on 이 오늘이거나 그 앞인 가장 최근)를 읽어 이 집 탁자 그림 위에 펼친다 · 한 번 돌고 멈춤 (1022 소로) -->',
              f'    <figure class="ct-fig ct-spoon" data-code="{esc(p["c"])}" data-name="{esc(p["n"])}">',
@@ -283,10 +283,10 @@ def build_cafe(p, P, K, head, gate, h, body, tmpl):
            'fetch(SUPA+"/rest/v1/terra_pins?select=code,name&kind=eq.hansfoon&active=eq.true&order=sort",{headers:{apikey:KEY,Authorization:"Bearer "+KEY}}).then(function(r){return r.json();}).then(function(L){'
            'var c=el.getAttribute("data-code"),n=L.length,i=-1,me=null;L.forEach(function(x,k){if(x.code===c){i=k;me=x;}});if(i<0)return;'
            'var D=Math.floor((Date.now()+9*36e5)/DAY),ds=[];for(var k=0;k<28;k++)if((D+k)%n===i)ds.push(D+k);'
-           'el.textContent=(ds[0]===D?"오늘이 그날입니다. 다음은 "+ds.slice(1).map(lab).join(" · ")+".":"다음에 오늘의 카페가 되는 날 — "+ds.map(lab).join(" · "));}).catch(function(){});})();</script>\n')
+           'el.textContent="다음에 오늘의 카페가 되는 날 — "+(ds[0]===D?ds.slice(1):ds).map(lab).join(" · ");}).catch(function(){});})();</script>\n')
     sky = ('<!-- 앱의 하늘 — 서울 시각 + 서울의 실제 일출 · 일몰(Today · Places 첫 화면과 같은 판) -->\n'
            '<script src="https://app.egsalon.com/eg_sky.js?v=0806e"></script>\n'
-           f'<script src="place.js?v={V}"></script>\n' + day + '<script src="cafetable.js?v=1022b"></script>\n')
+           f'<script src="place.js?v={V}"></script>\n' + day + '<script src="cafetable.js?v=1022c"></script>\n')
     tail = tail.replace('<script src="guide.js', sky + '<script src="guide.js', 1)
     page = head + '<body data-nav="cover">\n\n' + gate + h + '\n'.join(body) + tail
     out = os.path.join(ROOT, f'place-{p["c"]}.html')

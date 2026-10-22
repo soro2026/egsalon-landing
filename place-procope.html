@@ -125,7 +125,7 @@
   <section class="room" id="day-room">
     <div class="room-head"><span class="room-num">02</span><h2>오늘의 카페가 되는 날</h2><span class="room-sub">열세 곳이 날마다 돌아가며</span></div>
     <div class="room-body">
-      <p>지구 위 카페 열세 곳이 날마다 한 곳씩 돌아가며 오늘의 카페가 됩니다. 그날 이 탁자에는 그 무렵 열린 교양 한 스푼이 놓이고, 사람들이 그 위에 한 줄씩 얹습니다. 아래는 지금 열려 있는 한 스푼을 이 집 탁자에 놓아 본 모습입니다.</p>
+      <p>지구 위 카페 열세 곳이 날마다 한 곳씩 돌아가며 오늘의 카페가 됩니다. 그날 이 탁자에는 그 무렵 열린 교양 한 스푼이 놓이고, 사람들이 그 위에 한 줄씩 얹습니다. <span id="spoonsay">아래는 지금 열려 있는 한 스푼을 이 집 탁자에 놓아 본 모습입니다.</span></p>
     </div>
     <!-- 탁자 위의 한 스푼 — cafetable.js 가 DB(spoons · 지금 열려 있는 회차 = open_on 이 오늘이거나 그 앞인 가장 최근)를 읽어 이 집 탁자 그림 위에 펼친다 · 한 번 돌고 멈춤 (1022 소로) -->
     <figure class="ct-fig ct-spoon" data-code="procope" data-name="르 프로코프">
@@ -153,8 +153,8 @@
 <script src="https://app.egsalon.com/eg_sky.js?v=0806e"></script>
 <script src="place.js?v=1021c"></script>
 <script>/* 오늘의 카페가 되는 날 — 카페 열세 곳(sort)[ 서울 날수 % 13 ] (앱 spoonOnDuty · today.html 과 같은 셈) */
-(function(){var el=document.getElementById("cafeday");if(!el)return;var SUPA="https://cyhlotwdisjvoxvfkpnd.supabase.co",KEY="sb_publishable_jYYfQV_wQgMRFjSUuDq7xA_gWc9vsnR",WD="일월화수목금토",DAY=864e5;function lab(n){var d=new Date(n*DAY);return (d.getUTCMonth()+1)+"/"+d.getUTCDate()+"("+WD[d.getUTCDay()]+")";}fetch(SUPA+"/rest/v1/terra_pins?select=code,name&kind=eq.hansfoon&active=eq.true&order=sort",{headers:{apikey:KEY,Authorization:"Bearer "+KEY}}).then(function(r){return r.json();}).then(function(L){var c=el.getAttribute("data-code"),n=L.length,i=-1,me=null;L.forEach(function(x,k){if(x.code===c){i=k;me=x;}});if(i<0)return;var D=Math.floor((Date.now()+9*36e5)/DAY),ds=[];for(var k=0;k<28;k++)if((D+k)%n===i)ds.push(D+k);el.textContent=(ds[0]===D?"오늘이 그날입니다. 다음은 "+ds.slice(1).map(lab).join(" · ")+".":"다음에 오늘의 카페가 되는 날 — "+ds.map(lab).join(" · "));}).catch(function(){});})();</script>
-<script src="cafetable.js?v=1022b"></script>
+(function(){var el=document.getElementById("cafeday");if(!el)return;var SUPA="https://cyhlotwdisjvoxvfkpnd.supabase.co",KEY="sb_publishable_jYYfQV_wQgMRFjSUuDq7xA_gWc9vsnR",WD="일월화수목금토",DAY=864e5;function lab(n){var d=new Date(n*DAY);return (d.getUTCMonth()+1)+"/"+d.getUTCDate()+"("+WD[d.getUTCDay()]+")";}fetch(SUPA+"/rest/v1/terra_pins?select=code,name&kind=eq.hansfoon&active=eq.true&order=sort",{headers:{apikey:KEY,Authorization:"Bearer "+KEY}}).then(function(r){return r.json();}).then(function(L){var c=el.getAttribute("data-code"),n=L.length,i=-1,me=null;L.forEach(function(x,k){if(x.code===c){i=k;me=x;}});if(i<0)return;var D=Math.floor((Date.now()+9*36e5)/DAY),ds=[];for(var k=0;k<28;k++)if((D+k)%n===i)ds.push(D+k);el.textContent="다음에 오늘의 카페가 되는 날 — "+(ds[0]===D?ds.slice(1):ds).map(lab).join(" · ");}).catch(function(){});})();</script>
+<script src="cafetable.js?v=1022c"></script>
 <script src="guide.js?v=1020h"></script>
 </body>
 </html>

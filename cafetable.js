@@ -101,16 +101,26 @@
     if (reduce){ [].forEach.call(lines, function(l){ l.classList.add('on'); }); return; }
     [].forEach.call(lines, function(l, i){ setTimeout(function(){ l.classList.add('on'); }, 1100 + i * 1900); });
   }
-  fetch(SUPA + '/rest/v1/spoons?select=headline,story,open_on&status=eq.published&open_on=lte.' + today + '&order=open_on.desc,spoon_no.desc&limit=1', H)
+  /* 오늘의 카페 = 카페 열세 곳(sort)[ 서울 날수 % 13 ] (앱 spoonOnDuty · Today 와 같은 셈) — 이 집이면 「지금 이 탁자에 놓인」, 아니면 「놓아 본」 (1022 소로) */
+  var me = sp.getAttribute('data-code'), NAME = sp.getAttribute('data-name');
+  var duty = fetch(SUPA + '/rest/v1/terra_pins?select=code,name&kind=eq.hansfoon&active=eq.true&order=sort', H)
     .then(function(r){ return r.json(); })
-    .then(function(L){
+    .then(function(L){ return (L && L.length) ? L[Math.floor((Date.now() + 9 * 36e5) / 864e5) % L.length] : null; })
+    .catch(function(){ return null; });
+  Promise.all([duty, fetch(SUPA + '/rest/v1/spoons?select=headline,story,open_on&status=eq.published&open_on=lte.' + today + '&order=open_on.desc,spoon_no.desc&limit=1', H)
+    .then(function(r){ return r.json(); })])
+    .then(function(R){
+      var on = R[0], L = R[1];
       var x = L && L[0]; if (!x || !x.headline) { sp.hidden = true; return; }
       sp.querySelector('.head').innerHTML = br(x.headline);
       var paras = (x.story || []).filter(function(b){ return b && b.type === 'text' && b.text; }).slice(0, 2);
       sp.querySelector('.story').innerHTML = paras.map(function(b){ return '<p class="line">' + br(b.text) + '</p>'; }).join('');
       var d = new Date(x.open_on + 'T00:00:00Z');
-      sp.querySelector('.ct-where').textContent = sp.getAttribute('data-name') + ' · 지금 열려 있는 한 스푼 · ' +
-        (d.getUTCMonth() + 1) + '/' + d.getUTCDate() + '(' + WD[d.getUTCDay()] + ') 열림';
+      var md = (d.getUTCMonth() + 1) + '/' + d.getUTCDate() + '(' + WD[d.getUTCDay()] + ')';
+      var say = document.getElementById('spoonsay'), mine = on && on.code === me;
+      sp.querySelector('.ct-where').textContent = mine ? NAME + ' · 오늘의 카페 · ' + md + '에 열린 한 스푼' : NAME + ' · 지금 열려 있는 한 스푼 · ' + md + ' 열림';
+      if (say && on) say.textContent = mine ? '오늘이 그날입니다. 아래는 지금 이 탁자에 놓인 한 스푼입니다.'
+                                            : '오늘 이 한 스푼은 ' + on.name + '의 탁자에 놓여 있습니다. 아래는 그것을 이 집 탁자에 놓아 본 모습입니다.';
       ready = true; if (wanted) play();
     }).catch(function(){ sp.hidden = true; });
   watch(sp, function(){ wanted = true; if (ready) play(); });
