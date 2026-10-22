@@ -28,7 +28,8 @@
   var PUB  = SUPA + '/storage/v1/object/public/tour-assets/galerie/';
   var DAY  = 86400000;
   var PW = 941, PH = 1672;            /* 앱 그림판(HALL_RATIO) */
-  var VIEW = 5 / 4;                   /* 칸의 세로 ÷ 가로 — 지붕(또는 창)에서 그림 아래 명패까지 한 화면 */
+  var VIEW = 5 / 4;                   /* 칸의 세로 ÷ 가로(기본) — 지붕(또는 창)에서 그림 아래 명패까지 한 화면
+                                         figure[data-view] 로 칸마다 바꿀 수 있다(넓은 한 칸은 3/4) */
 
   /* 칸 모양 — guide.css 꼬리표를 건드리지 않으려고 여기서 붙인다 */
   var css = document.createElement('style');
@@ -44,11 +45,17 @@
     '.hallroom .hp{position:absolute;transform:translateX(-50%);text-align:center;white-space:nowrap;' +
       'font-family:var(--serif);text-shadow:0 1px 10px rgba(0,0,0,.55);opacity:0;transition:opacity 1.2s ease}' +
     '.hallroom .hp.on{opacity:1}' +
-    '.hallroom .hp b{display:block;font-weight:400;font-size:max(9px,2.5cqw);color:#f2ead6;letter-spacing:.04em}' +
-    '.hallroom .hp span{display:block;margin-top:.35em;font-size:max(8px,1.95cqw);color:rgba(242,234,214,.66);letter-spacing:.06em}' +
+    '.hallroom .hp b{display:block;font-weight:400;font-size:clamp(9px,2.5cqw,16px);color:#f2ead6;letter-spacing:.04em}' +
+    '.hallroom .hp > span{display:block;margin-top:.35em;font-size:clamp(8px,1.95cqw,12.5px);color:rgba(242,234,214,.66);letter-spacing:.06em}' +
+    '.hallroom .hp .hv{display:block;margin:.7em auto 0;padding:.2em .4em;background:none;border:0;cursor:pointer;font:inherit;' +
+      'font-size:clamp(9px,2cqw,13px);letter-spacing:.06em;color:rgba(232,214,168,.92);text-shadow:inherit}' +
+    '.hallroom .hp .hv:hover{color:#f6ecd2}' +
+    '.hallroom .hp .hv .vd{opacity:.55;margin-left:6px;font-size:.92em}' +
     '.hallroom .hp.dark{text-shadow:0 1px 2px rgba(255,255,255,.3)}' +
     '.hallroom .hp.dark b{color:#2a2318}' +
-    '.hallroom .hp.dark span{color:rgba(42,35,24,.62)}' +
+    '.hallroom .hp.dark > span{color:rgba(42,35,24,.62)}' +
+    '.hallroom .hp.dark .hv{color:rgba(90,70,26,.95)}' +
+    '.hallroom .hp.dark .hv:hover{color:#3a2c10}' +
     '.hallroom figcaption a{color:inherit;text-decoration:underline;text-underline-offset:3px}';
   document.head.appendChild(css);
 
@@ -97,6 +104,34 @@
     im.src = src;
   }
 
+  /* 그림 이야기 듣기 — 앱 galerie.html 명패의 낭독 줄과 같은 파일(voice_takes · scope art · ref 그림 id)
+     1022 소로 — 헤드셋 낀 사람을 보여 주는 대신, 그 헤드셋을 손님 귀에. 자동 재생 없음(헌장 9장) · 누를 때만 */
+  function mmss(d){ d = Math.round(Number(d) || 0); return Math.floor(d / 60) + ':' + String(d % 60).padStart(2, '0'); }
+  function voice(fig, hp, w){
+    if (fig._audio){ try{ fig._audio.pause(); }catch(e){} fig._audio = null; }
+    var old = hp.querySelector('.hv'); if (old) old.remove();
+    if (!fig.hasAttribute('data-voice') || !w || !w.id) return;
+    get('voice_takes?select=url,dur_sec&scope=eq.art&active=eq.true&ref=eq.' + encodeURIComponent(w.id)).then(function(rows){
+      var v = rows && rows[0]; if (!v || !v.url) return;          /* 없으면 줄도 없다 — 먹통 단추를 안 만든다 */
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'hv';
+      var dur = v.dur_sec ? '<span class="vd">' + mmss(v.dur_sec) + '</span>' : '';
+      var paint = function(t){ b.innerHTML = t + dur; };
+      var a = null, started = false;
+      paint('▶ 설명 듣기');
+      b.addEventListener('click', function(){
+        if (!a){
+          a = fig._audio = new Audio(v.url);
+          a.addEventListener('ended', function(){ paint('▶ 다시 듣기'); });
+          a.addEventListener('pause', function(){ if (!a.ended) paint('▶ 이어 듣기'); });
+          a.addEventListener('play', function(){ paint('❚❚ 듣는 중'); });
+        }
+        if (a.paused){ if (a.ended) a.currentTime = 0; a.play().catch(function(){}); started = true; }
+        else a.pause();
+      });
+      hp.appendChild(b);
+    }).catch(function(){});
+  }
+
   var halls = [], list = [], dayNo = -1;
   var baseCap = [];
   figs.forEach(function(f, i){ baseCap[i] = f.querySelector('figcaption').innerHTML; });
@@ -106,6 +141,8 @@
     var hr = fig.querySelector('.hr'), wall = hr.querySelector('img.wall');
     var art = hr.querySelector('.art'), img = art.querySelector('img'), hp = hr.querySelector('.hp');
     var m = me.meta || {}, R = m.frame_rect, P = m.plaque_pos;
+    var view = Number(fig.getAttribute('data-view')) || VIEW;
+    fig.querySelector('.frame').style.aspectRatio = '1 / ' + view;
     hp.classList.toggle('dark', m.plaque_ink === 'dark');   /* 폴백 먼저 — 재면 갈아 끼운다 */
     loadWall(wall, PUB + me.code + '_hall_d.webp', function(){ hr.classList.add('on'); ink(hp, wall, m); });
     if (!R || !w){ hr.classList.add('on'); return; }
@@ -120,16 +157,18 @@
       art.style.left = g.L + '%'; art.style.top = g.T + '%'; art.style.width = g.W + '%'; art.style.height = g.H + '%';
       var need = g.T + g.H + 2;
       if (P){ hp.style.left = P.X + '%'; hp.style.top = P.Y + '%'; need = Math.max(need, P.Y + 4); }
-      var seen = 100 / (PH / PW / VIEW);                 /* 칸에 들어오는 방의 높이(%) */
+      var seen = 100 / (PH / PW / view);                 /* 칸에 들어오는 방의 높이(%) */
       var lift = Math.max(0, need - seen + 2);
+      lift = Math.min(lift, Math.max(0, g.T - 4));       /* 그림 위쪽은 잘리지 않게 */
       hr.style.transform = lift ? 'translateY(-' + lift + '%)' : '';
     }
     img.onload = function(){ hang(); art.classList.add('on'); hp.classList.add('on'); };
     img.alt = (w.artist || '') + ' 「' + (w.name || '') + '」';
     img.src = w.img || '';
     hp.querySelector('b').textContent = w.name || '';
-    hp.querySelector('span').textContent = [w.artist, w.period].filter(Boolean).join(' · ');
+    hp.querySelector(':scope > span').textContent = [w.artist, w.period].filter(Boolean).join(' · ');
     hang();
+    voice(fig, hp, w);
   }
 
   function render(){

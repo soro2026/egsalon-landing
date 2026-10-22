@@ -12,7 +12,8 @@
 # }
 # 미디어 하나 = {'video': 'guide_x_y', 'cap': '...'}  · {'img': 'guide_x_y', 'cap': '...', 'w':1920, 'h':1080}
 #             · {'shot': {'kind','shot','where','len','key','must'}}  · {'pair': [미디어, 미디어]}
-#             · {'hall': 'orsay', 'cap': '...'}  — 미술관 방 낮 판 + 오늘 그 관에 걸린 그림(hallroom.js · DB 직접 · 1022)
+#             · {'hall': 'orsay', 'cap': '...', 'voice': True, 'view': 0.75}  — 미술관 방 낮 판 + 오늘 그 관에 걸린 그림(hallroom.js · DB 직접 · 1022)
+#               voice = 명패 아래 「▶ 설명 듣기」(앱과 같은 낭독) · view = 칸의 세로 ÷ 가로(기본 1.25)
 import sys, os, html, runpy
 V = '1020h'
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -33,7 +34,8 @@ def media(m, ind='  '):
                 f'{ind}  <figcaption>{m.get("cap","")}</figcaption></figure>')
     if 'hall' in m:   # 1022 소로 — 캡처 대신 낮 판 방 + 오늘 그 관에 걸린 그림을 페이지가 직접 건다(hallroom.js)
         USES['hall'] = True
-        return (f'{ind}<figure class="clip hallroom" data-hall="{esc(m["hall"])}">\n'
+        extra = (' data-voice="1"' if m.get('voice') else '') + (f' data-view="{m["view"]}"' if m.get('view') else '')
+        return (f'{ind}<figure class="clip hallroom" data-hall="{esc(m["hall"])}"{extra}>\n'
                 f'{ind}  <div class="frame"><div class="hr"><img class="wall" alt="" aria-hidden="true">'
                 f'<div class="art"><img alt=""></div><div class="hp"><b></b><span></span></div></div></div>\n'
                 f'{ind}  <figcaption>{m.get("cap","")}</figcaption></figure>')
@@ -107,7 +109,7 @@ def build(P):
              '  <p class="g7-head">일곱 가지</p>', '  <nav class="g7" aria-label="일곱 가지"></nav>', '</main>']
     tail = tmpl[tmpl.index('</main>') + len('</main>'):]
     if USES.get('hall'):
-        tail = tail.replace('</body>', '<script src="hallroom.js?v=1022b"></script>\n</body>', 1)
+        tail = tail.replace('</body>', '<script src="hallroom.js?v=1022c"></script>\n</body>', 1)
     page = head + '<body data-nav="cover">\n\n' + gate + hero + '\n'.join(body) + tail
     out = os.path.join(ROOT, f'guide-{P["slug"]}.html')
     open(out, 'w', encoding='utf-8').write(page)
