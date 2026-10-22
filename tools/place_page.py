@@ -132,7 +132,7 @@ def build(p, P, tmpl):
     sky = ('<!-- 앱의 하늘 — 서울 시각 + 서울의 실제 일출 · 일몰(Today · Places 첫 화면과 같은 판) -->\n'
            '<script src="https://app.egsalon.com/eg_sky.js?v=0806e"></script>\n'
            f'<script src="place.js?v={V}"></script>\n'
-           + ('<script src="libshelf.js?v=1022a"></script>\n' if K.get('shelf') else ''))
+           + ('<script src="libshelf.js?v=1022b"></script>\n' if K.get('shelf') else ''))
     tail = tail.replace('<script src="guide.js', sky + '<script src="guide.js', 1)
     page = head + '<body data-nav="cover">\n\n' + gate + h + '\n'.join(body) + tail
     out = os.path.join(ROOT, f'place-{p["c"]}.html')

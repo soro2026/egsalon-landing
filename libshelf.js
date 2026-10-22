@@ -44,7 +44,7 @@
     '.ls-shelf .bk.away{opacity:.25}',
     '.ls-shelf .spine{display:block;height:100%;width:auto;filter:drop-shadow(0 3px 6px rgba(0,0,0,.6))}',
     '.ls-shelf .bkt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;text-orientation:mixed;pointer-events:none;' +
-      'font-family:var(--serif);font-size:clamp(9px,2.1cqw,18px);font-weight:500;color:rgba(255,255,255,.96);letter-spacing:.02em;line-height:1.18;' +
+      'font-family:var(--serif);font-size:11px;font-weight:500;white-space:nowrap;color:rgba(255,255,255,.96);letter-spacing:.02em;line-height:1.18;' +
       'padding:7% 2px;overflow:hidden;text-shadow:0 1px 3px rgba(0,0,0,.98),0 0 6px rgba(0,0,0,.85),0 0 14px rgba(0,0,0,.6)}',
     '.ls-shelf .plank{height:11%;min-height:8px;border-radius:2px;position:relative;flex:none;' +
       'background:linear-gradient(180deg,#6b4a26 0%,#48311a 42%,#2f1f10 100%);box-shadow:0 5px 12px rgba(0,0,0,.55),inset 0 1px 0 rgba(201,162,74,.28)}',
@@ -217,8 +217,16 @@
     var s = Math.min(1, stage.clientWidth * 0.94 / 340, stage.clientHeight * 0.96 / 510);
     fitEl.style.transform = 'scale(' + s + ')';
   }
-  window.addEventListener('resize', function(){ aim(); fitBook(); });
+  window.addEventListener('resize', function(){ aim(); fitBook(); fitSpines(); });
 
+  /* 책등 글씨 — 책등의 폭과 높이를 재서 한 줄로 들어가게(1022 소로 「책등이 문제발생」 — 좁은 책등에서 글씨가 두 줄로 넘쳤다) */
+  function fitSpine(bk){
+    var im = bk.querySelector('.spine'), t = bk.querySelector('.bkt');
+    var w = im.clientWidth, h = im.clientHeight; if (!w || !h) return;
+    var n = Math.max(3, t.textContent.length);
+    t.style.fontSize = Math.max(7, Math.min(w * 0.58, h * 0.84 / n, 20)).toFixed(1) + 'px';
+  }
+  function fitSpines(){ shelf.querySelectorAll('.bk').forEach(fitSpine); }
   function drawShelf(){
     shelf.style.left = RECT.L + '%'; shelf.style.top = RECT.T + '%'; shelf.style.width = RECT.W + '%'; shelf.style.height = RECT.H + '%';
     var page = BOOKS.slice(0, PER_PAGE), racks = [];
@@ -233,6 +241,10 @@
       }).join('') + '</div><div class="plank"><span class="pl-when">' + when(seg[seg.length - 1].d, seg[0].d) + '</span><span class="pl-n">' + seg.length + '</span></div></div>');
     }
     shelf.innerHTML = racks.join('');
+    shelf.querySelectorAll('.bk').forEach(function(bk){
+      var im = bk.querySelector('.spine');
+      if (im.complete && im.naturalWidth) fitSpine(bk); else im.addEventListener('load', function(){ fitSpine(bk); });
+    });
     head.querySelector('span').textContent = BOOKS.length + '권';
     shelf.querySelectorAll('.bk').forEach(function(el){
       var go = function(){ stopDemo(); openBook(+el.getAttribute('data-i'), false); };
