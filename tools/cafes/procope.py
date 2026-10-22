@@ -10,6 +10,8 @@ STAR = 'https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/star-p
 STORY = {
   'title': '이 탁자에 앉았던 사람들',
   'sub': '1686년부터 지금까지',
+  # 1022 소로 「디저트도 한 접시씩 구워두었고 … 군침돌게」 — 탁자 그림(앱 procope_cup_1) 아래 한 줄 · 첫 장면(1686 얼음 한 잔)과 운을 맞춤
+  'table_cap': '<b>탁자에 앉으면</b> — 김이 오르는 잔 곁에 이 집의 디저트 한 접시. 1686년 이 집의 첫 손님들은 작은 도자기 잔에 담긴 얼음 과자를 받았습니다. 오늘의 카페가 되는 날에는 교양 한 스푼이 이 탁자 위에 놓입니다.',
   'scenes': [
     {'when': '1686', 'title': '얼음 한 잔',
      'img': 'cafe_procope_01',

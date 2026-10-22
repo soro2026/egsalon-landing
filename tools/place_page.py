@@ -43,11 +43,38 @@ CAFE_CSS = ('<style>'
   '.scene h3{margin-top:8px;font-family:var(--serif);font-weight:500;font-size:clamp(21px,2.2vw,28px);letter-spacing:-.01em;line-height:1.35;word-break:keep-all}'
   '.scene p{margin-top:16px;font-family:var(--serif);font-weight:300;font-size:clamp(16px,1.35vw,18px);line-height:1.95;word-break:keep-all;max-width:36em}'
   '.scene .clip{max-width:860px}'
-  '.sc-faces{display:flex;gap:clamp(14px,2vw,24px);flex-wrap:wrap;margin-top:22px}'
-  '.sc-face{margin:0;width:clamp(120px,15vw,168px)}'
-  '.sc-face img{display:block;width:100%;height:auto;filter:drop-shadow(0 8px 18px rgba(11,9,7,.28))}'
-  '.sc-face figcaption{margin-top:10px;font-size:12.5px;line-height:1.5;color:var(--ink-dim);word-break:keep-all}'
-  '.sc-face figcaption b{display:block;font-weight:500;color:var(--ink-soft)}'
+  # 1022 소로 「액자들이 좀 컸으면」 — 168 → 둘이면 반씩(300까지) · 하나면 340까지
+  '.sc-faces{display:flex;gap:clamp(18px,3vw,36px);flex-wrap:wrap;margin-top:clamp(26px,3.4vw,40px)}'
+  '.sc-face{margin:0;width:min(300px,calc(50% - 18px))}'
+  '.sc-faces.one .sc-face{width:min(340px,78%)}'
+  '.sc-face img{display:block;width:100%;height:auto;filter:drop-shadow(0 14px 26px rgba(11,9,7,.3)) drop-shadow(0 2px 4px rgba(11,9,7,.18))}'
+  '.sc-face figcaption{margin-top:14px;font-size:13.5px;line-height:1.55;color:var(--ink-dim);word-break:keep-all}'
+  '.sc-face figcaption b{display:block;font-family:var(--serif);font-weight:500;font-size:clamp(16px,1.4vw,18px);color:var(--ink)}'
+  # 1022 소로 「각 카페의 장면 · 디저트 한 접시를 활용해서 군침돌게」 — 문을 열면(실내 · 시간대 넷) · 탁자에 앉으면(잔과 디저트 · 김) — cafetable.js
+  '.ct{margin-top:clamp(56px,8vw,96px)}'
+  '.ct-fig{margin:0}.ct-fig+.ct-fig{margin-top:clamp(40px,6vw,72px)}'
+  '.ct-frame{position:relative;aspect-ratio:1672/941;border-radius:6px;overflow:hidden;background:#1a1612;'
+    'box-shadow:0 1px 0 rgba(11,9,7,.08),0 18px 44px rgba(11,9,7,.18)}'
+  '.ct-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}'
+  '.ct-hall .ct-frame img{opacity:0;transition:opacity 1.2s ease}.ct-hall .ct-frame img.on{opacity:1}'
+  '.ct-hall .ct-frame::after{content:"";position:absolute;inset:auto 0 0 0;height:30%;pointer-events:none;background:linear-gradient(0deg,rgba(8,6,4,.5),rgba(8,6,4,0))}'
+  '.ct-chips{position:absolute;z-index:2;right:clamp(10px,1.6vw,18px);bottom:clamp(10px,1.6vw,18px);display:flex;gap:6px}'
+  '.ct-chips button{position:relative;padding:6px 13px;border-radius:999px;border:1px solid rgba(244,239,230,.42);background:rgba(11,9,7,.32);'
+    'color:rgba(244,239,230,.9);font:inherit;font-size:13px;letter-spacing:.06em;cursor:pointer;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}'
+  '.ct-chips button:hover{border-color:rgba(244,239,230,.8)}'
+  '.ct-chips button[aria-pressed=true]{background:rgba(244,239,230,.92);color:#15110d;border-color:transparent}'
+  '.ct-chips button.now::after{content:"";position:absolute;top:3px;right:5px;width:5px;height:5px;border-radius:50%;background:var(--arrow)}'
+  '.ct-in{position:absolute;inset:0;transform:scale(1.05);transition:transform 9s cubic-bezier(.2,.6,.2,1)}.ct-in.in{transform:none}'
+  '.ct-fig figcaption{margin-top:14px;max-width:40em;font-size:14px;line-height:1.7;color:var(--ink-dim);word-break:keep-all}'
+  '.ct-fig figcaption b{font-weight:500;color:var(--ink-soft)}'
+  '.steam{position:absolute;z-index:2;width:90px;height:150px;transform:translate(-50%,-100%);transform-origin:50% 100%;pointer-events:none;opacity:0;transition:opacity 1.6s}'
+  '.steam.on{opacity:1}'
+  '.steam i{position:absolute;bottom:0;left:50%;width:22px;height:110px;margin-left:-11px;border-radius:50%;'
+    'background:radial-gradient(ellipse at center,rgba(255,255,255,.34),rgba(255,255,255,0) 70%);filter:blur(7px);animation:rise 4.2s ease-in infinite}'
+  '.steam i:nth-child(2){left:38%;animation-delay:1.4s}.steam i:nth-child(3){left:62%;animation-delay:2.8s}'
+  '@keyframes rise{0%{transform:translateY(20px) scaleX(.7);opacity:0}25%{opacity:.9}100%{transform:translateY(-70px) scaleX(1.5);opacity:0}}'
+  '@media (max-width:760px){.ct-frame{margin:0 calc(-1 * var(--gutter));border-radius:0}.ct-fig figcaption{font-size:13.5px}.ct-chips button{padding:5px 10px;font-size:12px}}'
+  '@media (prefers-reduced-motion:reduce){.ct-in{transition:none;transform:none}.steam i{animation:none}}'
   '</style>')
 
 def scene_media(sc, ind):
@@ -63,7 +90,7 @@ def scene_media(sc, ind):
             out.append(f'{ind}<figure class="clip pending" {attrs}></figure>')
     faces = sc.get('stars') or ([sc['star']] if sc.get('star') else [])
     if faces:
-        out.append(f'{ind}<div class="sc-faces">' + ''.join(
+        out.append(f'{ind}<div class="sc-faces{" one" if len(faces) == 1 else ""}">' + ''.join(
             f'<figure class="sc-face"><img src="{esc(f["url"])}" alt="{esc(f["name"])}의 액자 초상" loading="lazy">'
             f'<figcaption><b>{esc(f["name"])}</b>EG 하늘에 별로 떠 있는 사람</figcaption></figure>' for f in faces) + '</div>')
     return out
@@ -184,6 +211,21 @@ def build_cafe(p, P, K, head, gate, h, body, tmpl):
     ST = runpy.run_path(os.path.join(ROOT, 'tools', 'cafes', p['c'] + '.py'))['STORY']
     head = head.replace('</head>', CAFE_CSS + '\n</head>', 1)
     body += [f'  <p class="rooms">{ST["title"]} · {K["fort_title"]}</p>', '',
+             ]
+    # 1022 소로 — 앱에 지어 둔 카페 장면과 디저트 한 접시로 「문을 열면 · 탁자에 앉으면」(cafetable.js · 그림은 DB 가 아니라 앱 그림 파일 그대로)
+    c = p['c']; n = esc(p['n'])
+    hall_cap = ST.get('hall_cap') or f'<b>문을 열면</b> — 앱에서 {n}의 문을 열고 들어서면 이 방입니다. 빛은 서울 시각을 따라 바뀌고, 아침 · 낮 · 저녁 · 밤을 누르면 이 방의 하루를 미리 지나 볼 수 있습니다.'
+    table_cap = ST.get('table_cap') or '<b>탁자에 앉으면</b> — 김이 오르는 잔 곁에 이 집의 디저트 한 접시. 오늘의 카페가 되는 날에는 교양 한 스푼이 이 탁자 위에 놓입니다.'
+    body += ['  <section class="ct" aria-label="문을 열면 · 탁자에 앉으면">',
+             f'    <figure class="ct-fig ct-hall" data-code="{esc(c)}">',
+             f'      <div class="ct-frame"><img alt="{n}의 실내" class="on" src="{PUB}hansfoon/{esc(c)}_hall_d.webp"><img alt="" aria-hidden="true">',
+             '        <div class="ct-chips" role="group" aria-label="이 방의 시간대">'
+             + ''.join(f'<button type="button" data-t="{t}" aria-pressed="false">{lab}</button>' for t, lab in [('m', '아침'), ('d', '낮'), ('e', '저녁'), ('n', '밤')]) + '</div></div>',
+             f'      <figcaption>{hall_cap}</figcaption></figure>',
+             f'    <figure class="ct-fig ct-table" data-code="{esc(c)}">',
+             f'      <div class="ct-frame"><div class="ct-in"><img alt="{n}의 탁자 — 김이 오르는 잔과 디저트 한 접시"><div class="steam" aria-hidden="true"><i></i><i></i><i></i></div></div></div>',
+             f'      <figcaption>{table_cap}</figcaption></figure>',
+             '  </section>', '',
              '  <section class="room" id="story">',
              f'    <div class="room-head"><span class="room-num">01</span><h2>{ST["title"]}</h2><span class="room-sub">{ST["sub"]}</span></div>',
              '    <div class="scenes">']
@@ -226,7 +268,7 @@ def build_cafe(p, P, K, head, gate, h, body, tmpl):
            'el.textContent=(ds[0]===D?"오늘이 그날입니다. 다음은 "+ds.slice(1).map(lab).join(" · ")+".":"다음에 오늘의 카페가 되는 날 — "+ds.map(lab).join(" · "));}).catch(function(){});})();</script>\n')
     sky = ('<!-- 앱의 하늘 — 서울 시각 + 서울의 실제 일출 · 일몰(Today · Places 첫 화면과 같은 판) -->\n'
            '<script src="https://app.egsalon.com/eg_sky.js?v=0806e"></script>\n'
-           f'<script src="place.js?v={V}"></script>\n' + day)
+           f'<script src="place.js?v={V}"></script>\n' + day + '<script src="cafetable.js?v=1022a"></script>\n')
     tail = tail.replace('<script src="guide.js', sky + '<script src="guide.js', 1)
     page = head + '<body data-nav="cover">\n\n' + gate + h + '\n'.join(body) + tail
     out = os.path.join(ROOT, f'place-{p["c"]}.html')
