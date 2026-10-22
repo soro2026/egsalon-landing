@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500&display=swap">
 <link rel="stylesheet" href="site.css?v=1020h">
 <link rel="stylesheet" href="guide.css?v=1020h">
-
+<style>.hero{background-image:url('media/guide_classical_wien_poster.jpg?v=1020h')}</style>
 </head>
 <body data-nav="cover">
 
@@ -34,7 +34,11 @@
   </ul>
 </nav>
 
-<header class="hero pending" aria-label="Classical — 맨 위 영상 자리" data-kind="영상" data-shot="연주가 흐르는 중에 「곡 소개」를 눌러 이야기가 밀려 들어오는 장면" data-where="빈 무지크페어아인 · 무대 스크린을 눌러 연주를 켠 뒤 → 아래 띠 「곡 소개」" data-len="10~12초" data-key="Shift+F9 — 방 안을 누르기 전에 미리 켜 두기" data-must="황금홀 무대에서 연주가 흐르고 → 「곡 소개」를 누르면 → 오른쪽에서 이야기가 밀려 들고 홀이 흐려지는 데까지 · 연주 영상은 계속 돌고 있게">
+<header class="hero" aria-label="Classical — 맨 위 영상">
+  <video id="heroClip" muted playsinline autoplay loop preload="auto"
+         poster="media/guide_classical_wien_poster.jpg?v=1020h" aria-hidden="true"
+         data-src-1920="media/guide_classical_wien_1920.mp4?v=1020h"
+         data-src-1280="media/guide_classical_wien_1280.mp4?v=1020h"></video>
   <div class="plate">
     <p class="tag"><span><a href="guide.html">Guide</a> · 03 · 고전음악</span></p>
     <h1>Classical</h1>
@@ -99,10 +103,9 @@
       <p>거실의 ♪ 단추를 누르면 그림 벽이 뒤로 물러나고 청음실이 섭니다. 빈티지 유럽 음악감상실이거나 일본 다실이거나 — 진공관에 불이 들어오고 바늘이 떨립니다. 레코드장의 판을 누르면 그 방 안 스크린에서 연주가 흐릅니다.</p>
       <p>내 집에 들른 이웃도 ♪를 누를 수 있습니다. 주인이 어떤 연주를 곁에 두었는지 그대로 들어 봅니다. 판 일곱 장이 말보다 그 사람을 더 정확하게 말합니다.</p>
     </div>
-    <div class="pair">
-      <figure class="clip pending" data-kind="영상" data-shot="거실에서 ♪를 눌러 청음실이 서는 장면" data-where="내 집 1층 거실 · ♪ 단추" data-len="10~12초" data-key="Shift+F9 — 방 안을 누르기 전에 미리 켜 두기" data-must="그림 벽이 물러나고 → 진공관에 불이 들어오고 → 레코드장 판 하나를 눌러 연주가 흐르기까지 · 판이 서너 장 이상 꽂혀 있으면 좋음"></figure>
-      <figure class="clip pending" data-kind="캡처" data-shot="레코드장에 담기 확인 창" data-where="빈 무지크페어아인 · 맨 위 영상 녹화 끝에 이어서 아래 띠 「🍎 레코드장에 담기」" data-key="맨 위 영상 녹화 끝 3초 — 파이스2가 잘라 씀" data-must="「🍎 ○알로 담기」와 「거실 레코드장에는 일곱 장까지」 안내가 읽히게"></figure>
-    </div>
+    <figure class="clip" data-video-1920="media/guide_classical_records_1920.mp4" data-video-1280="media/guide_classical_records_1280.mp4">
+      <div class="frame"><video muted playsinline loop preload="none" poster="media/guide_classical_records_poster.jpg"></video></div>
+      <figcaption>홀에서 「🍎 레코드장에 담기」를 누르면 그날의 곡이 내 집 거실 레코드장에 꽂힙니다. 거실의 ♪를 누르면 그림 벽이 물러나고 청음실이 서고, 판 하나를 누르면 연주가 흐릅니다.</figcaption></figure>
     <div class="notes">
     <div class="keep"><h3>지키는 것</h3><ul>
       <li><b>그날 들은 곡만 담습니다.</b> 목록에서 골라 담는 곳이 아니라, 그날 그 홀에 앉아 있었던 곡만 데려올 수 있습니다.</li>
