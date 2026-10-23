@@ -173,6 +173,45 @@ section.drawer{scroll-margin-top:calc(var(--head-top) + 52px)}
 .newest-row button:hover img{transform:translateY(-3px)}
 .newest-row b{font-family:var(--serif);font-weight:400;font-size:11.5px;line-height:1.35;color:#efe6d4;text-align:center;word-break:keep-all}
 @media (max-width:520px){ .grow > div{padding:12px 12px} .grow span{font-size:11px} }
+/* 콜레주의 책 — 열람실 초록빛 서가(1023 저녁) · 책등 그림은 앱 콜레주 2층 서가와 같은 것(college-assets/spines/spine_{id}.webp) */
+.wall.college{--sp-h:clamp(132px,16vw,200px);background:radial-gradient(120% 70% at 50% 0%,#24352b 0%,#18241d 55%,#101912 100%)}
+.wall.college .chips{margin-top:26px}
+.cs-room{padding:clamp(26px,3.2vw,40px) 0 clamp(10px,1.6vw,18px);border-top:1px solid rgba(239,230,212,.1)}
+.cs-room[hidden]{display:none}
+.cs-case{max-width:1080px;margin:0 auto clamp(14px,1.8vw,22px)}
+.cs-row{display:flex;align-items:flex-end;justify-content:center;padding:0 6px;min-height:calc(var(--sp-h) + 6px)}
+.cs-sp{display:block;height:var(--sp-h);width:auto;max-width:calc(100% / var(--n,12));object-fit:contain;object-position:bottom;
+  background:none;border:0;padding:0;cursor:pointer;filter:drop-shadow(0 3px 5px rgba(0,0,0,.55));transition:transform .22s ease}
+.cs-sp img{display:block;height:100%;width:auto;max-width:100%;object-fit:contain;object-position:bottom}
+.cs-sp:hover,.cs-sp:focus-visible{transform:translateY(-8px);outline:none}
+.cs-plank{position:relative;height:24px;border-radius:2px;margin:-2px 2px 0;
+  background:linear-gradient(180deg,#5a4020 0%,#3d2a13 42%,#2a1c0c 100%);
+  box-shadow:0 5px 12px rgba(0,0,0,.55),inset 0 1px 0 rgba(201,162,74,.28)}
+.cs-plank::after{content:'';position:absolute;left:0;right:0;bottom:-4px;height:4px;background:linear-gradient(180deg,rgba(0,0,0,.4),transparent)}
+.cs-plank span{position:absolute;top:50%;transform:translateY(-50%);font-size:10.5px;letter-spacing:.2em;white-space:nowrap;
+  color:rgba(222,186,118,.92);text-shadow:0 -1px 0 rgba(0,0,0,.75),0 1px 0 rgba(255,232,180,.14)}
+.cs-plank .pl-l{left:12px;font-family:var(--serif);font-weight:500}
+.cs-plank .pl-r{right:12px;letter-spacing:.12em;color:rgba(222,186,118,.7);font-variant-numeric:tabular-nums}
+@media (max-width:520px){ .cs-plank span{font-size:9.5px;letter-spacing:.12em} .cs-plank .pl-l{left:8px} .cs-plank .pl-r{right:8px} }
+/* 크게 보기 — 콜레주의 책: 책등 하나 + 판본 표지 2~3장 */
+.lb.college{background:rgba(10,16,12,.97)}
+.lb.college .lb-img{max-height:min(210px,26vh);max-height:min(210px,26svh)}
+.lb-eds{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:clamp(16px,2.4vw,28px);width:100%;
+  border-top:1px solid rgba(239,230,212,.14);padding-top:20px}
+.lb-eds[hidden]{display:none}
+.ed{display:grid;grid-template-columns:92px 1fr;gap:14px;align-items:start;text-align:left;min-width:0}
+.ed-c{display:block;width:92px;aspect-ratio:2/3;overflow:hidden;border-radius:2px;background:rgba(239,230,212,.08);
+  box-shadow:0 8px 18px rgba(0,0,0,.5)}
+.ed-c img{display:block;width:100%;height:100%;object-fit:cover}
+.ed-c.none{display:flex;align-items:center;justify-content:center;padding:8px;font-family:var(--serif);font-size:11.5px;line-height:1.5;
+  color:rgba(239,230,212,.7);text-align:center;word-break:keep-all}
+.ed-t{display:flex;flex-direction:column;gap:3px;min-width:0;word-break:keep-all}
+.ed-t b{font-weight:600;font-size:14px;color:#efe6d4}
+.ed-t i{font-style:normal;font-size:12.5px;color:rgba(239,230,212,.6)}
+.ed-t .ed-n{font-family:var(--serif);font-size:12.5px;line-height:1.5;color:rgba(239,230,212,.75)}
+.ed-t p{margin-top:4px;font-family:var(--serif);font-weight:300;font-size:13.5px;line-height:1.7;color:rgba(239,230,212,.86)}
+.ed-t em{align-self:flex-start;margin-top:6px;font-style:normal;font-size:11px;letter-spacing:.04em;padding:2px 9px;border-radius:999px;
+  border:1px solid rgba(239,230,212,.35);color:rgba(239,230,212,.8)}
 </style>
 </head>
 <body>
@@ -204,7 +243,7 @@ section.drawer{scroll-margin-top:calc(var(--head-top) + 52px)}
     <a class="dr on" href="#paintings" data-dr="paintings" aria-current="true"><span class="n" data-count="visual">75</span><b>그림</b><i>다섯 미술관이 하루 한 점씩 돌아가며 겁니다</i></a>
     <a class="dr" href="#music" data-dr="music"><span class="n" data-count="record">75</span><b>곡</b><i>다섯 음악관에 하루 한 곡씩 오릅니다</i></a>
     <a class="dr" href="#stars" data-dr="stars"><span class="n" data-count="stars">233</span><b>별</b><i>별 하나에 한 사람 · 해마다 273명씩 새로 뜹니다</i></a>
-    <div class="dr wip" aria-disabled="true"><span class="n" data-count="college">273</span><b>콜레주의 책</b><i>일곱 갈래 서가에 선 책</i><em>짓는 중</em></div>
+    <a class="dr" href="#college" data-dr="college"><span class="n" data-count="college">273</span><b>콜레주의 책</b><i>일곱 갈래 서가에 선 책 · 책등을 누르면 판본이 펼쳐집니다</i></a>
   </nav>
 </main>
 
@@ -249,6 +288,18 @@ section.drawer{scroll-margin-top:calc(var(--head-top) + 52px)}
   <div class="wall-in" id="starRooms"><p class="wall-note">별을 붙이는 중입니다…</p></div>
 </section>
 
+<!-- 콜레주의 책 — 일곱 갈래 서가(1023 저녁 소로) · 책등은 앱 2층 서가의 그림 그대로 · 누르면 판본 표지 2~3장(college_editions · collection.js · DB 직접) -->
+<section class="wall college drawer" id="college" aria-labelledby="college-title" hidden>
+  <div class="wall-head">
+    <div class="k">서랍 넷 · 콜레주의 책</div>
+    <h2 id="college-title">일곱 갈래 서가</h2>
+    <p>콜레주 드 콤포스텔라의 서가에는 273권이 일곱 갈래로 서 있습니다. 문학, 시와 극, 철학과 사상, 역사, 자연, 예술, 삶의 기록. 갈래 안에서는 쓰인 때의 차례입니다. 모두 혼자서는 끝까지 가기 어려운 책이라, 콜레주에서는 같은 책을 든 사람들과 몇 주에 걸쳐 함께 읽습니다.</p>
+    <p>책등을 누르면 지금 서점에서 구할 수 있는 판본 두세 가지가 펼쳐집니다. 어떤 판을 들고 오셔도 됩니다. 콜레주의 진도표는 쪽수가 아니라 장과 소제목으로 짜여 있으니까요.</p>
+    <div class="chips" id="collegeChips" role="group" aria-label="갈래로 거르기"></div>
+  </div>
+  <div class="wall-in" id="collegeRooms"><p class="wall-note">책을 꽂는 중입니다…</p></div>
+</section>
+
 <div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="그림 크게 보기">
   <span class="lb-count"></span>
   <button class="lb-x" type="button" aria-label="닫기">×</button>
@@ -266,6 +317,7 @@ section.drawer{scroll-margin-top:calc(var(--head-top) + 52px)}
       <h4>다섯 미술관에 걸리는 날</h4>
       <ul class="lb-when"></ul>
     </div>
+    <div class="lb-eds" hidden></div>
     <p class="lb-app">그림의 네 겹 해설과 설명 듣기, 내 집 거실에 들이기는 EG유니버스 안에서.</p>
   </div>
 </div>
@@ -275,6 +327,6 @@ section.drawer{scroll-margin-top:calc(var(--head-top) + 52px)}
 
 <script src="https://app.egsalon.com/eg_device.js?v=20260729"></script>
 <script src="site.js?v=1023a"></script>
-<script src="collection.js?v=1023a"></script>
+<script src="collection.js?v=1023b"></script>
 </body>
 </html>

@@ -15,6 +15,7 @@
           그림  H 미술관 전부(terra_pins heritage · sort · 잠든 관 포함) · N 그림(hang_order → id) · no meta.museum_no
           곡    H 깨어 있는 음악관(terra_pins concert · active · sort)      · N 곡(id 순)            · no meta.hall_no
         ⚠⚠ 앱 공식을 고치면 여기도 함께
+   ⑤ 별 서랍 — 포토카드 앨범 · ⑥ 콜레주의 책(1023 저녁) — 일곱 갈래 서가 · 책등은 앱 2층 서가 그림 · 누르면 판본 표지 2~3장(college_editions)
    4겹 해설 · 설명 듣기 · 연주 · 거실에 들이기는 앱 몫(「홈은 보는 곳, 앱은 하고 남는 곳」 1018 · 「곡은 만나는 날에만」 0816)
    ══════════════════════════════════════════════════════════════════════════ */
 (function(){
@@ -274,6 +275,92 @@
     renderChips(); renderStars();
   });
 
+  /* ══ ⑥ 콜레주의 책 — 일곱 갈래 서가(1023 저녁 소로) ══
+        college_books 273 · 책등은 앱 콜레주 2층 서가와 같은 그림(college-assets/spines/spine_{id}.webp)
+        갈래(stream)마다 방 하나 · 갈래 안은 sort_order(쓰인 때의 차례) · 한 칸에 서는 권수는 폭에 맞춰
+        책마다 키 변주는 앱과 같은 셈(88~100% · id 결정론) · 누르면 판본 표지 2~3장(college_editions · 1023 저녁) */
+  var college = { list:[], order:[] }, eds = {}, colStream = '', colN = 0;
+  var colBox = document.getElementById('collegeRooms'), colChips = document.getElementById('collegeChips');
+  var STREAMS = ['I. 문학', 'II. 시와 극', 'III. 철학과 사상', 'IV. 역사', 'V. 자연', 'VI. 예술', 'VII. 삶의 기록'];
+  var ROMAN = { 'I. 문학':'Ⅰ', 'II. 시와 극':'Ⅱ', 'III. 철학과 사상':'Ⅲ', 'IV. 역사':'Ⅳ', 'V. 자연':'Ⅴ', 'VI. 예술':'Ⅵ', 'VII. 삶의 기록':'Ⅶ' };
+  var SPINE_V = (function(d){ return d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0'); })(new Date());
+  function spine(id){ return SUPA + '/storage/v1/object/public/college-assets/spines/spine_' + id + '.webp?v=' + SPINE_V; }
+  function sname(s){ return String(s || '').replace(/^[IVX]+\. /, ''); }
+  function cleanYear(y){ return String(y || '').replace(/c\./g, '').replace(/^AD\s*/, '').replace(/\s*\(사후 출간\)/, '').trim(); }
+  function perRow(){
+    var w = colBox ? colBox.clientWidth : 1000;
+    return Math.max(8, Math.min(22, Math.floor(w / 46)));
+  }
+
+  function renderColChips(){
+    if (!colChips) return;
+    var n = {};
+    college.list.forEach(function(b){ n[b.stream] = (n[b.stream] || 0) + 1; });
+    colChips.innerHTML = ['<button type="button" data-s=""' + (colStream ? '' : ' class="on" aria-pressed="true"') + '>전체 <i>' + college.list.length + '</i></button>']
+      .concat(STREAMS.filter(function(s){ return n[s]; }).map(function(s){
+        return '<button type="button" data-s="' + esc(s) + '"' + (colStream === s ? ' class="on" aria-pressed="true"' : '') + '>'
+          + ROMAN[s] + ' ' + esc(sname(s)) + ' <i>' + n[s] + '</i></button>';
+      })).join('');
+  }
+
+  function renderCollege(){
+    if (!colBox) return;
+    colN = perRow();
+    var by = {};
+    college.list.forEach(function(b, i){ (by[b.stream] = by[b.stream] || []).push({ b:b, i:i }); });
+    college.order = [];
+    var out = [];
+    STREAMS.concat(Object.keys(by).filter(function(s){ return STREAMS.indexOf(s) < 0; })).forEach(function(s){
+      var list = by[s]; if (!list || !list.length) return;
+      if (colStream && colStream !== s) return;
+      out.push('<section class="cs-room"><h3 class="wroom-h"><b>' + (ROMAN[s] ? ROMAN[s] + ' ' : '') + esc(sname(s)) + '</b><span>' + list.length + '권</span></h3>');
+      for (var r = 0; r < list.length; r += colN){
+        var row = list.slice(r, r + colN), cells = [];
+        row.forEach(function(x){
+          var k = college.order.length; college.order.push(x.i);
+          var f = (88 + ((x.b.id * 7919) % 13)) / 100;
+          cells.push('<button class="cs-sp" type="button" data-k="' + k + '" style="height:calc(var(--sp-h) * ' + f + ')" aria-label="' + esc('『' + x.b.title + '』 ' + (x.b.author || '')) + '">'
+            + '<img src="' + esc(spine(x.b.id)) + '" alt="" loading="lazy" decoding="async" onerror="this.parentNode.style.display=\'none\'"></button>');
+        });
+        var y0 = cleanYear(row[0].b.year_raw), y1 = cleanYear(row[row.length - 1].b.year_raw);
+        out.push('<div class="cs-case"><div class="cs-row" style="--n:' + colN + '">' + cells.join('') + '</div>'
+          + '<div class="cs-plank"><span class="pl-l">' + (r === 0 ? (ROMAN[s] ? ROMAN[s] + ' ' : '') + esc(sname(s)) : '') + '</span>'
+          + '<span class="pl-r">' + esc(y0) + (y1 && y1 !== y0 ? ' – ' + esc(y1) : '') + '</span></div></div>');
+      }
+      out.push('</section>');
+    });
+    colBox.innerHTML = out.join('') || '<p class="wall-note">이 갈래의 책이 아직 없습니다.</p>';
+  }
+  if (colChips) colChips.addEventListener('click', function(e){
+    var b = e.target.closest('button[data-s]'); if (!b) return;
+    colStream = b.getAttribute('data-s');
+    renderColChips(); renderCollege();
+  });
+  /* 폭이 바뀌어 한 칸 권수가 달라질 때만 다시 꽂는다 */
+  var rsT = null;
+  window.addEventListener('resize', function(){
+    clearTimeout(rsT);
+    rsT = setTimeout(function(){ if (college.list.length && perRow() !== colN) renderCollege(); }, 200);
+  });
+
+  /* 판본 카드 — 표지 · 출판사 · 옮긴이 · 해 · 까닭 한 줄 · 절판이면 「절판 · 도서관에서」 */
+  function edTitle(t){ return String(t || '').replace(/\((양장본 )?Hard[Cc]over\)/g, '').replace(/\s+/g, ' ').trim(); }
+  function edsHtml(id){
+    var list = eds[id] || [];
+    if (!list.length) return '<p class="lb-app">이 책의 판본은 곧 실립니다.</p>';
+    return list.map(function(e){
+      var cover = e.cover_url
+        ? '<span class="ed-c"><img src="' + esc(e.cover_url) + '" alt="" loading="lazy" decoding="async" onerror="this.parentNode.className=\'ed-c none\';this.parentNode.textContent=' + esc(JSON.stringify(edTitle(e.title))) + '"></span>'
+        : '<span class="ed-c none">' + esc(edTitle(e.title)) + '</span>';
+      var tag = e.availability === 'out' ? '<em>절판 · 도서관에서</em>'
+              : e.availability === 'none' ? '<em>한국어판이 없어 대신 권하는 책</em>' : '';
+      return '<div class="ed">' + cover + '<div class="ed-t"><b>' + esc(e.publisher || '') + '</b>'
+        + '<i>' + esc([e.translators ? e.translators + ' 옮김' : '', (e.pub_date || '').slice(0, 4)].filter(Boolean).join(' · ')) + '</i>'
+        + '<span class="ed-n">' + esc(edTitle(e.title)) + '</span>'
+        + (e.why ? '<p>' + esc(e.why) + '</p>' : '') + tag + '</div></div>';
+    }).join('');
+  }
+
   function fadeIn(root){
     root.querySelectorAll('.wa-f img').forEach(function(img){
       var host = img.closest('.wa, .mc, .sc');
@@ -291,7 +378,11 @@
             img:function(w, i){ var f = faces[w.artist]; return f ? f.img : stageFor(i); }, meta:function(w){ return [w.artist, w.period]; }, by:'origin' },
     star: { shelf:star, head:'', app:'별에 다가가 그 생애를 장면으로 펼치고, 그 별의 컴퍼니에 드는 일은 EG유니버스 안에서.',
             img:function(w){ return w.photo_url; }, meta:function(w){ return [life(w), w.field, w.primary_tag]; }, by:'',
-            title:function(w){ return w.name; }, scene:function(w){ return w.description; } }
+            title:function(w){ return w.name; }, scene:function(w){ return w.description; } },
+    college: { shelf:college, head:'', app:'종 달기와 등록, 같은 책을 든 사람들과 함께 읽는 일은 EG유니버스 안에서.',
+            img:function(w){ return spine(w.id); },
+            meta:function(w){ return [w.author, sname(w.stream), cleanYear(w.year_raw), w.weeks_raw ? w.weeks_raw + ' 과정' : '', w.founding ? '개막하는 다섯 권' : '']; }, by:'',
+            title:function(w){ return '『' + w.title + '』'; }, scene:function(){ return ''; } }
   };
   function open(which, k){
     if (!lb) return;
@@ -303,10 +394,13 @@
     var big = lb.querySelector('.lb-img');
     big.classList.remove('in');
     big.onload = function(){ big.classList.add('in'); };
-    big.alt = L.title ? w.name : (w.artist || '') + ' 「' + w.name + '」';
+    big.alt = which === 'college' ? '『' + w.title + '』 책등' : L.title ? w.name : (w.artist || '') + ' 「' + w.name + '」';
     big.src = L.img(w, i);
     lb.classList.toggle('song', which === 'song');
     lb.classList.toggle('star', which === 'star');
+    lb.classList.toggle('college', which === 'college');
+    var edBox = lb.querySelector('.lb-eds');
+    if (edBox){ edBox.hidden = which !== 'college'; edBox.innerHTML = which === 'college' ? edsHtml(w.id) : ''; }
     lb.querySelector('.lb-name').textContent = L.title ? L.title(w) : '「' + w.name + '」';
     lb.querySelector('.lb-meta').textContent = L.meta(w).filter(Boolean).join(' · ');
     var by = lb.querySelector('.lb-by');
@@ -346,6 +440,9 @@
   });
   if (starBox) starBox.addEventListener('click', function(e){
     var b = e.target.closest('.sc'); if (b) open('star', Number(b.getAttribute('data-k')));
+  });
+  if (colBox) colBox.addEventListener('click', function(e){
+    var b = e.target.closest('.cs-sp'); if (b) open('college', Number(b.getAttribute('data-k')));
   });
   if (lb){
     lb.querySelector('.lb-x').addEventListener('click', close);
@@ -407,6 +504,17 @@
       setCount('stars', star.list.length);
       renderChips(); renderStars(); renderNewest();
     }).catch(fail(starBox, '별'));
+
+  if (colBox) Promise.all([
+    get('college_books?select=id,title,author,stream,year_raw,weeks_raw,founding&order=sort_order'),
+    get('college_editions?select=book_id,ord,title,translators,publisher,pub_date,why,cover_url,availability&order=book_id,ord').catch(function(){ return []; })
+  ]).then(function(r){
+    college.list = Array.isArray(r[0]) ? r[0] : [];
+    if (!college.list.length) throw new Error('empty');
+    (Array.isArray(r[1]) ? r[1] : []).forEach(function(e){ (eds[e.book_id] = eds[e.book_id] || []).push(e); });
+    setCount('college', college.list.length);
+    renderColChips(); renderCollege();
+  }).catch(fail(colBox, '책'));
 
   /* 서울 자정을 넘기면 「오늘」을 다시 단다 */
   setInterval(function(){
