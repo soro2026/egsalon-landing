@@ -105,6 +105,29 @@ a.dr:hover{background:var(--paper-2)}
 .lb-x:hover,.lb-prev:hover,.lb-next:hover{background:rgba(239,230,212,.18)}
 .lb-count{position:fixed;left:var(--gutter);top:calc(var(--head-top) + 16px);font-size:12px;letter-spacing:.14em;color:rgba(239,230,212,.45)}
 @media (max-width:640px){ .lb-prev,.lb-next{top:auto;bottom:18px;transform:none} .lb{padding-bottom:84px} }
+section.drawer[hidden]{display:none}
+section.drawer{scroll-margin-top:calc(var(--head-top) + 52px)}
+.wall.concert .wrow{align-items:flex-start}
+/* 곡 서랍 — 객석의 짙은 와인빛 벽 */
+.wall.concert{background:radial-gradient(120% 70% at 50% 0%,#3a1f22 0%,#2a1518 55%,#1e0f11 100%)}
+.mc{--h:clamp(130px,15vw,200px);display:flex;flex-direction:column;align-items:center;gap:12px;width:calc(var(--h) * 1.25);max-width:44vw}
+.mc .wa-f{min-width:calc(var(--h) * .7)}
+.mc.in .wa-f{min-width:0}
+.mc .wa-f img{display:block;height:100%;width:auto;max-width:100%;object-fit:contain;opacity:0;transition:opacity .9s ease;
+  filter:drop-shadow(0 10px 24px rgba(0,0,0,.55)) drop-shadow(0 2px 6px rgba(0,0,0,.45))}
+.mc.in .wa-f img{opacity:1}
+.mc.stage .wa-f img{border:6px solid #a8833f;box-shadow:inset 0 0 0 1px rgba(0,0,0,.3)}
+.mc-n{display:flex;flex-direction:column;gap:2px;text-align:center;line-height:1.4;word-break:keep-all}
+.mc-n b{font-family:var(--serif);font-weight:400;font-size:14px;color:#efe6d4}
+.mc-n i{font-style:normal;font-size:11.5px;letter-spacing:.06em;color:rgba(239,230,212,.5)}
+.mc-s{list-style:none;display:flex;flex-direction:column;gap:2px;width:100%;border-top:1px solid rgba(239,230,212,.12);padding-top:8px}
+.mc-s button{display:block;width:100%;background:none;border:0;padding:5px 2px;cursor:pointer;color:rgba(239,230,212,.82);
+  font-family:var(--serif);font-size:12.5px;line-height:1.5;text-align:center;word-break:keep-all;border-radius:4px;transition:background .2s,color .2s}
+.mc-s button:hover,.mc-s button:focus-visible{background:rgba(239,230,212,.08);color:#fff;outline:none}
+.mc-s button em{display:table;margin:5px auto 1px;font-style:normal;font-family:'Pretendard',sans-serif;font-size:11px;letter-spacing:.04em;
+  padding:2px 9px;border-radius:999px;background:var(--arrow);color:var(--ink)}
+.lb-by{margin-top:6px;font-size:12.5px;line-height:1.6;color:rgba(239,230,212,.5);word-break:keep-all}
+.lb.song .lb-img{max-height:max(34vh,calc(100vh - 540px));max-height:max(34svh,calc(100svh - 540px))}
 </style>
 </head>
 <body>
@@ -133,15 +156,15 @@ a.dr:hover{background:var(--paper-2)}
   <p class="gloss">EG유니버스가 지금까지 들여온 것들입니다. 다섯 미술관이 돌아가며 거는 그림, 다섯 음악관에 하루 한 곡씩 오르는 곡, 하늘의 별 하나에 한 사람, 콜레주 드 콤포스텔라의 서가에 선 책. 서랍을 열어 천천히 둘러보세요.</p>
 
   <nav class="drawers" aria-label="소장품 서랍 넷">
-    <a class="dr on" href="#paintings" aria-current="true"><span class="n" data-count="visual">75</span><b>그림</b><i>다섯 미술관이 하루 한 점씩 돌아가며 겁니다</i></a>
-    <div class="dr wip" aria-disabled="true"><span class="n" data-count="record">75</span><b>곡</b><i>다섯 음악관에 하루 한 곡씩 오릅니다</i><em>짓는 중</em></div>
+    <a class="dr on" href="#paintings" data-dr="paintings" aria-current="true"><span class="n" data-count="visual">75</span><b>그림</b><i>다섯 미술관이 하루 한 점씩 돌아가며 겁니다</i></a>
+    <a class="dr" href="#music" data-dr="music"><span class="n" data-count="record">75</span><b>곡</b><i>다섯 음악관에 하루 한 곡씩 오릅니다</i></a>
     <div class="dr wip" aria-disabled="true"><span class="n" data-count="stars">233</span><b>별</b><i>별 하나에 한 사람이 있습니다</i><em>짓는 중</em></div>
     <div class="dr wip" aria-disabled="true"><span class="n" data-count="college">273</span><b>콜레주의 책</b><i>일곱 갈래 서가에 선 책</i><em>짓는 중</em></div>
   </nav>
 </main>
 
 <!-- 그림 서랍 — 사조별 · 시대순 · 오늘 걸린 다섯 점 표시 · 누르면 크게(collection.js · DB 직접) -->
-<section class="wall" id="paintings" aria-labelledby="wall-title">
+<section class="wall drawer" id="paintings" aria-labelledby="wall-title">
   <div class="wall-head">
     <div class="k">서랍 하나 · 그림</div>
     <h2 id="wall-title">벽에 건 그림들</h2>
@@ -149,6 +172,17 @@ a.dr:hover{background:var(--paper-2)}
     <span class="mark">오늘 다섯 미술관에 걸린 그림</span>
   </div>
   <div class="wall-in" id="wallRooms"><p class="wall-note">그림을 거는 중입니다…</p></div>
+</section>
+
+<!-- 곡 서랍 — 작곡가의 벽(1023 소로 「재킷은 CSS 라 심심」) · 태어난 해 순서 · 네 방 · 곡 이름을 누르면 크게(collection.js · DB 직접) -->
+<section class="wall concert drawer" id="music" aria-labelledby="music-title" hidden>
+  <div class="wall-head">
+    <div class="k">서랍 둘 · 곡</div>
+    <h2 id="music-title">곡을 쓴 사람들</h2>
+    <p>빈 · 파리 · 부에노스아이레스 · 시드니 · 함부르크, 다섯 음악관에 하루 한 곡씩 오릅니다. 한 곡이 다섯 음악관을 다 도는 데 75일이 걸립니다. 여기서는 곡을 쓴 사람의 얼굴 아래에 걸어 두었습니다. 곡 이름을 누르면 다음에 어느 음악관에서 다시 울리는지 보입니다.</p>
+    <span class="mark">오늘 다섯 음악관에 오른 곡</span>
+  </div>
+  <div class="wall-in" id="musicRooms"><p class="wall-note">곡을 거는 중입니다…</p></div>
 </section>
 
 <div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="그림 크게 보기">
@@ -161,6 +195,7 @@ a.dr:hover{background:var(--paper-2)}
     <div class="lb-plq">
       <h3 class="lb-name"></h3>
       <p class="lb-meta"></p>
+      <p class="lb-by" hidden></p>
       <p class="lb-scene"></p>
     </div>
     <div class="lb-wh">
