@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Collection · EG유니버스</title>
-<meta name="description" content="그림 · 곡 · 별 · 콜레주의 273권. 한 점에 한 장씩 담고, 새로 들어온 것은 매일 밤 늘어납니다.">
+<meta name="description" content="EG유니버스의 소장품 — 다섯 미술관이 돌아가며 거는 그림, 다섯 음악관의 곡, 하늘의 별, 콜레주 드 콤포스텔라의 273권.">
 <meta name="theme-color" content="#0b0907">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,19 +12,99 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500&display=swap">
 <link rel="stylesheet" href="site.css?v=1020h">
 <style>
-/* ── Collection — 골격만 선 자리 (1018 저녁) · 채우는 대로 이 아래가 바뀐다 ── */
+/* ── Collection — 서랍 넷(1023 소로) · 그림 서랍부터 · 숫자와 그림은 collection.js 가 DB 에서 직접 ── */
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--paper)}
+html.lb-open{overflow:hidden}
 body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
   -webkit-font-smoothing:antialiased;color:var(--ink);min-height:100vh;min-height:100svh}
-main{max-width:1080px;margin:0 auto;padding:calc(var(--head-top) + 140px) var(--gutter) 120px}
+main{max-width:1080px;margin:0 auto;padding:calc(var(--head-top) + 140px) var(--gutter) clamp(56px,7vw,96px)}
 .eyebrow{font-size:12.5px;letter-spacing:.3em;color:var(--ink-dim)}
 h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px,6.4vw,88px);
   line-height:1.15;letter-spacing:-.025em;word-break:keep-all}
 .gloss{margin-top:clamp(24px,3.6vw,44px);max-width:34em;font-family:var(--serif);font-weight:300;
   font-size:clamp(17px,1.7vw,22px);line-height:1.9;color:var(--ink-soft);word-break:keep-all;text-wrap:pretty}
-.wip{display:inline-block;margin-top:clamp(36px,5vw,60px);padding:8px 16px;border-radius:999px;
-  border:1px dashed rgba(11,9,7,.3);font-size:13px;letter-spacing:.06em;color:var(--ink-dim)}
+
+/* 서랍 넷 */
+.drawers{margin-top:clamp(40px,5.4vw,72px);display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:rgba(11,9,7,.14);border:1px solid rgba(11,9,7,.14)}
+.dr{position:relative;display:flex;flex-direction:column;gap:6px;padding:clamp(18px,2.2vw,28px) clamp(16px,1.8vw,24px) clamp(20px,2.4vw,30px);
+  background:var(--paper);color:var(--ink);text-decoration:none;transition:background .3s}
+a.dr:hover{background:var(--paper-2)}
+.dr .n{font-family:var(--serif);font-weight:300;font-size:clamp(34px,4.2vw,56px);line-height:1;letter-spacing:-.02em}
+.dr b{margin-top:8px;font-weight:600;font-size:15px;letter-spacing:.02em}
+.dr i{font-style:normal;font-size:13px;line-height:1.6;color:var(--ink-dim);word-break:keep-all}
+.dr.on{background:var(--ink);color:var(--paper)}
+.dr.on i{color:rgba(244,239,230,.62)}
+.dr.on::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--arrow)}
+.dr.wip{color:rgba(11,9,7,.42)}
+.dr.wip em{position:absolute;right:clamp(14px,1.6vw,20px);top:clamp(16px,2vw,24px);font-style:normal;font-size:11.5px;
+  letter-spacing:.06em;padding:3px 9px;border-radius:999px;border:1px dashed rgba(11,9,7,.3);color:var(--ink-dim)}
+@media (max-width:760px){ .drawers{grid-template-columns:repeat(2,1fr)} }
+
+/* 그림 서랍 — 어두운 미술관 벽 */
+.wall{background:radial-gradient(120% 70% at 50% 0%,#2e2720 0%,#211b16 55%,#1a1511 100%);color:#efe6d4;
+  padding:clamp(56px,7vw,104px) var(--gutter) clamp(72px,9vw,128px)}
+.wall-in{max-width:1240px;margin:0 auto}
+.wall-head{max-width:1080px;margin:0 auto clamp(36px,5vw,64px)}
+.wall-head .k{font-size:12.5px;letter-spacing:.3em;color:rgba(239,230,212,.55)}
+.wall-head h2{margin-top:14px;font-family:var(--serif);font-weight:400;font-size:clamp(30px,4vw,52px);letter-spacing:-.02em}
+.wall-head p{margin-top:18px;max-width:36em;font-family:var(--serif);font-weight:300;font-size:clamp(15.5px,1.45vw,19px);
+  line-height:1.95;color:rgba(239,230,212,.78);word-break:keep-all;text-wrap:pretty}
+.wall-head .mark{display:inline-flex;align-items:center;gap:8px;margin-top:18px;font-size:13px;color:rgba(239,230,212,.6)}
+.wall-head .mark::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--arrow);box-shadow:0 0 10px rgba(242,201,76,.7)}
+.wroom{padding:clamp(28px,3.4vw,44px) 0 clamp(18px,2.4vw,28px);border-top:1px solid rgba(239,230,212,.1)}
+.wroom-h{display:flex;align-items:baseline;gap:14px;margin-bottom:clamp(22px,2.8vw,36px);font-weight:400}
+.wroom-h b{font-family:var(--serif);font-weight:400;font-size:clamp(18px,1.7vw,22px);letter-spacing:.02em;color:#efe6d4}
+.wroom-h span{font-size:12.5px;letter-spacing:.14em;color:rgba(239,230,212,.45)}
+.wrow{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:center;gap:clamp(26px,3.4vw,52px) clamp(22px,3vw,48px)}
+.wa{--h:clamp(118px,15vw,210px);display:flex;flex-direction:column;align-items:center;gap:12px;max-width:min(92vw,calc(var(--h) * 1.9));
+  background:none;border:0;padding:0;cursor:zoom-in;color:inherit;font:inherit;text-align:center}
+.wa-f{display:block;height:var(--h);min-width:calc(var(--h) * .72)}
+.wa.pt .wa-f{min-width:calc(var(--h) * .6)}
+.wa.in .wa-f{min-width:0}
+.wa-f img{display:block;height:100%;width:auto;max-width:100%;object-fit:contain;opacity:0;transition:opacity .9s ease,transform .5s ease;
+  filter:drop-shadow(0 10px 24px rgba(0,0,0,.55)) drop-shadow(0 2px 6px rgba(0,0,0,.45))}
+.wa.in .wa-f img{opacity:1}
+.wa:hover .wa-f img,.wa:focus-visible .wa-f img{transform:translateY(-4px)}
+.wa:focus-visible{outline:none}
+.wa:focus-visible .wa-t b{text-decoration:underline;text-underline-offset:4px}
+.wa-t{display:flex;flex-direction:column;gap:3px;max-width:calc(var(--h) * 1.5);line-height:1.45;word-break:keep-all}
+.wa-t b{font-family:var(--serif);font-weight:400;font-size:13px;color:#efe6d4}
+.wa-t i{font-style:normal;font-size:11.5px;letter-spacing:.02em;color:rgba(239,230,212,.5)}
+.wa-t em{margin-top:4px;align-self:center;font-style:normal;font-size:11px;letter-spacing:.04em;padding:2px 9px;border-radius:999px;
+  background:var(--arrow);color:var(--ink)}
+.wall-note{text-align:center;color:rgba(239,230,212,.6);font-size:14px;padding:40px 0}
+
+/* 크게 보기 */
+.lb{position:fixed;inset:0;z-index:40;background:rgba(14,11,8,.97);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#efe6d4;display:flex;align-items:center;justify-content:center;
+  padding:calc(var(--head-top) + 8px) clamp(12px,5vw,80px) 24px;opacity:0;transition:opacity .25s ease;overflow-y:auto}
+.lb.on{opacity:1}
+.lb[hidden]{display:none}
+.lb-box{display:flex;flex-direction:column;align-items:center;gap:22px;max-width:980px;width:100%;margin:auto}
+.lb-img{display:block;max-width:100%;max-height:62vh;max-height:62svh;width:auto;height:auto;opacity:0;transition:opacity .5s ease;
+  filter:drop-shadow(0 18px 40px rgba(0,0,0,.6))}
+.lb-img.in{opacity:1}
+.lb-plq{text-align:center;max-width:34em}
+.lb-name{font-family:var(--serif);font-weight:400;font-size:clamp(20px,2.2vw,28px);letter-spacing:.01em}
+.lb-meta{margin-top:8px;font-size:13px;letter-spacing:.04em;color:rgba(239,230,212,.6)}
+.lb-scene{margin-top:14px;font-family:var(--serif);font-weight:300;font-size:clamp(15px,1.4vw,18px);line-height:1.8;color:rgba(239,230,212,.86);word-break:keep-all}
+.lb-wh{margin-top:6px;width:100%;max-width:30em;border-top:1px solid rgba(239,230,212,.14);padding-top:16px}
+.lb-wh h4{font-weight:400;font-size:12px;letter-spacing:.24em;color:rgba(239,230,212,.5);text-align:center}
+.lb-when{list-style:none;margin-top:12px;display:grid;gap:6px}
+.lb-when li{display:flex;justify-content:space-between;gap:16px;font-size:14px;color:rgba(239,230,212,.82);padding:2px 0}
+.lb-when li span{font-variant-numeric:tabular-nums;color:rgba(239,230,212,.55)}
+.lb-when li.now{color:var(--arrow)}
+.lb-when li.now span{color:var(--arrow)}
+.lb-app{margin-top:4px;font-size:12.5px;line-height:1.7;color:rgba(239,230,212,.45);text-align:center;word-break:keep-all}
+.lb-x,.lb-prev,.lb-next{position:fixed;z-index:41;background:rgba(239,230,212,.08);border:1px solid rgba(239,230,212,.2);color:#efe6d4;
+  border-radius:999px;cursor:pointer;font:inherit;display:flex;align-items:center;justify-content:center}
+.lb-x{top:calc(var(--head-top) + 6px);right:var(--gutter);width:42px;height:42px;font-size:20px;line-height:1}
+.lb-prev,.lb-next{top:50%;transform:translateY(-50%);width:46px;height:46px;font-size:20px}
+.lb-prev{left:clamp(8px,2vw,28px)} .lb-next{right:clamp(8px,2vw,28px)}
+.lb-x:hover,.lb-prev:hover,.lb-next:hover{background:rgba(239,230,212,.18)}
+.lb-count{position:fixed;left:var(--gutter);top:calc(var(--head-top) + 16px);font-size:12px;letter-spacing:.14em;color:rgba(239,230,212,.45)}
+@media (max-width:640px){ .lb-prev,.lb-next{top:auto;bottom:18px;transform:none} .lb{padding-bottom:84px} }
 </style>
 </head>
 <body>
@@ -50,14 +130,52 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
 <main>
   <div class="eyebrow">5 · 무엇 · 소장품</div>
   <h1>Collection</h1>
-  <p class="gloss">그림 · 곡 · 별 · 콜레주의 273권. 한 점에 한 장씩 담고, 새로 들어온 것은 매일 밤 늘어납니다.</p>
-  <span class="wip">짓는 중</span>
+  <p class="gloss">EG유니버스가 지금까지 들여온 것들입니다. 다섯 미술관이 돌아가며 거는 그림, 다섯 음악관에 하루 한 곡씩 오르는 곡, 하늘의 별 하나에 한 사람, 콜레주 드 콤포스텔라의 서가에 선 책. 서랍을 열어 천천히 둘러보세요.</p>
+
+  <nav class="drawers" aria-label="소장품 서랍 넷">
+    <a class="dr on" href="#paintings" aria-current="true"><span class="n" data-count="visual">75</span><b>그림</b><i>다섯 미술관이 하루 한 점씩 돌아가며 겁니다</i></a>
+    <div class="dr wip" aria-disabled="true"><span class="n" data-count="record">75</span><b>곡</b><i>다섯 음악관에 하루 한 곡씩 오릅니다</i><em>짓는 중</em></div>
+    <div class="dr wip" aria-disabled="true"><span class="n" data-count="stars">233</span><b>별</b><i>별 하나에 한 사람이 있습니다</i><em>짓는 중</em></div>
+    <div class="dr wip" aria-disabled="true"><span class="n" data-count="college">273</span><b>콜레주의 책</b><i>일곱 갈래 서가에 선 책</i><em>짓는 중</em></div>
+  </nav>
 </main>
+
+<!-- 그림 서랍 — 사조별 · 시대순 · 오늘 걸린 다섯 점 표시 · 누르면 크게(collection.js · DB 직접) -->
+<section class="wall" id="paintings" aria-labelledby="wall-title">
+  <div class="wall-head">
+    <div class="k">서랍 하나 · 그림</div>
+    <h2 id="wall-title">벽에 건 그림들</h2>
+    <p>오르세 · 루브르 · 프라도 · 우피치 · 시카고, 다섯 미술관이 이 그림들을 하루 한 점씩 돌아가며 겁니다. 한 점이 다섯 미술관을 다 도는 데 75일이 걸립니다. 여기서는 사조와 시대의 차례로 한 벽에 걸어 두었습니다. 그림을 누르면 다음에 어느 미술관에서 다시 만나는지 보입니다.</p>
+    <span class="mark">오늘 다섯 미술관에 걸린 그림</span>
+  </div>
+  <div class="wall-in" id="wallRooms"><p class="wall-note">그림을 거는 중입니다…</p></div>
+</section>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="그림 크게 보기">
+  <span class="lb-count"></span>
+  <button class="lb-x" type="button" aria-label="닫기">×</button>
+  <button class="lb-prev" type="button" aria-label="앞 그림">‹</button>
+  <button class="lb-next" type="button" aria-label="다음 그림">›</button>
+  <div class="lb-box">
+    <img class="lb-img" alt="">
+    <div class="lb-plq">
+      <h3 class="lb-name"></h3>
+      <p class="lb-meta"></p>
+      <p class="lb-scene"></p>
+    </div>
+    <div class="lb-wh">
+      <h4>다섯 미술관에 걸리는 날</h4>
+      <ul class="lb-when"></ul>
+    </div>
+    <p class="lb-app">그림의 네 겹 해설과 설명 듣기, 내 집 거실에 들이기는 EG유니버스 안에서.</p>
+  </div>
+</div>
 
 <!-- 바닥 지도 — 글은 site.js 한 곳(1019) -->
 <footer class="eg-map" aria-label="EG유니버스의 지도"></footer>
 
 <script src="https://app.egsalon.com/eg_device.js?v=20260729"></script>
 <script src="site.js?v=1023a"></script>
+<script src="collection.js?v=1023a"></script>
 </body>
 </html>
