@@ -195,9 +195,70 @@
     fadeIn(musicBox);
   }
 
+  /* ══ ⑤ 별 서랍 — 포토카드 앨범(1023 소로) ══
+        stars 233 · 포토카드(photo_url) · 태어난 해 순서 · 방 여섯(태어난 때) · 맨 위 분야 칩으로 거르기
+        앱 하늘의 띠(안쪽 고대 → 바깥 근현대)와 같은 차례 · 북극성(is_polaris)에는 작은 표시 */
+  var star = { list:[], order:[] }, starField = '';
+  var starBox = document.getElementById('starRooms'), chipBox = document.getElementById('starChips');
+  var SKY = [
+    { to:499,  name:'고대' },
+    { to:1399, name:'중세' },
+    { to:1699, name:'1400–1600년대' },
+    { to:1799, name:'1700년대' },
+    { to:1899, name:'1800년대' },
+    { to:9999, name:'1900년대' }
+  ];
+  function yr(y){ return y == null ? '' : (y < 0 ? '기원전 ' + (-y) : String(y)); }
+  function life(s){
+    if (s.birth < 0 && s.death != null && s.death < 0) return '기원전 ' + (-s.birth) + '–' + (-s.death);   /* 둘 다 기원전이면 한 번만 */
+    return yr(s.birth) + (s.death != null ? '–' + yr(s.death) : '');
+  }
+
+  function renderChips(){
+    var n = {}, total = star.list.length;
+    star.list.forEach(function(s){ if (s.field) n[s.field] = (n[s.field] || 0) + 1; });
+    var fs = Object.keys(n).sort(function(a, b){ return n[b] - n[a] || a.localeCompare(b, 'ko'); });
+    chipBox.innerHTML = ['<button type="button" data-f=""' + (starField ? '' : ' class="on" aria-pressed="true"') + '>전체 <i>' + total + '</i></button>']
+      .concat(fs.map(function(f){
+        return '<button type="button" data-f="' + esc(f) + '"' + (starField === f ? ' class="on" aria-pressed="true"' : '') + '>' + esc(f) + ' <i>' + n[f] + '</i></button>';
+      })).join('');
+  }
+
+  function renderStars(){
+    var rooms = SKY.map(function(e){ return { name:e.name, to:e.to, people:[] }; });
+    star.list.forEach(function(s, i){
+      if (starField && s.field !== starField) return;
+      var b = s.birth == null ? 9999 : s.birth;
+      for (var r = 0; r < rooms.length; r++){ if (b <= rooms[r].to){ rooms[r].people.push({ s:s, i:i }); break; } }
+    });
+    star.order = [];
+    var out = [];
+    rooms.forEach(function(room){
+      if (!room.people.length) return;
+      room.people.sort(function(a, b){ return (a.s.birth || 0) - (b.s.birth || 0) || a.i - b.i; });
+      out.push('<section class="wroom"><h3 class="wroom-h"><b>' + esc(room.name) + '</b><span>' + room.people.length + '명</span></h3><div class="wrow">');
+      room.people.forEach(function(x, n){
+        var k = star.order.length; star.order.push(x.i);
+        var s = x.s;
+        out.push('<button class="sc' + (n % 3 === 1 ? ' t1' : n % 3 === 2 ? ' t2' : '') + '" type="button" data-k="' + k + '" aria-label="' + esc(s.name) + '">'
+          + '<span class="wa-f"><img src="' + esc(s.photo_url) + '" alt="" loading="lazy" decoding="async"></span>'
+          + '<span class="sc-t"><b>' + esc(s.name) + '</b><i>' + esc(life(s)) + '</i>'
+          + (s.is_polaris ? '<em>북극성</em>' : '') + '</span></button>');
+      });
+      out.push('</div></section>');
+    });
+    starBox.innerHTML = out.join('') || '<p class="wall-note">이 분야의 별이 아직 없습니다.</p>';
+    fadeIn(starBox);
+  }
+  if (chipBox) chipBox.addEventListener('click', function(e){
+    var b = e.target.closest('button[data-f]'); if (!b) return;
+    starField = b.getAttribute('data-f');
+    renderChips(); renderStars();
+  });
+
   function fadeIn(root){
     root.querySelectorAll('.wa-f img').forEach(function(img){
-      var host = img.closest('.wa, .mc');
+      var host = img.closest('.wa, .mc, .sc');
       var done = function(){ host.classList.add('in'); };
       if (img.complete && img.naturalWidth) done(); else img.addEventListener('load', done);
     });
@@ -209,30 +270,39 @@
     art:  { shelf:art,  head:'다섯 미술관에 걸리는 날', app:'그림의 네 겹 해설과 설명 듣기, 내 집 거실에 들이기는 EG유니버스 안에서.',
             img:function(w){ return w.img; }, meta:function(w){ return [w.artist, w.period, w.movement]; }, by:'' },
     song: { shelf:song, head:'다섯 음악관에 오르는 날', app:'곡 이야기 듣기와 연주는 그 곡이 음악관에 오르는 날, EG유니버스 안에서.',
-            img:function(w, i){ var f = faces[w.artist]; return f ? f.img : stageFor(i); }, meta:function(w){ return [w.artist, w.period]; }, by:'origin' }
+            img:function(w, i){ var f = faces[w.artist]; return f ? f.img : stageFor(i); }, meta:function(w){ return [w.artist, w.period]; }, by:'origin' },
+    star: { shelf:star, head:'', app:'별에 다가가 그 생애를 장면으로 펼치고, 그 별의 컴퍼니에 드는 일은 EG유니버스 안에서.',
+            img:function(w){ return w.photo_url; }, meta:function(w){ return [life(w), w.field, w.primary_tag]; }, by:'',
+            title:function(w){ return w.name; }, scene:function(w){ return w.description; } }
   };
   function open(which, k){
     if (!lb) return;
     var L = LB[which], S = L.shelf;
+    if (!S.order.length) return;
     kind = which;
     cur = (k + S.order.length) % S.order.length;
     var i = S.order[cur], w = S.list[i];
     var big = lb.querySelector('.lb-img');
     big.classList.remove('in');
     big.onload = function(){ big.classList.add('in'); };
-    big.alt = (w.artist || '') + ' 「' + w.name + '」';
+    big.alt = L.title ? w.name : (w.artist || '') + ' 「' + w.name + '」';
     big.src = L.img(w, i);
     lb.classList.toggle('song', which === 'song');
-    lb.querySelector('.lb-name').textContent = '「' + w.name + '」';
+    lb.classList.toggle('star', which === 'star');
+    lb.querySelector('.lb-name').textContent = L.title ? L.title(w) : '「' + w.name + '」';
     lb.querySelector('.lb-meta').textContent = L.meta(w).filter(Boolean).join(' · ');
     var by = lb.querySelector('.lb-by');
     by.textContent = L.by && w[L.by] ? '연주 · ' + w[L.by] : ''; by.hidden = !by.textContent;
-    var sc = lb.querySelector('.lb-scene');
-    sc.textContent = plain(w.scene); sc.hidden = !w.scene;
-    lb.querySelector('.lb-wh h4').textContent = L.head;
-    lb.querySelector('.lb-when').innerHTML = S.when(i).map(function(x){
-      return '<li' + (x.d === 0 ? ' class="now"' : '') + '><span>' + (x.d === 0 ? '오늘' : label(S.D + x.d)) + '</span>' + esc(S.hallName(x.h)) + '</li>';
-    }).join('');
+    var sc = lb.querySelector('.lb-scene'), st = L.scene ? L.scene(w) : w.scene;
+    sc.textContent = plain(st); sc.hidden = !st;
+    var wh = lb.querySelector('.lb-wh');
+    wh.hidden = !S.when;
+    if (S.when){
+      wh.querySelector('h4').textContent = L.head;
+      lb.querySelector('.lb-when').innerHTML = S.when(i).map(function(x){
+        return '<li' + (x.d === 0 ? ' class="now"' : '') + '><span>' + (x.d === 0 ? '오늘' : label(S.D + x.d)) + '</span>' + esc(S.hallName(x.h)) + '</li>';
+      }).join('');
+    }
     lb.querySelector('.lb-app').textContent = L.app;
     lb.querySelector('.lb-count').textContent = (cur + 1) + ' / ' + S.order.length;
     if (lb.hidden){
@@ -255,6 +325,9 @@
   });
   if (musicBox) musicBox.addEventListener('click', function(e){
     var b = e.target.closest('button[data-k]'); if (b) open('song', Number(b.getAttribute('data-k')));
+  });
+  if (starBox) starBox.addEventListener('click', function(e){
+    var b = e.target.closest('.sc'); if (b) open('star', Number(b.getAttribute('data-k')));
   });
   if (lb){
     lb.querySelector('.lb-x').addEventListener('click', close);
@@ -308,6 +381,14 @@
     setCount('record', song.list.length);
     renderMusic();
   }).catch(fail(musicBox, '곡'));
+
+  if (starBox) get('stars?select=id,name,field,birth,death,is_polaris,photo_url,description,primary_tag&photo_url=not.is.null&order=birth.asc.nullslast,id.asc')
+    .then(function(r){
+      star.list = Array.isArray(r) ? r : [];
+      if (!star.list.length) throw new Error('empty');
+      setCount('stars', star.list.length);
+      renderChips(); renderStars();
+    }).catch(fail(starBox, '별'));
 
   /* 서울 자정을 넘기면 「오늘」을 다시 단다 */
   setInterval(function(){
