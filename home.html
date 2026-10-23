@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500&display=swap">
-<link rel="preload" as="image" href="media/eg_home_hero_poster.jpg?v=1017b">
+<link rel="preload" as="image" href="media/eg_home_hero_poster.jpg?v=1023">
 <link rel="stylesheet" href="site.css?v=1020h">
 <style>
 /* ── EG 홈페이지 (1017) ───────────────────────────────────────
@@ -40,7 +40,7 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
 
 /* ── ① 후킹 층 ─────────────────────────────────────── */
 .hero{position:relative;height:100vh;height:100svh;min-height:420px;overflow:hidden;
-  background:var(--ink) url('media/eg_home_hero_poster.jpg?v=1017b') center/cover no-repeat}
+  background:var(--ink) url('media/eg_home_hero_poster.jpg?v=1023') center/cover no-repeat}
 .hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
 /* 글자가 읽히도록 아래·위만 살짝 어둡게 — 영상 자체는 손대지 않는다 */
 .hero::after{content:'';position:absolute;inset:0;pointer-events:none;
@@ -211,7 +211,7 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
 
 <header class="hero" aria-label="EG유니버스 소개 영상">
   <video id="hero" muted playsinline autoplay loop preload="auto"
-         poster="media/eg_home_hero_poster.jpg?v=1017b" aria-hidden="true"></video>
+         poster="media/eg_home_hero_poster.jpg?v=1023" aria-hidden="true"></video>
   <div class="plate">
     <b>EG유니버스</b>
     <span>2026년 12월 25일(금) 개관</span>
@@ -370,6 +370,12 @@ const credit = document.getElementById('credit');
 /* 폰은 가벼운 판, 넓은 화면은 1920 판 */
 v.src = (Math.max(screen.width, screen.height) * (window.devicePixelRatio || 1) > 2000 && window.innerWidth > 900)
   ? 'media/eg_home_hero_1920.mp4?v=1017b' : 'media/eg_home_hero_1280.mp4?v=1017b';
+/* 1023 파이원 — 영상 첫 0.27초는 검은 페이드인이라, 처음 켜질 때만 그 뒤에서 시작한다(포스터 = 그 장면 · 포스터 → 영상이 끊김 없이).
+   한 바퀴 돌아 처음으로 갈 때의 어두워졌다 밝아지는 숨은 그대로 둔다(소로 「껌뻑 하는 거 보기 흉함」). */
+v.addEventListener('loadedmetadata', function skipFade(){
+  v.removeEventListener('loadedmetadata', skipFade);
+  try { if (v.currentTime < 0.27) v.currentTime = 0.27; } catch(e){}
+});
 
 let cur = -1, swapTimer = 0;
 function cutAt(time){
