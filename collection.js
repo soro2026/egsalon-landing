@@ -250,6 +250,24 @@
     starBox.innerHTML = out.join('') || '<p class="wall-note">이 분야의 별이 아직 없습니다.</p>';
     fadeIn(starBox);
   }
+  /* 가장 최근에 뜬 별 — id 가 큰 차례(별은 세운 순서대로 번호를 받는다) · 누르면 「전체」로 돌려 그 별을 연다 */
+  var newBox = document.getElementById('starNew');
+  function renderNewest(){
+    if (!newBox) return;
+    var idx = star.list.map(function(s, i){ return i; })
+      .sort(function(a, b){ return (star.list[b].id || 0) - (star.list[a].id || 0); }).slice(0, 8);
+    newBox.innerHTML = idx.map(function(i){
+      var s = star.list[i];
+      return '<button type="button" data-i="' + i + '"><img src="' + esc(s.photo_url) + '" alt="" loading="lazy"><b>' + esc(s.name) + '</b></button>';
+    }).join('');
+  }
+  if (newBox) newBox.addEventListener('click', function(e){
+    var b = e.target.closest('button[data-i]'); if (!b) return;
+    var i = Number(b.getAttribute('data-i'));
+    if (starField){ starField = ''; renderChips(); renderStars(); }
+    var k = star.order.indexOf(i);
+    if (k >= 0) open('star', k);
+  });
   if (chipBox) chipBox.addEventListener('click', function(e){
     var b = e.target.closest('button[data-f]'); if (!b) return;
     starField = b.getAttribute('data-f');
@@ -387,7 +405,7 @@
       star.list = Array.isArray(r) ? r : [];
       if (!star.list.length) throw new Error('empty');
       setCount('stars', star.list.length);
-      renderChips(); renderStars();
+      renderChips(); renderStars(); renderNewest();
     }).catch(fail(starBox, '별'));
 
   /* 서울 자정을 넘기면 「오늘」을 다시 단다 */

@@ -157,6 +157,22 @@ section.drawer{scroll-margin-top:calc(var(--head-top) + 52px)}
 .sc-t i{font-style:normal;font-size:11px;letter-spacing:.04em;color:rgba(239,230,212,.5)}
 .sc-t em{margin-top:4px;align-self:center;font-style:normal;font-size:11px;letter-spacing:.06em;padding:2px 9px;border-radius:999px;background:var(--arrow);color:var(--ink)}
 .lb.star{background:rgba(9,13,26,.97)}
+/* 살아 있는 목록 */
+.grow{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:28px;max-width:640px;
+  background:rgba(239,230,212,.14);border:1px solid rgba(239,230,212,.14)}
+.grow > div{display:flex;flex-direction:column;gap:6px;padding:16px 18px;background:#141c33}
+.grow b{font-family:var(--serif);font-weight:300;font-size:clamp(26px,3vw,38px);line-height:1;color:#efe6d4;font-variant-numeric:tabular-nums}
+.grow > div:first-child b{color:var(--arrow)}
+.grow span{font-size:12px;line-height:1.5;color:rgba(239,230,212,.55);word-break:keep-all}
+.newest{margin-top:28px}
+.newest h4{font-weight:400;font-size:12px;letter-spacing:.24em;color:rgba(239,230,212,.5)}
+.newest-row{display:flex;gap:14px;margin-top:14px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:thin}
+.newest-row button{flex:none;display:flex;flex-direction:column;align-items:center;gap:6px;width:84px;background:none;border:0;padding:0;
+  cursor:zoom-in;color:inherit;font:inherit}
+.newest-row img{height:100px;width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(0 6px 12px rgba(0,0,0,.5));transition:transform .3s}
+.newest-row button:hover img{transform:translateY(-3px)}
+.newest-row b{font-family:var(--serif);font-weight:400;font-size:11.5px;line-height:1.35;color:#efe6d4;text-align:center;word-break:keep-all}
+@media (max-width:520px){ .grow > div{padding:12px 12px} .grow span{font-size:11px} }
 </style>
 </head>
 <body>
@@ -187,7 +203,7 @@ section.drawer{scroll-margin-top:calc(var(--head-top) + 52px)}
   <nav class="drawers" aria-label="소장품 서랍 넷">
     <a class="dr on" href="#paintings" data-dr="paintings" aria-current="true"><span class="n" data-count="visual">75</span><b>그림</b><i>다섯 미술관이 하루 한 점씩 돌아가며 겁니다</i></a>
     <a class="dr" href="#music" data-dr="music"><span class="n" data-count="record">75</span><b>곡</b><i>다섯 음악관에 하루 한 곡씩 오릅니다</i></a>
-    <a class="dr" href="#stars" data-dr="stars"><span class="n" data-count="stars">233</span><b>별</b><i>별 하나에 한 사람이 있습니다</i></a>
+    <a class="dr" href="#stars" data-dr="stars"><span class="n" data-count="stars">233</span><b>별</b><i>별 하나에 한 사람 · 해마다 273명씩 새로 뜹니다</i></a>
     <div class="dr wip" aria-disabled="true"><span class="n" data-count="college">273</span><b>콜레주의 책</b><i>일곱 갈래 서가에 선 책</i><em>짓는 중</em></div>
   </nav>
 </main>
@@ -220,6 +236,14 @@ section.drawer{scroll-margin-top:calc(var(--head-top) + 52px)}
     <div class="k">서랍 셋 · 별</div>
     <h2 id="stars-title">별 하나에 한 사람</h2>
     <p>EG유니버스의 밤하늘에는 별마다 한 사람이 있습니다. 하늘에서는 북극성을 가운데 두고 안쪽 띠에 고대의 사람이, 바깥 띠에 가까운 시대의 사람이 돕니다. 여기서는 그 차례대로 포토카드를 한 권의 앨범에 붙여 두었습니다. 분야를 고르면 그 분야의 별만 남습니다.</p>
+    <p>이 앨범은 닫혀 있지 않습니다. 12월 25일 개관하는 날 273명으로 문을 열고, 그 뒤로 해마다 273명씩 새 별이 뜹니다. 30년이 지나면 이 앨범에 서는 사람은 8,000명이 넘습니다.</p>
+    <!-- 살아 있는 목록(1023 소로) — 지금 수는 DB 에서 · 개관 273 · 해마다 +273 · 가장 최근에 뜬 별(id 큰 순) -->
+    <div class="grow" aria-label="늘어나는 하늘">
+      <div><b data-count="stars">233</b><span>지금 하늘에 뜬 별</span></div>
+      <div><b>273</b><span>12월 25일 개관하는 날</span></div>
+      <div><b>+273</b><span>그 뒤로 해마다</span></div>
+    </div>
+    <div class="newest"><h4>가장 최근에 뜬 별</h4><div class="newest-row" id="starNew"></div></div>
     <div class="chips" id="starChips" role="group" aria-label="분야로 거르기"></div>
   </div>
   <div class="wall-in" id="starRooms"><p class="wall-note">별을 붙이는 중입니다…</p></div>
