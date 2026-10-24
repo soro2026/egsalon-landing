@@ -211,6 +211,105 @@ section.drawer{scroll-margin-top:calc(var(--head-top) + 52px)}
 @keyframes cs-breathe{0%,100%{opacity:.1}50%{opacity:.95}}
 @keyframes cs-lift{0%,100%{filter:brightness(1)}50%{filter:brightness(1.14)}}
 @media (prefers-reduced-motion:reduce){ .cs-sp.soon::before{animation:none;opacity:.6} .cs-sp.soon img{animation:none} }
+/* ══ 콜레주의 책 — 세부 페이지(1024 밤 소로) · 큰 표지 · 책등 색 바탕 · 소개 세 문단 · 별 액자 · 포스터와 진도표 · 판본 ══
+   바탕 --c = 그 책 책등의 가죽 색(collection.js 가 읽어 칠함 · 못 읽으면 열람실 초록) · .light = 밝은 양피지 책등이면 종이 방 */
+.cb{--c:#24352b;--fg:239,230,212;--gold:#d6b26a;position:fixed;inset:0;z-index:40;overflow-y:auto;overscroll-behavior:contain;color:rgb(var(--fg));
+  background:radial-gradient(140% 90% at 22% 0%,color-mix(in srgb,var(--c) 92%,#000) 0%,color-mix(in srgb,var(--c) 52%,#000) 46%,color-mix(in srgb,var(--c) 20%,#050403) 100%);
+  opacity:0;transition:opacity .25s ease,background .6s ease;word-break:keep-all}
+.cb.on{opacity:1}
+.cb[hidden]{display:none}
+.cb.light{--fg:38,29,20;--gold:#7a5622;
+  background:radial-gradient(140% 90% at 22% 0%,color-mix(in srgb,var(--c) 70%,#fff8ec) 0%,color-mix(in srgb,var(--c) 46%,#f1e8d8) 52%,color-mix(in srgb,var(--c) 30%,#e6dcc8) 100%)}
+.cb-count{position:fixed;z-index:41;left:var(--gutter);top:calc(var(--head-top) + 16px);font-size:12px;letter-spacing:.14em;color:rgba(var(--fg),.5)}
+.cb-x,.cb-prev,.cb-next{position:fixed;z-index:41;display:grid;place-items:center;border-radius:50%;cursor:pointer;color:rgb(var(--fg));
+  background:rgba(var(--fg),.08);border:1px solid rgba(var(--fg),.22);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:background .2s ease}
+.cb-x{top:calc(var(--head-top) + 6px);right:var(--gutter);width:42px;height:42px;font-size:20px;line-height:1}
+.cb-prev,.cb-next{top:50%;transform:translateY(-50%);width:46px;height:46px;font-size:20px}
+.cb-prev{left:clamp(8px,2vw,28px)} .cb-next{right:clamp(8px,2vw,28px)}
+.cb-x:hover,.cb-prev:hover,.cb-next:hover{background:rgba(var(--fg),.18)}
+.cb-in{position:relative;max-width:1120px;margin:0 auto;padding:0 clamp(20px,6vw,88px) 110px}
+/* ① 큰 표지 + 명패 */
+.cb-hero{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(32px,6vw,84px);align-items:center;
+  min-height:min(100svh,880px);padding:clamp(96px,12vh,140px) 0 clamp(48px,8vh,90px)}
+.cb-cover{position:relative;width:clamp(230px,30vw,360px);transform:perspective(1600px) rotateY(9deg) rotateZ(-.4deg);transform-origin:left center;
+  filter:drop-shadow(-22px 34px 46px rgba(0,0,0,.55));transition:transform .6s ease}
+.cb-cover:hover{transform:perspective(1600px) rotateY(3deg)}
+.cb-cover img{display:block;width:100%;height:auto;border-radius:2px 4px 4px 2px}
+.cb-bk{position:relative;display:block}
+.cb-bk::before{content:'';position:absolute;z-index:1;left:0;top:0;bottom:0;width:9%;pointer-events:none;border-radius:2px 0 0 2px;
+  background:linear-gradient(90deg,rgba(0,0,0,.42) 0%,rgba(255,255,255,.16) 18%,rgba(0,0,0,.06) 50%,transparent 100%)}
+.cb-cover figcaption{margin-top:18px;text-align:center;font-size:12px;letter-spacing:.06em;color:rgba(var(--fg),.55)}
+.cb-cover.spine{width:auto;transform:none;filter:drop-shadow(0 18px 30px rgba(0,0,0,.5))}
+.cb-cover.spine .cb-bk::before{display:none}
+.cb-cover.spine img{height:min(56vh,460px);width:auto;max-width:none}
+.cb-cover.spine figcaption{display:none}
+.cb-plq .era{display:inline-flex;align-items:center;gap:10px;font-family:var(--serif);font-size:13px;letter-spacing:.22em;color:var(--gold)}
+.cb-plq .era::before{content:'';width:28px;height:1px;background:currentColor;opacity:.7}
+.cb-plq h2{margin-top:18px;font-family:var(--serif);font-weight:500;font-size:clamp(40px,6.4vw,82px);line-height:1.15;letter-spacing:-.01em;text-wrap:balance}
+.cb-plq .by{margin-top:16px;font-family:var(--serif);font-size:clamp(17px,1.7vw,21px);color:rgba(var(--fg),.86)}
+.cb-plq .tags{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px}
+.cb-plq .tags span{font-size:12.5px;letter-spacing:.04em;padding:6px 12px;border-radius:999px;border:1px solid rgba(var(--fg),.22);color:rgba(var(--fg),.78)}
+.cb-plq .tags span.gold{border-color:var(--gold);color:var(--gold)}
+.cb-plq .lede{margin-top:30px;max-width:24em;font-family:var(--serif);font-weight:300;font-size:clamp(19px,1.9vw,25px);line-height:1.75;color:rgba(var(--fg),.94)}
+/* 마디 */
+.cb-sec{padding-top:clamp(56px,8vw,96px);margin-top:clamp(8px,2vw,20px);border-top:1px solid rgba(var(--fg),.13)}
+.cb-k{font-size:12px;letter-spacing:.32em;color:var(--gold)}
+.cb-sec h3{margin-top:14px;font-family:var(--serif);font-weight:400;font-size:clamp(26px,3.2vw,40px);line-height:1.3}
+.cb-sub{margin-top:14px;max-width:34em;font-family:var(--serif);font-weight:300;font-size:clamp(15.5px,1.4vw,17.5px);line-height:1.85;color:rgba(var(--fg),.74)}
+/* ② 소개 세 문단 */
+.cb-intro p{max-width:36em;font-family:var(--serif);font-weight:300;font-size:clamp(17px,1.55vw,19.5px);line-height:2;color:rgba(var(--fg),.92)}
+.cb-intro p+p{margin-top:1.4em}
+/* ③ 하늘의 별 */
+.cb-star{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(24px,5vw,64px);align-items:center;margin-top:clamp(26px,3.6vw,40px)}
+.cb-star figure{width:clamp(170px,20vw,250px);filter:drop-shadow(0 18px 30px rgba(0,0,0,.45))}
+.cb-star figure img{display:block;width:100%;height:auto}
+.cb-star .nm{font-family:var(--serif);font-weight:500;font-size:clamp(24px,2.6vw,32px)}
+.cb-star .life{margin-top:6px;font-size:13px;letter-spacing:.1em;color:rgba(var(--fg),.6)}
+.cb-star .ds{margin-top:16px;font-family:var(--serif);font-weight:300;font-size:clamp(16px,1.5vw,19px);line-height:1.8;color:rgba(var(--fg),.9)}
+.cb-star .go{margin-top:16px;font-size:13.5px;line-height:1.75;color:rgba(var(--fg),.62);max-width:30em}
+/* ④ 포스터와 진도표 */
+.cb-pst{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(28px,5vw,64px);align-items:start;margin-top:clamp(26px,3.6vw,40px)}
+.cb-pst.solo{grid-template-columns:minmax(0,1fr);max-width:640px}
+.cb-pframe{position:relative;aspect-ratio:3/4.1;border-radius:6px;box-shadow:0 0 0 6px rgba(10,8,5,.22),0 24px 60px rgba(0,0,0,.55);background:rgba(0,0,0,.25)}
+.cb-pframe img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:6px}
+.cb-seal{position:absolute;z-index:2;left:var(--x,62%);top:var(--y,78%);transform:translate(-50%,-50%) rotate(-12deg);filter:drop-shadow(0 3px 6px rgba(0,0,0,.42))}
+.cb-seal b{display:grid;place-items:center;width:clamp(70px,8vw,104px);height:clamp(70px,8vw,104px);background:#b99244;color:#231708;
+  font-family:'Pretendard',sans-serif;font-size:clamp(10.5px,1vw,14px);font-weight:800;line-height:1.12;letter-spacing:.06em;text-align:center;
+  clip-path:polygon(50.0% 0.0%,55.9% 8.9%,64.1% 2.0%,67.2% 12.3%,77.0% 7.9%,77.2% 18.6%,87.8% 17.3%,84.9% 27.6%,95.5% 29.2%,89.8% 38.3%,99.5% 42.9%,91.5% 50.0%,99.5% 57.1%,89.8% 61.7%,95.5% 70.8%,84.9% 72.4%,87.8% 82.7%,77.2% 81.4%,77.0% 92.1%,67.2% 87.7%,64.1% 98.0%,55.9% 91.1%,50.0% 100.0%,44.1% 91.1%,35.9% 98.0%,32.8% 87.7%,23.0% 92.1%,22.8% 81.4%,12.2% 82.7%,15.1% 72.4%,4.5% 70.8%,10.2% 61.7%,0.5% 57.1%,8.5% 50.0%,0.5% 42.9%,10.2% 38.3%,4.5% 29.2%,15.1% 27.6%,12.2% 17.3%,22.8% 18.6%,23.0% 7.9%,32.8% 12.3%,35.9% 2.0%,44.1% 8.9%)}
+.cb-plan h4{font-family:var(--serif);font-weight:400;font-size:clamp(20px,2vw,25px)}
+.cb-plan .note{margin-top:8px;font-size:13.5px;line-height:1.7;color:rgba(var(--fg),.6)}
+.cb-plan ol{list-style:none;margin-top:20px;border-top:1px solid rgba(var(--fg),.14)}
+.cb-plan li{display:grid;grid-template-columns:3.4em minmax(0,1fr);gap:12px;padding:12px 0;border-bottom:1px solid rgba(var(--fg),.1)}
+.cb-plan li i{font-style:normal;font-size:12.5px;letter-spacing:.08em;color:var(--gold);padding-top:3px;font-variant-numeric:tabular-nums}
+.cb-plan li b{display:block;font-family:var(--serif);font-weight:500;font-size:16px;line-height:1.5}
+.cb-plan li span{display:block;margin-top:2px;font-size:12.5px;line-height:1.6;color:rgba(var(--fg),.58)}
+/* ⑤ 판본 — 표지를 크게 */
+.cb-eds{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr));gap:clamp(26px,3.6vw,44px);margin-top:clamp(28px,4vw,44px)}
+.cb-ed .c{display:block;width:100%;max-width:230px;filter:drop-shadow(0 16px 26px rgba(0,0,0,.45))}
+.cb-ed .c img{display:block;width:100%;height:auto;border-radius:2px}
+.cb-ed .c.none{display:flex;align-items:center;justify-content:center;aspect-ratio:2/3;padding:14px;border-radius:2px;background:rgba(var(--fg),.08);
+  font-family:var(--serif);font-size:15px;line-height:1.5;text-align:center;filter:none}
+.cb-ed b{display:block;margin-top:18px;font-weight:600;font-size:15.5px}
+.cb-ed .tr{display:block;margin-top:4px;font-size:13px;color:rgba(var(--fg),.62)}
+.cb-ed .ti{display:block;margin-top:4px;font-family:var(--serif);font-size:14px;color:rgba(var(--fg),.78)}
+.cb-ed p{margin-top:12px;font-family:var(--serif);font-weight:300;font-size:15px;line-height:1.8;color:rgba(var(--fg),.88)}
+.cb-ed em{display:inline-block;margin-top:10px;font-style:normal;font-size:12px;letter-spacing:.06em;color:rgba(var(--fg),.6)}
+.cb-ed .first{display:block;margin-top:14px;font-size:11.5px;letter-spacing:.12em;color:var(--gold)}
+.cb-app{margin-top:clamp(64px,8vw,96px);text-align:center;font-size:13px;line-height:1.75;color:rgba(var(--fg),.5)}
+@media (max-width:760px){
+  .cb-hero{grid-template-columns:1fr;justify-items:center;text-align:center;gap:48px;min-height:auto}
+  .cb-cover{width:min(64vw,300px);transform:none}
+  .cb-cover:hover{transform:none}
+  .cb-cover.spine img{height:min(46vh,340px)}
+  .cb-plq .era,.cb-plq .tags{justify-content:center}
+  .cb-plq .lede{margin-left:auto;margin-right:auto}
+  .cb-star{grid-template-columns:1fr;justify-items:center;text-align:center}
+  .cb-star .go{margin-left:auto;margin-right:auto}
+  .cb-pst{grid-template-columns:1fr}
+  .cb-pframe{max-width:420px;width:100%;margin:0 auto}
+  .cb-prev,.cb-next{top:auto;bottom:18px;transform:none}
+}
+@media (prefers-reduced-motion:reduce){ .cb,.cb-cover{transition:none} }
 /* 크게 보기 — 콜레주의 책: 책등 하나 + 판본 표지 2~3장 */
 .lb.college{background:rgba(10,16,12,.97)}
 .lb.college .lb-img{max-height:min(210px,26vh);max-height:min(210px,26svh)}
@@ -320,6 +419,15 @@ section.drawer{scroll-margin-top:calc(var(--head-top) + 52px)}
   <div class="wall-in" id="collegeRooms"><p class="wall-note">책을 꽂는 중입니다…</p></div>
 </section>
 
+<!-- 콜레주의 책 세부 페이지(1024 밤 소로) — 책등을 누르면 열린다 · 속은 collection.js 가 DB 에서 직접 · 주소 #college/{id} -->
+<div class="cb" id="cb" hidden role="dialog" aria-modal="true" aria-labelledby="cb-title">
+  <span class="cb-count"></span>
+  <button class="cb-x" type="button" aria-label="닫기">×</button>
+  <button class="cb-prev" type="button" aria-label="앞 책">‹</button>
+  <button class="cb-next" type="button" aria-label="다음 책">›</button>
+  <div class="cb-in"></div>
+</div>
+
 <div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="그림 크게 보기">
   <span class="lb-count"></span>
   <button class="lb-x" type="button" aria-label="닫기">×</button>
@@ -347,6 +455,6 @@ section.drawer{scroll-margin-top:calc(var(--head-top) + 52px)}
 
 <script src="https://app.egsalon.com/eg_device.js?v=20260729"></script>
 <script src="site.js?v=1023a"></script>
-<script src="collection.js?v=1024a"></script>
+<script src="collection.js?v=1024b"></script>
 </body>
 </html>
