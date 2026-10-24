@@ -324,7 +324,8 @@
     var f = (88 + ((x.b.id * 7919) % 13)) / 100;
     return '<button class="cs-sp' + (soon[x.b.id] ? ' soon' : '') + '" type="button" data-k="' + k + '" style="height:calc(var(--sp-h) * ' + (big ? 1.16 : 1) + ' * ' + f + ')"'
       + ' aria-label="' + esc('『' + x.b.title + '』 ' + (x.b.author || '') + (soon[x.b.id] ? ' · 곧 문을 엽니다' : '')) + '">'
-      + '<img src="' + esc(spine(x.b.id)) + '" alt="" loading="lazy" decoding="async" onerror="this.parentNode.style.display=\'none\'"></button>';
+      + '<img src="' + esc(spine(x.b.id)) + '" alt="" loading="lazy" decoding="async" onerror="this.parentNode.style.display=\'none\'">'
+      + (soon[x.b.id] ? '<i class="tw" aria-hidden="true">✦</i>' : '') + '</button>';
   }
   function shelf(cls, row, n, k0, big, left, right){
     var cells = row.map(function(x, j){ return spBtn(x, k0 == null ? x.k : k0 + j, big); });
@@ -516,6 +517,9 @@
   var cb = document.getElementById('cb'), cbIn = cb ? cb.querySelector('.cb-in') : null, cbCur = -1, cbLast = null;
   var starById = {}, tints = {};
   var POSTER = function(n){ return SUPA + '/storage/v1/object/public/college-assets/posters/' + n + '.webp'; };
+  /* 포스터 번호 — 앱 college.html loadCohorts 와 한 벌(0927): 개막작 다섯은 짝표 · 나머지는 그 책의 가장 먼저 선 기수 번호
+     ⚠⚠ 앱의 BOOK_POSTER 를 고치면 여기도 함께 */
+  var BOOK_POSTER = { 194:1, 120:2, 39:3, 46:4, 51:5 }, firstCohort = {};
   function paras(t){ return String(t || '').split(/\n\s*\n/).map(function(x){ return x.trim(); }).filter(Boolean); }
   function tintOf(id, done){
     if (tints[id]) return done(tints[id]);
@@ -580,9 +584,9 @@
       + '<p class="go">EG유니버스 하늘에 이 사람의 별이 떠 있습니다. 별을 펼치면 그 생애가 장면으로 이어지고, 그가 걸었던 땅으로 내려갈 수 있습니다.</p></div></div></section>';
     /* ④ 포스터와 진도표 */
     var plan = Array.isArray(b.session_plan) ? b.session_plan : [];
-    var poster = b.founding && b.lab_no ? POSTER(b.lab_no) : '';
+    var pn = BOOK_POSTER[b.id] || (soon[b.id] && firstCohort[b.id]), poster = pn ? POSTER(pn) : '';
     if (poster || plan.length){
-      h += '<section class="cb-sec"><p class="cb-k">' + (b.founding ? '개막하는 다섯 권' : '진도표') + '</p><h3>' + (poster ? '포스터와 진도표' : (b.weeks_raw || '') + ' 진도표') + '</h3>'
+      h += '<section class="cb-sec"><p class="cb-k">' + (b.founding ? '개막하는 다섯 권' : soon[b.id] ? '곧 문을 엽니다' : '진도표') + '</p><h3>' + (poster ? '포스터와 진도표' : (b.weeks_raw || '') + ' 진도표') + '</h3>'
         + '<div class="cb-pst' + (poster ? '' : ' solo') + '">';
       if (poster) h += '<div class="cb-pframe"><img src="' + esc(poster) + '" alt="' + esc(b.title + ' 개막작 포스터') + '" loading="lazy" onerror="this.closest(\'.cb-pst\').classList.add(\'solo\');this.parentNode.remove()">'
         + (soon[b.id] ? '<div class="cb-seal" style="--x:' + (b.sticker_x != null ? b.sticker_x : 62) + '%;--y:' + (b.sticker_y != null ? b.sticker_y : 78) + '%"><b>COMING<br>SOON</b></div>' : '') + '</div>';
@@ -699,7 +703,7 @@
     get('college_books?select=id,title,author,stream,year_raw,year_num,era_order,era_chapter,weeks_raw,founding,lab_no,sticker_x,sticker_y,session_plan,lede,intro,star_id&order=era_order.asc.nullslast,sort_order'),
     get('college_editions?select=book_id,ord,title,translators,publisher,pub_date,why,cover_url,availability&order=book_id,ord').catch(function(){ return []; }),
     /* 곧 문을 여는 책 — 공개된 기수(announce_at ≤ 오늘) 가운데 아직 개강 전인 것 · 못 읽으면 진열 선반 없이 */
-    get('college_cohorts?select=book_id,start_date&status=eq.announced&announce_at=lte.' + isoToday()).catch(function(){ return []; }),
+    get('college_cohorts?select=id,book_id,start_date&status=eq.announced&announce_at=lte.' + isoToday()).catch(function(){ return []; }),
     /* 세부 페이지의 하늘의 별 — 저자가 별이면 액자 초상 */
     get('stars?select=id,name,birth,death,framed_url,photo_url,description').catch(function(){ return []; })
   ]).then(function(r){
@@ -707,7 +711,10 @@
     if (!college.list.length) throw new Error('empty');
     (Array.isArray(r[1]) ? r[1] : []).forEach(function(e){ (eds[e.book_id] = eds[e.book_id] || []).push(e); });
     var today = isoToday();
-    (Array.isArray(r[2]) ? r[2] : []).forEach(function(c){ if (!c.start_date || c.start_date > today) soon[c.book_id] = true; });
+    (Array.isArray(r[2]) ? r[2] : []).forEach(function(c){
+      if (!c.start_date || c.start_date > today) soon[c.book_id] = true;
+      if (!firstCohort[c.book_id] || c.id < firstCohort[c.book_id]) firstCohort[c.book_id] = c.id;
+    });
     (Array.isArray(r[3]) ? r[3] : []).forEach(function(x){ starById[x.id] = x; });
     setCount('college', college.list.length);
     renderColChips(); renderCollege();

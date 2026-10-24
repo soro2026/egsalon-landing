@@ -202,15 +202,23 @@ section.drawer{scroll-margin-top:calc(var(--head-top) + 52px)}
 .cs-case.soon .cs-row{gap:clamp(6px,1vw,14px)}
 .cs-case.soon .cs-plank span{color:rgba(242,201,76,.95)}
 .cs-case.soon .cs-plank .pl-r{letter-spacing:.24em;color:rgba(242,201,76,.7)}
-/* 곧 문을 여는 책 — 책등 뒤에서 금빛이 숨 쉰다(6초에 한 번 · 켜졌다 꺼지는 깜빡임이 아니라 차오르고 잦아듦) */
+/* 곧 문을 여는 책 — 금빛이 숨 쉰다(6초에 한 번 · 켜졌다 꺼지는 깜빡임이 아니라 차오르고 잦아듦)
+   1024 밤 소로 「273권 선반에서 빛나게 · 월든이면 저 아래에서 반짝이게」 — 빽빽한 시대순 선반에서도 보이도록
+   ① 빛이 옆 책등 위로 번진다(z-index 2) ② 책등 자체가 금빛으로 달아오른다(::after) ③ 책등 위에 작은 별 하나가 반짝인다(.tw) */
 .cs-sp{position:relative;isolation:isolate}
-.cs-sp.soon::before{content:'';position:absolute;z-index:-1;left:50%;top:46%;width:300%;height:118%;transform:translate(-50%,-50%);pointer-events:none;
-  background:radial-gradient(closest-side,rgba(242,201,76,.62),rgba(242,201,76,.2) 52%,rgba(242,201,76,0));opacity:.1;
+.cs-sp.soon{z-index:2}
+.cs-sp.soon::before{content:'';position:absolute;z-index:-1;left:50%;top:44%;width:330%;height:128%;transform:translate(-50%,-50%);pointer-events:none;
+  background:radial-gradient(closest-side,rgba(255,214,110,.78),rgba(242,190,70,.3) 50%,rgba(242,201,76,0));opacity:.15;
   animation:cs-breathe 6s ease-in-out infinite}
-.cs-sp.soon img{animation:cs-lift 6s ease-in-out infinite}
-@keyframes cs-breathe{0%,100%{opacity:.1}50%{opacity:.95}}
-@keyframes cs-lift{0%,100%{filter:brightness(1)}50%{filter:brightness(1.14)}}
-@media (prefers-reduced-motion:reduce){ .cs-sp.soon::before{animation:none;opacity:.6} .cs-sp.soon img{animation:none} }
+.cs-sp.soon::after{content:'';position:absolute;inset:0;pointer-events:none;border-radius:2px;mix-blend-mode:screen;
+  background:linear-gradient(180deg,rgba(255,222,140,.34),rgba(255,200,90,.12) 45%,rgba(255,222,140,.3));
+  box-shadow:0 0 0 1px rgba(255,214,110,.75),0 0 14px 2px rgba(255,200,90,.65);opacity:.1;animation:cs-breathe 6s ease-in-out infinite}
+.cs-sp .tw{position:absolute;left:50%;bottom:calc(100% + 6px);transform:translateX(-50%) scale(.6);font-style:normal;font-size:15px;line-height:1;
+  color:#ffe08a;text-shadow:0 0 8px rgba(255,214,110,.95),0 0 18px rgba(255,190,70,.7);opacity:0;pointer-events:none;animation:cs-twinkle 6s ease-in-out infinite}
+.cs-case.soon .cs-sp .tw{display:none}
+@keyframes cs-breathe{0%,100%{opacity:.12}50%{opacity:1}}
+@keyframes cs-twinkle{0%,100%{opacity:0;transform:translateX(-50%) scale(.55) rotate(0)}45%{opacity:1;transform:translateX(-50%) scale(1.15) rotate(20deg)}60%{opacity:.85;transform:translateX(-50%) scale(.95) rotate(28deg)}}
+@media (prefers-reduced-motion:reduce){ .cs-sp.soon::before,.cs-sp.soon::after{animation:none;opacity:.7} .cs-sp .tw{animation:none;opacity:1;transform:translateX(-50%)} }
 /* ══ 콜레주의 책 — 세부 페이지(1024 밤 소로) · 큰 표지 · 책등 색 바탕 · 소개 세 문단 · 별 액자 · 포스터와 진도표 · 판본 ══
    바탕 --c = 그 책 책등의 가죽 색(collection.js 가 읽어 칠함 · 못 읽으면 열람실 초록) · .light = 밝은 양피지 책등이면 종이 방 */
 .cb{--c:#24352b;--fg:239,230,212;--gold:#d6b26a;position:fixed;inset:0;z-index:40;overflow-y:auto;overscroll-behavior:contain;color:rgb(var(--fg));
@@ -455,6 +463,6 @@ section.drawer{scroll-margin-top:calc(var(--head-top) + 52px)}
 
 <script src="https://app.egsalon.com/eg_device.js?v=20260729"></script>
 <script src="site.js?v=1023a"></script>
-<script src="collection.js?v=1024b"></script>
+<script src="collection.js?v=1024c"></script>
 </body>
 </html>
