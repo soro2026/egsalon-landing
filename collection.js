@@ -374,6 +374,16 @@
       out.push('</section>');
     }
     colBox.innerHTML = out.join('') || '<p class="wall-note">이 갈래의 책이 아직 없습니다.</p>';
+    /* 별 ✦ 자리 — 책등 그림은 칸 안에서 아래로 붙어 줄어들 수 있다(갈래 화면) · 그만큼 별을 내려 책등 바로 위에 */
+    colBox.querySelectorAll('.cs-sp.soon img').forEach(function(img){
+      var place = function(){
+        var w = img.clientWidth, h = img.clientHeight, nw = img.naturalWidth, nh = img.naturalHeight;
+        if (!w || !h || !nw || !nh) return;
+        var gap = Math.max(0, h - Math.min(h, w * nh / nw));
+        img.parentNode.style.setProperty('--gap', gap.toFixed(1) + 'px');
+      };
+      if (img.complete) place(); else img.addEventListener('load', place);
+    });
   }
   if (colChips) colChips.addEventListener('click', function(e){
     var b = e.target.closest('button[data-s]'); if (!b) return;
