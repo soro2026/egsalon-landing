@@ -37,6 +37,7 @@
   }
   function esc(t){ return String(t == null ? '' : t).replace(/[&<>"']/g, function(c){ return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]; }); }
   function kstDay(){ return Math.floor((Date.now() + 9 * 3600000) / DAY); }
+  function isoToday(){ return new Date(kstDay() * DAY).toISOString().slice(0, 10); }
   function label(dayNo){ var d = new Date(dayNo * DAY); return (d.getUTCMonth() + 1) + '/' + d.getUTCDate() + '(' + WD[d.getUTCDay()] + ')'; }
   function year(p){ var m = /(\d{4})/.exec(p || ''); return m ? Number(m[1]) : 9999; }
   /* 해설 글의 *제목* · **굵게** — 홈페이지 한 줄에서는 별표를 걷고, 홑별표는 작품 표기 「 」로 */
@@ -275,11 +276,16 @@
     renderChips(); renderStars();
   });
 
-  /* ══ ⑥ 콜레주의 책 — 일곱 갈래 서가(1023 저녁 소로) ══
+  /* ══ ⑥ 콜레주의 책 — 시대순 서가(1024 밤 소로 「시대순 배열이 훨씬 더 강렬하다」) ══
         college_books 273 · 책등은 앱 콜레주 2층 서가와 같은 그림(college-assets/spines/spine_{id}.webp)
-        갈래(stream)마다 방 하나 · 갈래 안은 sort_order(쓰인 때의 차례) · 한 칸에 서는 권수는 폭에 맞춰
+        전체 — era_order(1~273) 차례 · 시대의 장(era_chapter) 하나가 선반 하나(장마다 12권 · 마지막 장 9권)
+               널 왼쪽 = 장 이름 · 오른쪽 = 그 선반의 해(year_num 의 처음 ~ 끝) · 폭이 좁으면 한 장을 고르게 두 줄로
+        맨 위 진열 선반 「곧 문을 엽니다」 — 공개된 기수(college_cohorts announced · announce_at ≤ 오늘 · 개강 전)의 책
+               아래 시대순 서가에도 그대로 서고, 두 곳 모두 책등 뒤에서 금빛이 6초에 한 번 숨 쉰다
+        갈래 칩 — 그 갈래의 책만 남기되 순서는 그대로 시대순 · 한 칸 권수는 폭에 맞춰
+        (1023 저녁의 「갈래마다 방 · sort_order」 는 나라별 차례라 글과 어긋났다 — 1024 걷어 냄)
         책마다 키 변주는 앱과 같은 셈(88~100% · id 결정론) · 누르면 판본 표지 2~3장(college_editions · 1023 저녁) */
-  var college = { list:[], order:[] }, eds = {}, colStream = '', colN = 0;
+  var college = { list:[], order:[] }, eds = {}, colStream = '', colN = 0, soon = {};
   var colBox = document.getElementById('collegeRooms'), colChips = document.getElementById('collegeChips');
   var STREAMS = ['I. 문학', 'II. 시와 극', 'III. 철학과 사상', 'IV. 역사', 'V. 자연', 'VI. 예술', 'VII. 삶의 기록'];
   var ROMAN = { 'I. 문학':'Ⅰ', 'II. 시와 극':'Ⅱ', 'III. 철학과 사상':'Ⅲ', 'IV. 역사':'Ⅳ', 'V. 자연':'Ⅴ', 'VI. 예술':'Ⅵ', 'VII. 삶의 기록':'Ⅶ' };
@@ -303,32 +309,69 @@
       })).join('');
   }
 
+  /* 해 — year_num(기원전은 음수) · 없으면 year_raw 를 다듬어 */
+  function yfmt(b){ return b.year_num == null ? cleanYear(b.year_raw) : (b.year_num < 0 ? '기원전 ' + (-b.year_num) : String(b.year_num)); }
+  function yrange(row){
+    var ys = row.filter(function(x){ return x.b.year_num != null; });
+    if (!ys.length) return '';
+    var lo = ys[0].b, hi = ys[0].b;
+    ys.forEach(function(x){ if (x.b.year_num < lo.year_num) lo = x.b; if (x.b.year_num > hi.year_num) hi = x.b; });
+    return lo === hi || lo.year_num === hi.year_num ? yfmt(lo) : yfmt(lo) + ' – ' + yfmt(hi);
+  }
+  function chapName(c){ return String(c || '').replace(/\s*·\s*/, ' · '); }
+  /* 책등 한 권 — k 는 크게 보기에서 앞뒤로 넘기는 차례 · 곧 문을 여는 책은 .soon(뒤에서 금빛이 숨 쉼) */
+  function spBtn(x, k, big){
+    var f = (88 + ((x.b.id * 7919) % 13)) / 100;
+    return '<button class="cs-sp' + (soon[x.b.id] ? ' soon' : '') + '" type="button" data-k="' + k + '" style="height:calc(var(--sp-h) * ' + (big ? 1.16 : 1) + ' * ' + f + ')"'
+      + ' aria-label="' + esc('『' + x.b.title + '』 ' + (x.b.author || '') + (soon[x.b.id] ? ' · 곧 문을 엽니다' : '')) + '">'
+      + '<img src="' + esc(spine(x.b.id)) + '" alt="" loading="lazy" decoding="async" onerror="this.parentNode.style.display=\'none\'"></button>';
+  }
+  function shelf(cls, row, n, k0, big, left, right){
+    var cells = row.map(function(x, j){ return spBtn(x, k0 == null ? x.k : k0 + j, big); });
+    return '<div class="cs-case' + (cls ? ' ' + cls : '') + '"><div class="cs-row" style="--n:' + n + '">' + cells.join('') + '</div>'
+      + '<div class="cs-plank"><span class="pl-l">' + left + '</span><span class="pl-r">' + esc(right) + '</span></div></div>';
+  }
+
   function renderCollege(){
     if (!colBox) return;
     colN = perRow();
-    var by = {};
-    college.list.forEach(function(b, i){ (by[b.stream] = by[b.stream] || []).push({ b:b, i:i }); });
     college.order = [];
     var out = [];
-    STREAMS.concat(Object.keys(by).filter(function(s){ return STREAMS.indexOf(s) < 0; })).forEach(function(s){
-      var list = by[s]; if (!list || !list.length) return;
-      if (colStream && colStream !== s) return;
-      out.push('<section class="cs-room"><h3 class="wroom-h"><b>' + (ROMAN[s] ? ROMAN[s] + ' ' : '') + esc(sname(s)) + '</b><span>' + list.length + '권</span></h3>');
-      for (var r = 0; r < list.length; r += colN){
-        var row = list.slice(r, r + colN), cells = [];
-        row.forEach(function(x){
-          var k = college.order.length; college.order.push(x.i);
-          var f = (88 + ((x.b.id * 7919) % 13)) / 100;
-          cells.push('<button class="cs-sp" type="button" data-k="' + k + '" style="height:calc(var(--sp-h) * ' + f + ')" aria-label="' + esc('『' + x.b.title + '』 ' + (x.b.author || '')) + '">'
-            + '<img src="' + esc(spine(x.b.id)) + '" alt="" loading="lazy" decoding="async" onerror="this.parentNode.style.display=\'none\'"></button>');
-        });
-        var y0 = cleanYear(row[0].b.year_raw), y1 = cleanYear(row[row.length - 1].b.year_raw);
-        out.push('<div class="cs-case"><div class="cs-row" style="--n:' + colN + '">' + cells.join('') + '</div>'
-          + '<div class="cs-plank"><span class="pl-l">' + (r === 0 ? (ROMAN[s] ? ROMAN[s] + ' ' : '') + esc(sname(s)) : '') + '</span>'
-          + '<span class="pl-r">' + esc(y0) + (y1 && y1 !== y0 ? ' – ' + esc(y1) : '') + '</span></div></div>');
+    var all = college.list.map(function(b, i){ return { b:b, i:i }; })
+      .filter(function(x){ return !colStream || x.b.stream === colStream; });
+    all.forEach(function(x){ x.k = college.order.length; college.order.push(x.i); });
+
+    if (!colStream){
+      /* 맨 위 진열 선반 — 곧 문을 엽니다(아래 시대순 서가에도 그대로 선다 · 누르면 같은 차례로 넘어간다) */
+      var top = all.filter(function(x){ return soon[x.b.id]; });
+      if (top.length) out.push('<section class="cs-room cs-soon">'
+        + shelf('soon', top, Math.max(top.length, 6), null, true, '곧 문을 엽니다', 'COMING SOON') + '</section>');
+      /* 시대의 장 하나가 선반 하나 · 폭이 좁으면 한 장을 고르게 나눠 */
+      var chaps = [], at = {};
+      all.forEach(function(x){
+        var c = x.b.era_chapter || '';
+        if (!(c in at)){ at[c] = chaps.length; chaps.push({ name:c, list:[] }); }
+        chaps[at[c]].list.push(x);
+      });
+      out.push('<section class="cs-room cs-era">');
+      chaps.forEach(function(ch){
+        var L = ch.list, rows = Math.ceil(L.length / colN), per = Math.ceil(L.length / rows);
+        for (var r = 0; r < L.length; r += per){
+          var row = L.slice(r, r + per);
+          out.push(shelf('era', row, per, null, false, r === 0 ? esc(chapName(ch.name)) : '', yrange(row)));
+        }
+      });
+      out.push('</section>');
+    } else {
+      /* 갈래 하나 — 그 갈래의 책만, 순서는 시대순 · 한 칸 권수는 폭에 맞춰 */
+      var s = colStream;
+      out.push('<section class="cs-room"><h3 class="wroom-h"><b>' + (ROMAN[s] ? ROMAN[s] + ' ' : '') + esc(sname(s)) + '</b><span>' + all.length + '권 · 시대순</span></h3>');
+      for (var r2 = 0; r2 < all.length; r2 += colN){
+        var row2 = all.slice(r2, r2 + colN);
+        out.push(shelf('', row2, colN, null, false, r2 === 0 ? (ROMAN[s] ? ROMAN[s] + ' ' : '') + esc(sname(s)) : '', yrange(row2)));
       }
       out.push('</section>');
-    });
+    }
     colBox.innerHTML = out.join('') || '<p class="wall-note">이 갈래의 책이 아직 없습니다.</p>';
   }
   if (colChips) colChips.addEventListener('click', function(e){
@@ -381,7 +424,7 @@
             title:function(w){ return w.name; }, scene:function(w){ return w.description; } },
     college: { shelf:college, head:'', app:'종 달기와 등록, 같은 책을 든 사람들과 함께 읽는 일은 EG유니버스 안에서.',
             img:function(w){ return spine(w.id); },
-            meta:function(w){ return [w.author, sname(w.stream), cleanYear(w.year_raw), w.weeks_raw ? w.weeks_raw + ' 과정' : '', w.founding ? '개막하는 다섯 권' : '']; }, by:'',
+            meta:function(w){ return [w.author, sname(w.stream), yfmt(w), w.weeks_raw ? w.weeks_raw + ' 과정' : '', w.founding ? '개막하는 다섯 권' : '']; }, by:'',
             title:function(w){ return '『' + w.title + '』'; }, scene:function(){ return ''; } }
   };
   function open(which, k){
@@ -506,12 +549,16 @@
     }).catch(fail(starBox, '별'));
 
   if (colBox) Promise.all([
-    get('college_books?select=id,title,author,stream,year_raw,weeks_raw,founding&order=sort_order'),
-    get('college_editions?select=book_id,ord,title,translators,publisher,pub_date,why,cover_url,availability&order=book_id,ord').catch(function(){ return []; })
+    get('college_books?select=id,title,author,stream,year_raw,year_num,era_order,era_chapter,weeks_raw,founding&order=era_order.asc.nullslast,sort_order'),
+    get('college_editions?select=book_id,ord,title,translators,publisher,pub_date,why,cover_url,availability&order=book_id,ord').catch(function(){ return []; }),
+    /* 곧 문을 여는 책 — 공개된 기수(announce_at ≤ 오늘) 가운데 아직 개강 전인 것 · 못 읽으면 진열 선반 없이 */
+    get('college_cohorts?select=book_id,start_date&status=eq.announced&announce_at=lte.' + isoToday()).catch(function(){ return []; })
   ]).then(function(r){
     college.list = Array.isArray(r[0]) ? r[0] : [];
     if (!college.list.length) throw new Error('empty');
     (Array.isArray(r[1]) ? r[1] : []).forEach(function(e){ (eds[e.book_id] = eds[e.book_id] || []).push(e); });
+    var today = isoToday();
+    (Array.isArray(r[2]) ? r[2] : []).forEach(function(c){ if (!c.start_date || c.start_date > today) soon[c.book_id] = true; });
     setCount('college', college.list.length);
     renderColChips(); renderCollege();
   }).catch(fail(colBox, '책'));

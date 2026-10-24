@@ -193,6 +193,24 @@ section.drawer{scroll-margin-top:calc(var(--head-top) + 52px)}
 .cs-plank .pl-l{left:12px;font-family:var(--serif);font-weight:500}
 .cs-plank .pl-r{right:12px;letter-spacing:.12em;color:rgba(222,186,118,.7);font-variant-numeric:tabular-nums}
 @media (max-width:520px){ .cs-plank span{font-size:9.5px;letter-spacing:.12em} .cs-plank .pl-l{left:8px} .cs-plank .pl-r{right:8px} }
+/* 1024 밤 소로 — 시대순 서가 · 시대의 장 하나가 선반 하나(12권) · 선반 폭은 12권에 맞춰 */
+.cs-case.era{max-width:calc(var(--sp-h) * .34 * 12 + 64px)}
+.cs-era{border-top:0}
+/* 맨 위 진열 선반 「곧 문을 엽니다」 — 다섯 권을 한 치수 크게 · 널에 금빛 글씨 */
+.cs-soon{padding-top:clamp(30px,3.6vw,46px);padding-bottom:clamp(30px,4vw,52px);margin-bottom:clamp(10px,1.6vw,20px)}
+.cs-case.soon{max-width:calc(var(--sp-h) * 1.16 * .34 * 6 + 120px)}
+.cs-case.soon .cs-row{gap:clamp(6px,1vw,14px)}
+.cs-case.soon .cs-plank span{color:rgba(242,201,76,.95)}
+.cs-case.soon .cs-plank .pl-r{letter-spacing:.24em;color:rgba(242,201,76,.7)}
+/* 곧 문을 여는 책 — 책등 뒤에서 금빛이 숨 쉰다(6초에 한 번 · 켜졌다 꺼지는 깜빡임이 아니라 차오르고 잦아듦) */
+.cs-sp{position:relative;isolation:isolate}
+.cs-sp.soon::before{content:'';position:absolute;z-index:-1;left:50%;top:46%;width:300%;height:118%;transform:translate(-50%,-50%);pointer-events:none;
+  background:radial-gradient(closest-side,rgba(242,201,76,.62),rgba(242,201,76,.2) 52%,rgba(242,201,76,0));opacity:.1;
+  animation:cs-breathe 6s ease-in-out infinite}
+.cs-sp.soon img{animation:cs-lift 6s ease-in-out infinite}
+@keyframes cs-breathe{0%,100%{opacity:.1}50%{opacity:.95}}
+@keyframes cs-lift{0%,100%{filter:brightness(1)}50%{filter:brightness(1.14)}}
+@media (prefers-reduced-motion:reduce){ .cs-sp.soon::before{animation:none;opacity:.6} .cs-sp.soon img{animation:none} }
 /* 크게 보기 — 콜레주의 책: 책등 하나 + 판본 표지 2~3장 */
 .lb.college{background:rgba(10,16,12,.97)}
 .lb.college .lb-img{max-height:min(210px,26vh);max-height:min(210px,26svh)}
@@ -243,7 +261,7 @@ section.drawer{scroll-margin-top:calc(var(--head-top) + 52px)}
     <a class="dr on" href="#paintings" data-dr="paintings" aria-current="true"><span class="n" data-count="visual">75</span><b>그림</b><i>다섯 미술관이 하루 한 점씩 돌아가며 겁니다</i></a>
     <a class="dr" href="#music" data-dr="music"><span class="n" data-count="record">75</span><b>곡</b><i>다섯 음악관에 하루 한 곡씩 오릅니다</i></a>
     <a class="dr" href="#stars" data-dr="stars"><span class="n" data-count="stars">233</span><b>별</b><i>별 하나에 한 사람 · 해마다 273명씩 새로 뜹니다</i></a>
-    <a class="dr" href="#college" data-dr="college"><span class="n" data-count="college">273</span><b>콜레주의 책</b><i>일곱 갈래 서가에 선 책 · 책등을 누르면 판본이 펼쳐집니다</i></a>
+    <a class="dr" href="#college" data-dr="college"><span class="n" data-count="college">273</span><b>콜레주의 책</b><i>시대순 서가에 선 책 · 책등을 누르면 판본이 펼쳐집니다</i></a>
   </nav>
 </main>
 
@@ -288,12 +306,14 @@ section.drawer{scroll-margin-top:calc(var(--head-top) + 52px)}
   <div class="wall-in" id="starRooms"><p class="wall-note">별을 붙이는 중입니다…</p></div>
 </section>
 
-<!-- 콜레주의 책 — 일곱 갈래 서가(1023 저녁 소로) · 책등은 앱 2층 서가의 그림 그대로 · 누르면 판본 표지 2~3장(college_editions · collection.js · DB 직접) -->
+<!-- 콜레주의 책 — 시대순 서가(1024 밤 소로) · 맨 위 「곧 문을 엽니다」 진열 선반 + 시대의 장 23 선반 · 책등은 앱 2층 서가의 그림 그대로
+     누르면 판본 표지 2~3장(college_editions · collection.js · DB 직접) -->
 <section class="wall college drawer" id="college" aria-labelledby="college-title" hidden>
   <div class="wall-head">
     <div class="k">서랍 넷 · 콜레주의 책</div>
-    <h2 id="college-title">일곱 갈래 서가</h2>
-    <p>콜레주 드 콤포스텔라의 서가에는 273권이 일곱 갈래로 서 있습니다. 문학, 시와 극, 철학과 사상, 역사, 자연, 예술, 삶의 기록. 갈래 안에서는 쓰인 때의 차례입니다. 모두 혼자서는 끝까지 가기 어려운 책이라, 콜레주에서는 같은 책을 든 사람들과 몇 주에 걸쳐 함께 읽습니다.</p>
+    <h2 id="college-title">시대순 서가</h2>
+    <p>콜레주 드 콤포스텔라의 서가에는 273권이 쓰인 때의 차례로 서 있습니다. 『길가메시 서사시』에서 시작해 23장을 지나 오늘에 가까운 책까지, 선반 하나가 한 시대입니다. 모두 혼자서는 끝까지 가기 어려운 책이라, 콜레주에서는 같은 책을 든 사람들과 몇 주에 걸쳐 함께 읽습니다.</p>
+    <p>맨 위 선반에서 금빛이 숨 쉬는 책은 곧 문을 여는 개막작입니다. 아래 시대의 서가에서도 같은 빛으로 제자리를 찾을 수 있습니다. 문학, 시와 극, 철학과 사상, 역사, 자연, 예술, 삶의 기록 — 일곱 갈래로 거르면 그 갈래의 책만 시대순으로 남습니다.</p>
     <p>책등을 누르면 지금 서점에서 구할 수 있는 판본 두세 가지가 펼쳐집니다. 어떤 판을 들고 오셔도 됩니다. 콜레주의 진도표는 쪽수가 아니라 장과 소제목으로 짜여 있으니까요.</p>
     <div class="chips" id="collegeChips" role="group" aria-label="갈래로 거르기"></div>
   </div>
@@ -327,6 +347,6 @@ section.drawer{scroll-margin-top:calc(var(--head-top) + 52px)}
 
 <script src="https://app.egsalon.com/eg_device.js?v=20260729"></script>
 <script src="site.js?v=1023a"></script>
-<script src="collection.js?v=1023b"></script>
+<script src="collection.js?v=1024a"></script>
 </body>
 </html>
