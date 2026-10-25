@@ -6,7 +6,6 @@
 <title>Today · EG유니버스</title>
 <meta name="description" content="지금 이 순간 EG유니버스 안에서 일어나는 일을 보여 드립니다. 오늘의 독서비행, 오늘 미술관에 걸린 그림, 음악관에 걸린 곡, 카페 탁자에 놓인 한 문장이 매일 자정 새로 걸립니다.">
 <meta name="theme-color" content="#0b0907">
-<link rel="preload" as="image" href="media/today_flight_icn_poster.jpg?v=1025">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,7 +25,7 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
 
 /* ── 오늘의 독서비행 ─────────────────────────────────────── */
 .hero{position:relative;height:100vh;height:100svh;min-height:440px;overflow:hidden;color:var(--paper);
-  background:var(--ink) url('media/today_flight_icn_poster.jpg?v=1025') center/cover no-repeat}
+  background:var(--ink) center/cover no-repeat}   /* 1025 — 표지 그림은 today_flights.js 가 그날 노선의 포스터로 깐다 */
 .hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
 /* 글자가 읽히도록 아래만 어둡게 — 영상 자체는 손대지 않는다 */
 .hero::after{content:'';position:absolute;inset:0;pointer-events:none;
@@ -79,6 +78,8 @@ main{max-width:1080px;margin:0 auto;padding:0 var(--gutter) 120px}
 .epigraph cite{display:block;margin-top:clamp(20px,2.4vw,30px);font-style:normal;text-align:right;
   font-size:clamp(14px,1.3vw,16px);letter-spacing:.04em;color:var(--ink-dim)}
 .epigraph cite::before{content:'— '}
+.epigraph .slot-date,.epigraph blockquote{transition:opacity .6s ease}
+.epigraph.wait .slot-date,.epigraph.wait blockquote{opacity:0}   /* 1025 — 오늘의 한 줄을 읽는 동안(길어야 2.5초) 옛 줄을 보이지 않는다 */
 
 .flight{padding-top:clamp(40px,6vw,72px);border-top:1px solid rgba(11,9,7,.12)}
 .eyebrow{font-size:13px;letter-spacing:.12em;color:var(--ink-dim)}
@@ -440,7 +441,9 @@ main [id]{scroll-margin-top:calc(var(--head-top) + 72px)}
   </ul>
 </nav>
 
-<!-- ▼ Today 표지 — 영상은 오늘의 독서비행 (1025 검증 판: 인천 → 파리 고정 · 알프스 · 파리 · 런던 · 산티아고 · 맨해튼 다음 여섯째로 구움 · 안데스와 함께 일곱이 다 모였다 · 날짜별 셈(올해 몇째 날 % 7)은 소로 콜 뒤 · 1027 = 300째 날 → 6 인천 → 파리) -->
+<!-- ▼ Today 표지 — 영상은 오늘의 독서비행 · 노선 일곱이 날마다 돈다(1025 파이원 · 소로 「Today 전부 날짜 함수로」)
+     셈 = 앱 dayIndex() 올해 몇째 날 % 7 · 노선 글과 영상은 today_flights.js 한 곳 · 아래 표지 · 글은 그 파일을 못 읽었을 때만 보이는 판(10/27 인천 → 파리) -->
+<script src="today_flights.js?v=1025"></script>
 <header class="hero" aria-label="Today — 오늘의 독서비행 영상">
   <video id="flight" muted playsinline autoplay loop preload="auto"
          poster="media/today_flight_icn_poster.jpg?v=1025" aria-hidden="true"
@@ -453,6 +456,7 @@ main [id]{scroll-margin-top:calc(var(--head-top) + 72px)}
   </div>
   <div class="credit">지도 · Google · Cesium</div>
 </header>
+<script>window.egFlightHero && egFlightHero();</script>
 <!-- ▲ -->
 
 <main>
@@ -466,9 +470,34 @@ main [id]{scroll-margin-top:calc(var(--head-top) + 72px)}
       <cite>몽테뉴 · 『에세』</cite>
     </blockquote>
   </section>
+  <script>
+  /* 1025 파이원 — Epigraph = daily_lines 가운데 show_on 이 오늘(서울)이거나 그 앞인 가장 최근 줄
+     앱 terra.html 첫 비행 화면과 같은 셈 · \n 자리에서 접는다 · 출처도 앱처럼 DB 그대로(문장 부호를 덧붙이지 않는다) */
+  (function(){
+    'use strict';
+    var sec = document.querySelector('section.epigraph'); if (!sec) return;
+    var SUPA = 'https://cyhlotwdisjvoxvfkpnd.supabase.co', KEY = 'sb_publishable_jYYfQV_wQgMRFjSUuDq7xA_gWc9vsnR';
+    var now = new Date(Date.now() + 9 * 3600000), today = now.toISOString().slice(0, 10);
+    var shown = false; function show(){ if (shown) return; shown = true; sec.classList.remove('wait'); }
+    sec.classList.add('wait'); setTimeout(show, 2500);
+    fetch(SUPA + '/rest/v1/daily_lines?select=body,source,show_on&active=eq.true&show_on=lte.' + today + '&order=show_on.desc&limit=1',
+          { headers:{ apikey:KEY, Authorization:'Bearer ' + KEY } })
+      .then(function(r){ return r.ok ? r.json() : []; })
+      .then(function(rows){
+        var it = rows && rows[0]; if (!it || !it.body) return;
+        sec.querySelector('.slot-date').textContent = (now.getUTCMonth() + 1) + '/' + now.getUTCDate() + '(' + '일월화수목금토'[now.getUTCDay()] + ')';
+        var p = sec.querySelector('blockquote p'); p.textContent = '';
+        String(it.body).trim().split('\n').forEach(function(t, i){ if (i) p.appendChild(document.createElement('br')); p.appendChild(document.createTextNode(t.trim())); });
+        var c = sec.querySelector('blockquote cite');
+        if (it.source){ c.textContent = it.source; c.hidden = false; } else c.hidden = true;
+      })
+      .catch(function(){})
+      .then(show);
+  })();
+  </script>
   <!-- ▲ -->
 
-  <!-- ▼ 오늘의 독서비행 — 노선마다 한 편 (자정 작업이 그날 노선의 글을 꺼내 끼운다) -->
+  <!-- ▼ 오늘의 독서비행 — 노선마다 한 편 · 그날 노선의 글은 today_flights.js 가 끼운다(1025) -->
   <article class="flight" aria-labelledby="flight-title">
     <div class="eyebrow">오늘의 독서비행 · 10/27(화)</div>
     <h1 id="flight-title">인천 → 파리</h1>
@@ -496,6 +525,7 @@ main [id]{scroll-margin-top:calc(var(--head-top) + 72px)}
 
     <p class="stop">좌석에 앉아 손에 든 책을 펴는 일은 EG 안에서 이어집니다.</p>
   </article>
+  <script>window.egFlightArticle && egFlightArticle();</script>
   <!-- ▲ -->
 
   <!-- ▼ 교양 한 스푼 — 오늘 문을 연 카페(앱 spoonOnDuty 와 같은 셈: KST 날수 % 13) · 오늘의 회차(spoons.open_on 이 오늘이거나 그 앞인 가장 최근)
