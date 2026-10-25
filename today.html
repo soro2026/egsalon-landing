@@ -104,6 +104,7 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
 .stage .bg,.stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   background:center/cover no-repeat;opacity:0;transition:opacity 1.4s ease}
 .stage .bg.on,.stage video.on{opacity:1}
+main video[hidden]{display:none!important}   /* 1025 — 영상 명단에 없는 집은 영상 칸을 걷는다 */
 .stage .bg.on{animation:drift 9s ease-out both}
 @keyframes drift{from{transform:scale(1.06)}to{transform:scale(1)}}
 .stage::after{content:'';position:absolute;inset:0;pointer-events:none;transition:background 1.2s ease;
@@ -1065,7 +1066,71 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
         paintStadium(row, q);
       });
   }).catch(function(e){ console.warn('[Today] 스타디움 · 서가는 손으로 적은 판으로 돈다 —', e); })
-    .then(function(){ clearTimeout(guard); finish(); });
+    .then(function(){ tasksLeft(); });
+
+  /* ── 영상 명단 (1025 소로 「영상이 덜 된 곳은 다음 장면부터 · 구워지면 앞에 끼워 넣기」)
+        칸마다 [영상 이름, 꼬리표, 정문으로 넘어가는 때(ms)] · 명단에 없는 집은 영상 없이 정문부터 연다
+        ⚠ 영상을 새로 구우면 여기 한 줄만 더한다 · 끝에 페이드아웃이 있는 영상은 다 어두워진 뒤로(off = 길이 − 0.05초) ── */
+  window.EG_TODAY_MEDIA = {
+    spoon: {
+      closerie:    ['today_spoon_closerie',    '1023b', 3900],
+      rules:       ['today_spoon_rules',       '1025',  4050],
+      cheshire:    ['today_spoon_cheshire',    '1025',  5430],
+      georgeinn:   ['today_spoon_georgeinn',   '1025',  6450],
+      caferoyal:   ['today_spoon_caferoyal',   '1025',  5650],
+      frenchhouse: ['today_spoon_frenchhouse', '1025',  5130],
+      eaglechild:  ['today_spoon_eaglechild',  '1025',  5050]
+    }
+  };
+  /* 무대에 영상을 걸거나 걷는다 — 걷으면 쉬는 동안 정문 그림이 보이도록 data-rest="gate" */
+  window.egStageMedia = function(st, m){
+    var v = st.querySelector('video');
+    if (m){
+      st.setAttribute('data-video-1920', 'media/' + m[0] + '_1920.mp4?v=' + m[1]);
+      st.setAttribute('data-video-1280', 'media/' + m[0] + '_1280.mp4?v=' + m[1]);
+      st.setAttribute('data-video-off', String(m[2]));
+      if (v){ v.hidden = false; v.setAttribute('poster', 'media/' + m[0] + '_poster.jpg?v=' + m[1]); }
+      st.removeAttribute('data-rest');
+    } else {
+      st.removeAttribute('data-video-1920'); st.removeAttribute('data-video-1280'); st.removeAttribute('data-video-off');
+      if (v){ v.hidden = true; v.removeAttribute('poster'); v.removeAttribute('src'); }
+      st.setAttribute('data-rest', 'gate');
+    }
+  };
+
+  /* ── 교양 한 스푼 (1025) — 오늘의 카페 = 카페 열세 곳(meta.spoon_no 순)[ 서울 날수 % 13 ] (앱 terra.html spoonOnDuty 와 같은 셈)
+        오늘의 문장 = spoons 가운데 open_on 이 오늘이거나 그 앞인 가장 최근(앱 · Places 카페 cafetable.js 와 같은 셈)
+        문장은 월 · 수 · 금에 놓여 이틀(금요일 것은 사흘) 머물고, 카페는 날마다 옮겨 간다(백서 「교양 한 스푼」) ── */
+  function spoonTask(){
+    var dayNo = Math.floor((Date.now() + 9 * 3600000) / 86400000);
+    return Promise.all([
+      get('terra_pins?select=code,name,meta&kind=eq.hansfoon&active=eq.true&order=sort'),
+      get('spoons?select=headline,story,open_on&status=eq.published&open_on=lte.' + today + '&order=open_on.desc,spoon_no.desc&limit=1')
+    ]).then(function(R){
+      if (done) return;
+      var L = (R[0] || []).slice().sort(function(a, b){ return ((a.meta || {}).spoon_no || 0) - ((b.meta || {}).spoon_no || 0); });
+      var x = (R[1] || [])[0], st = document.getElementById('spoonStage'), sec = document.querySelector('section.spoon');
+      if (!L.length || !x || !x.headline || !st || !sec) throw new Error('카페 · 문장을 못 읽음');
+      var c = L[dayNo % L.length], m = c.meta || {}, steam = ((m.cup_steam || {})['1']) || {};
+      var since = Math.round((Date.parse(today) - Date.parse(x.open_on)) / 86400000);
+      sec.querySelector('.eyebrow').textContent = '교양 한 스푼 · ' + md(today) + ' · ' + (since <= 0 ? '오늘 놓인 문장' : since === 1 ? '이틀째 놓인 문장' : '사흘째 놓인 문장');
+      sec.querySelector('#spoon-title').textContent = c.name;
+      sec.querySelector('.place').textContent = (m.city_en || '') + (m.city_en && m.subtitle ? ' · ' : '') + (m.subtitle || '');
+      sec.querySelector('.lede').textContent = (m.lede ? m.lede + ' ' : '') + '월 · 수 · 금 아침마다 새 문장 하나가 카페 탁자에 놓이고, 사람들이 그 위에 한 줄씩 얹습니다.';
+      st.setAttribute('data-code', c.code); st.setAttribute('data-name', c.name); st.setAttribute('data-cup', '1');
+      if (steam.x != null){ st.setAttribute('data-steam-x', steam.x); st.setAttribute('data-steam-y', steam.y); st.setAttribute('data-steam-s', steam.s || 1); }
+      st.setAttribute('data-steam-on', steam.on === false ? '0' : '1');
+      st.setAttribute('aria-label', c.name + ' — 정문에서 탁자까지');
+      egStageMedia(st, window.EG_TODAY_MEDIA.spoon[c.code]);
+      var br = function(t){ return esc(t).replace(/\n/g, '<br>'); };
+      st.querySelector('.table .head').innerHTML = br(x.headline);
+      var paras = (Array.isArray(x.story) ? x.story : []).filter(function(b){ return b && b.type === 'text' && b.text; }).slice(0, 2);
+      if (paras.length) st.querySelector('.table .story').innerHTML = paras.map(function(b){ return '<p class="line">' + br(b.text) + '</p>'; }).join('');
+    });
+  }
+  var left = 2;
+  function tasksLeft(){ if (--left <= 0){ clearTimeout(guard); finish(); } }
+  spoonTask().catch(function(e){ console.warn('[Today] 한 스푼은 손으로 적은 판으로 돈다 —', e); }).then(tasksLeft);
 })();
 </script>
 <script src="site.js?v=1023a"></script>
@@ -1094,7 +1159,7 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
 </script>
 <script>
 /* ── 교양 한 스푼 무대 — 화면에 들어오면 한 번 돈다 · 나갔다 다시 들어오면 처음부터 ── */
-(function(){
+egWhenToday(function(){   /* 1025 파이원 — 오늘의 카페 · 문장을 채운 뒤에 출발 */
   'use strict';
   var st = document.getElementById('spoonStage');
   if (!st) return;
@@ -1109,6 +1174,7 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
     el.style.backgroundImage = 'url("' + url + '")';
     bgs[k] = el;
   });
+  if (st.dataset.rest === 'gate') bgs.gate.classList.add('on');   /* 1025 — 영상이 아직 없는 집은 처음부터 정문 그림 */
   var steam = st.querySelector('.steam');
   steam.style.left = (st.dataset.steamX || 50) + '%';
   steam.style.top  = (st.dataset.steamY || 42) + '%';
@@ -1116,7 +1182,7 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
   var where = st.querySelector('.where');
   var lines = st.querySelectorAll('.line');
   var vid = st.querySelector('video');
-  var NAME = '클로즈리 데 릴라';
+  var NAME = st.dataset.name || '클로즈리 데 릴라';   /* 1025 — 그날의 카페 */
   var timers = [];
   function at(ms, fn){ timers.push(setTimeout(fn, ms)); }
   function show(k, label){
@@ -1130,12 +1196,13 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
     steam.classList.remove('on'); st.classList.remove('dim'); vid.classList.remove('on');
     try { vid.pause(); } catch(e){}
     egRestVid(vid);   /* 1025 파이원 — 쉬는 동안 첫 장면을 보인다 */
+    if (st.dataset.rest === 'gate') bgs.gate.classList.add('on');   /* 1025 — 영상이 아직 없는 집은 쉬는 동안 정문 그림 */
   }
   function play(){
     reset();
     var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     var off = 0;
-    /* 바깥 — 소로 촬영 영상이 걸려 있으면 먼저 */
+    /* 바깥 — 소로 촬영 영상이 걸려 있으면 먼저 (영상 명단 EG_TODAY_MEDIA · 없으면 정문부터) */
     var vsrc = (Math.max(screen.width, screen.height) * (window.devicePixelRatio || 1) > 2000 && window.innerWidth > 900)
       ? st.getAttribute('data-video-1920') : st.getAttribute('data-video-1280');
     if (vsrc && !reduce){
@@ -1143,7 +1210,7 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
       vid.classList.add('on'); where.textContent = NAME + ' · 지구 위';
       try { vid.currentTime = 0; } catch(e){}
       vid.play().catch(function(){});
-      off = 3900;   /* 영상 4.8초(앞 4.7초 잘라 냄 · 0.5초 페이드인) — 끝나기 직전에 정문으로 겹쳐 넘어감 (1019 소로) */
+      off = Number(st.dataset.videoOff) || 3900;   /* 클로즈리 영상 4.8초 — 끝나기 직전에 정문으로 겹쳐 넘어감 (1019 소로) · 1025 집마다 data-video-off */
       /* 1023 파이원 — Today 영상 여덟의 앞 0.5초(검은 페이드인)를 걷어 냄 · 첫 장면 포스터를 달고 · 정문으로 넘어가는 때를 모두 0.5초씩 당김(소로) */
       at(off, function(){ vid.classList.remove('on'); });
     }
@@ -1166,7 +1233,7 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
       else if (e.intersectionRatio === 0 && inside){ inside = false; reset(); }
     }, { threshold:[0, 0.5] }).observe(st);
   } else play();
-})();
+});
 </script>
 <script>
 /* ── 오늘의 미술관 무대 — 화면에 들어오면 돈다 · 끝나면 7초 뒤 처음부터 · 나가면 멈춤 ── */
