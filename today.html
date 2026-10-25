@@ -6,7 +6,7 @@
 <title>Today · EG유니버스</title>
 <meta name="description" content="지금 이 순간 EG유니버스 안에서 일어나는 일을 보여 드립니다. 오늘의 독서비행, 오늘 미술관에 걸린 그림, 음악관에 걸린 곡, 카페 탁자에 놓인 한 문장이 매일 자정 새로 걸립니다.">
 <meta name="theme-color" content="#0b0907">
-<link rel="preload" as="image" href="media/today_flight_alps_poster.jpg?v=1025">
+<link rel="preload" as="image" href="media/today_flight_paris_poster.jpg?v=1025">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,7 +26,7 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
 
 /* ── 오늘의 독서비행 ─────────────────────────────────────── */
 .hero{position:relative;height:100vh;height:100svh;min-height:440px;overflow:hidden;color:var(--paper);
-  background:var(--ink) url('media/today_flight_alps_poster.jpg?v=1025') center/cover no-repeat}
+  background:var(--ink) url('media/today_flight_paris_poster.jpg?v=1025') center/cover no-repeat}
 .hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
 /* 글자가 읽히도록 아래만 어둡게 — 영상 자체는 손대지 않는다 */
 .hero::after{content:'';position:absolute;inset:0;pointer-events:none;
@@ -440,16 +440,16 @@ main [id]{scroll-margin-top:calc(var(--head-top) + 72px)}
   </ul>
 </nav>
 
-<!-- ▼ Today 표지 — 영상은 오늘의 독서비행 (1025 검증 판: 알프스 종단 고정 · 일곱 노선 영상이 다 모이면 날짜별 셈(올해 몇째 날 % 7)으로 돌린다 · 1026 = 299째 날 → 5 알프스) -->
+<!-- ▼ Today 표지 — 영상은 오늘의 독서비행 (1025 검증 판: 파리 저공 관광 고정 · 알프스 다음 둘째로 구움 · 일곱 노선 영상이 다 모이면 날짜별 셈(올해 몇째 날 % 7)으로 돌린다 · 1028 = 301째 날 → 0 파리) -->
 <header class="hero" aria-label="Today — 오늘의 독서비행 영상">
   <video id="flight" muted playsinline autoplay loop preload="auto"
-         poster="media/today_flight_alps_poster.jpg?v=1025" aria-hidden="true"
-         data-src-1920="media/today_flight_alps_1920.mp4?v=1025"
-         data-src-1280="media/today_flight_alps_1280.mp4?v=1025"></video>
+         poster="media/today_flight_paris_poster.jpg?v=1025" aria-hidden="true"
+         data-src-1920="media/today_flight_paris_1920.mp4?v=1025"
+         data-src-1280="media/today_flight_paris_1280.mp4?v=1025"></video>
   <div class="plate">
     <h2>Today</h2>
     <p class="face">오늘 EG유니버스에서 경험할 수 있는 생생한 현장을 소개합니다.<br>하루 10분, 마음 가는 한 곳이면 충분합니다.</p>
-    <p class="book">창밖 · 오늘의 독서비행 <b>알프스 종단</b></p>
+    <p class="book">창밖 · 오늘의 독서비행 <b>파리 저공 관광</b></p>
   </div>
   <div class="credit">지도 · Google · Cesium</div>
 </header>
@@ -470,29 +470,29 @@ main [id]{scroll-margin-top:calc(var(--head-top) + 72px)}
 
   <!-- ▼ 오늘의 독서비행 — 노선마다 한 편 (자정 작업이 그날 노선의 글을 꺼내 끼운다) -->
   <article class="flight" aria-labelledby="flight-title">
-    <div class="eyebrow">오늘의 독서비행 · 10/26(월)</div>
-    <h1 id="flight-title">알프스 종단</h1>
-    <p class="sub">빙하와 석회암 탑 · 뮈조의 겨울 · 1922년</p>
+    <div class="eyebrow">오늘의 독서비행 · 10/28(수)</div>
+    <h1 id="flight-title">파리 저공 관광</h1>
+    <p class="sub">센강과 언덕을 낮게 도는 8자 · 위고의 탑 · 1831년</p>
 
     <div class="prose">
-      <p>아드리아해 절벽 위의 성 둘레를 한 시인이 바람을 맞으며 걷고 있었습니다. 1912년 1월, 트리에스테 가까운 두이노 성에 머물던 라이너 마리아 릴케입니다. 거센 바람 소리 속에서 그는 한 목소리를 들었다고 했습니다. 그 목소리가 불러 준 문장을 수첩에 적었고, 그날 밤 시 한 편의 초고를 끝냈습니다. 첫 줄은 이렇습니다.</p>
+      <p>1830년 여름, 출판사는 빅토르 위고에게 마지막 날짜를 내밀었습니다. 2년 전에 쓰기로 약속한 소설을 이듬해 2월까지 넘기라는 것이었습니다. 그해 9월부터 위고는 쉬지 않고 썼습니다. 밖에 나가고 싶은 마음이 들지 않게 옷을 모두 치워 두고 방에 틀어박혔다는 이야기가 지금도 전해집니다. 그렇게 쓴 소설이 1831년 3월에 나온 『파리의 노트르담』입니다.</p>
 
-      <blockquote>“내가 소리쳐 운다 한들, 천사의 서열에서<br>누가 내 목소리를 들어 주랴?”</blockquote>
+      <p>소설의 셋째 권에서 위고는 독자를 노트르담 성당의 탑 꼭대기로 데리고 올라갑니다. 장 제목은 「새가 날며 본 파리」. 1482년, 탑 위에서 내려다본 도시가 몇십 쪽에 걸쳐 펼쳐집니다. 센강에 뜬 섬과 다리, 지붕과 종탑, 강 오른쪽의 상인들 동네와 왼쪽의 학교들. 다른 장에서는 부주교 프롤로가 막 인쇄된 책 한 권을 가리킨 뒤 창밖의 성당을 가리키며 이렇게 말합니다.</p>
 
-      <p>『두이노의 비가』는 그렇게 시작되었습니다. 며칠 사이에 둘째 비가가 나왔고, 그 뒤로는 띄엄띄엄 이어졌습니다. 이듬해 스페인과 파리에서 몇 편을 더 손보았고, 전쟁이 터졌고, 1915년 11월에는 넷째 비가를 끝낸 바로 다음 날 군대에 불려 갔습니다. 제대한 뒤 몇 해 동안은 시를 거의 쓰지 못했습니다. 바람 속에서 받아 적은 책은 반쯤 열린 채로 10년을 기다렸습니다.</p>
+      <blockquote>“이것이 저것을 죽이리라.”</blockquote>
 
-      <p>1921년 여름, 그는 스위스 발레 지방 시에르 가까운 언덕에서 13세기에 지은 돌집 하나를 찾아냈습니다. 뮈조라는 집입니다. 가스도 전기도 들어오지 않았고, 스위스의 한 후원자가 그를 위해 집을 빌려 주었습니다. 그 집에서 겨울을 나던 1922년 2월, 막혀 있던 것이 한꺼번에 풀렸습니다. 2월 7일부터 15일까지 남은 비가를 모두 써서 열 편을 채웠고, 같은 달 그 앞뒤로 『오르페우스에게 바치는 소네트』까지 썼습니다. 그는 한 친구에게 자기를 짓누르고 괴롭히던 일이 마침내 이루어졌다고 적고, 달빛 속으로 나가 늙은 뮈조를 쓰다듬었습니다.</p>
+      <p>책이 건물을 죽이리라는 말입니다. 돌에 새겨 사람들에게 읽히던 성당의 시대가 가고, 인쇄된 책의 시대가 온다는 뜻이었습니다. 그런데 일은 거꾸로 흘렀습니다. 그 무렵 노트르담은 오래 손보지 않아 낡아 가고 있었는데, 소설이 프랑스 전역에서 크게 읽히면서 옛 건축을 지키자는 움직임이 일어났고, 결국 건축가 비올레르뒤크가 이끄는 대대적인 복원으로 이어졌습니다. 책 한 권이 성당을 살린 셈입니다. 2019년 4월 성당 지붕이 불에 탔을 때 사람들은 이 소설을 다시 사 들었습니다.</p>
 
-      <p>EG유니버스의 알프스 종단은 그 골짜기 위를 지납니다. 작은 제트기가 레만호 가를 떠나 샤모니 계곡과 몽블랑 남서 사면을 스치고, 마터호른 남면과 체르마트를 지나 론강 골짜기를 건너 알레치 빙하로 갑니다. 론 빙하와 엥가딘, 스텔비오를 거쳐 트레 치메와 코르티나의 돌로미티까지 갔다가 다시 레만호로 돌아옵니다. 순항 고도는 해발 4,100미터입니다. 몽블랑(4,808미터)과 마터호른(4,478미터)보다 낮아서 봉우리는 늘 창 위쪽에 남고, 능선과 빙하가 눈높이로 흘러갑니다. 비행기가 건너는 론강 골짜기를 따라 서쪽으로 가면 라롱 마을이 있고, 더 가면 뮈조가 있습니다. 릴케는 라롱의 교회 묘지에 묻혔고, 묘비의 글은 그가 직접 지었습니다. 이 비행에도 도착지는 없습니다. 책을 덮는 곳이 그날의 도착지입니다.</p>
+      <p>EG유니버스의 파리 저공 관광은 브레게 14 복엽기로 그 도시의 지붕 위를 납니다. 튈르리에서 떠나 샹젤리제를 따라 개선문으로, 트로카데로와 백조의 섬, 에펠탑과 앵발리드, 오르세와 루브르, 오페라를 지나 몽마르트르의 사크레쾨르까지 오릅니다. 뷔트쇼몽과 페르라셰즈를 돌아 바스티유, 생루이섬, 시테섬의 노트르담, 팡테옹과 뤽상부르를 거쳐 몽파르나스에서 돌아서고, 같은 길을 되짚어 처음 자리로 옵니다. 한 바퀴가 8자를 그리고, 왕복 48분입니다. 비행기는 지붕 위 200미터 남짓을 시속 70킬로미터로 천천히 갑니다. 위고가 독자를 세운 탑 꼭대기보다 높은 데서, 그가 그린 도시의 오늘을 내려다보는 셈입니다.</p>
 
-      <p>빙하는 멈춰 있는 것처럼 보이지만 해마다 조금씩 골짜기를 내려갑니다. 어떤 책도 그렇게 읽힙니다. 책장 사이에 손가락을 끼운 채 몇 달을 덮어 두었다가, 어느 겨울 저녁 갑자기 다시 열리는 책이 있습니다. 릴케가 10년 걸려 끝낸 책을 하루에 끝까지 읽어야 할 까닭은 없습니다. 이 비행은 고리를 돌아 날마다 같은 빙하 위로 돌아오고, 손님은 어제 덮어 둔 쪽에서 다시 펴면 됩니다.</p>
+      <p>위고가 탑 위에서 한 일은 도시를 한 장의 책처럼 펼쳐 읽어 주는 것이었습니다. 이 비행도 그렇게 씁니다. 지붕과 강과 언덕이 한 쪽씩 넘어가고, 눈을 무릎으로 돌리면 손에 든 책이 이어집니다. 프롤로는 책이 건물을 죽이리라 했지만, 위고의 책은 건물을 지켰습니다. 지금 무릎 위에 펼친 책이 언젠가 무엇을 지키게 될지는 아무도 모릅니다.</p>
     </div>
 
     <aside class="books" aria-label="이 비행에 곁들이면 좋은 책">
       <div class="label">이 비행에 곁들이면 좋은 책</div>
       <ul>
-        <li><b>『두이노의 비가』</b><span>1912년 두이노의 바람 속에서 시작해 1922년 뮈조의 돌집에서 끝난 열 편의 비가입니다. 사라지는 것들 앞에 선 사람의 노래입니다.</span></li>
-        <li><b>『젊은 시인에게 보내는 편지』</b><span>시를 써도 되겠느냐고 묻는 젊은이에게 릴케가 몇 해에 걸쳐 보낸 편지입니다. 풀리지 않는 물음을 서둘러 풀려 하지 말고 그 물음을 살아 보라고 권합니다.</span></li>
+        <li><b>『파리의 노트르담』</b><span>위고가 탑 꼭대기에서 1482년의 파리를 펼쳐 보이는 소설입니다. 「새가 날며 본 파리」 장은 이 비행의 창밖과 함께 읽기 좋습니다.</span></li>
+        <li><b>『파리는 날마다 축제』</b><span>1920년대 파리에서 가난한 젊은 작가로 산 헤밍웨이의 회고입니다. 센강 변 헌책방과 셰익스피어 앤 컴퍼니가 나옵니다. 이 비행도 그 서점 위를 지납니다.</span></li>
       </ul>
     </aside>
 
