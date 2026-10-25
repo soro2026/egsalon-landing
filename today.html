@@ -1083,7 +1083,10 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
       eaglechild:  ['today_spoon_eaglechild',  '1025',  5050]
     },
     galerie: {
-      orsay:       ['today_galerie_orsay',     '1023',  3900]
+      orsay:       ['today_galerie_orsay',     '1023',  3900]   /* 1025 소로 — 미술관은 영상 없이 정문 그림으로도 충분 */
+    },
+    concert: {
+      wien:        ['today_concert_wien',      '1023',  3300]
     }
   };
   /* 무대에 영상을 걸거나 걷는다 — 걷으면 쉬는 동안 정문 그림이 보이도록 data-rest="gate" */
@@ -1174,10 +1177,61 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
     });
   }
 
-  var left = 3;
+  /* ── 오늘의 음악관 (1025) — 오늘의 홀 = 깨어 있는 음악관(sort)[ 서울 날수 % H ] (앱 terra.html concertGate)
+        그 홀의 곡 = 곡 명단(record · active · id 순)[ (서울 날수 + floor(hall_no × N ÷ H)) % N ] (앱 songOfHall · Places 열나흘 표와 같은 셈)
+        소개 한 줄 = 대문 안내문(meta.body) 마지막 단락에서 「오늘 저 …」 바로 앞 문장 · 문설주 = meta.subtitle
+        10/19 = 무지크페어아인 · 슈베르트 D. 960(손으로 적은 판과 같음) ── */
+  function sentences(t){ return (String(t || '').replace(/\s+/g, ' ').trim().match(/.+?[.!?]+[」』”’)]*(?=\s|$)/g) || []).map(function(x){ return x.trim(); }); }
+  function titleHtml(n){   /* 조성 앞에서 한 번 접는다(「…21번 / B♭장조 D. 960」) · 조성이 없으면 긴 이름만 가운데 빈칸에서 */
+    n = String(n || ''); var d = n.indexOf(' — ');
+    if (d > 4) return esc(n.slice(0, d)) + '<br>' + esc(n.slice(d + 1));   /* 「멘델스존 한여름 밤의 꿈 / — 녹턴과 스케르초」 */
+    var m = n.match(/\s([A-G][♭♯b#]?\s?(장조|단조))/);
+    if (m && m.index > 4) return esc(n.slice(0, m.index)) + '<br>' + esc(n.slice(m.index + 1));
+    if (n.length <= 16) return esc(n);
+    var mid = n.length / 2, best = -1;
+    for (var i = 0; i < n.length; i++) if (n[i] === ' ' && (best < 0 || Math.abs(i - mid) < Math.abs(best - mid))) best = i;
+    return best > 0 ? esc(n.slice(0, best)) + '<br>' + esc(n.slice(best + 1)) : esc(n);
+  }
+  function concertTask(){
+    var dayNo = Math.floor((Date.now() + 9 * 3600000) / 86400000);
+    return Promise.all([
+      get('terra_pins?select=code,name,sort,meta&kind=eq.concert&active=eq.true&order=sort'),
+      get('heritage_items?select=id&category=eq.record&status=eq.active&order=id')
+    ]).then(function(R){
+      var halls = R[0] || [], ids = R[1] || [], H = halls.length, N = ids.length;
+      if (!H || !N) throw new Error('홀 · 곡 명단을 못 읽음');
+      var hall = halls[dayNo % H], m = hall.meta || {}, no = (m.hall_no != null) ? m.hall_no : halls.indexOf(hall);
+      var pick = ids[((dayNo + Math.floor(no * N / H)) % N + N) % N].id;
+      return get('heritage_items?select=id,name,artist,origin,video_id,liner_note&id=eq.' + encodeURIComponent(pick) + '&limit=1').then(function(A){
+        if (done) return;
+        var s = A && A[0], st = document.getElementById('conStage'), sec = document.getElementById('concert-title') && document.getElementById('concert-title').closest('section');
+        if (!s || !s.video_id || !st || !sec || !m.screen_rect) throw new Error('곡 · 스크린 자리를 못 읽음 · ' + pick);
+        var body = Array.isArray(m.body) ? m.body : [], last = sentences(body[body.length - 1]), k = -1;
+        for (var i = 0; i < last.length; i++) if (last[i].indexOf('오늘 저') === 0){ k = i; break; }
+        var lede = k > 0 ? last[k - 1] : (last[0] || '');
+        sec.querySelector('.eyebrow').textContent = '오늘의 음악관 · ' + md(today);
+        sec.querySelector('#concert-title').textContent = hall.name;
+        sec.querySelector('.place').textContent = (m.city_en || '') + (m.city_en && m.subtitle ? ' · ' : '') + (m.subtitle || '');
+        sec.querySelector('.lede').textContent = (lede ? lede + ' ' : '') + '지구 위 음악관 다섯 곳에 날마다 곡이 한 곡씩 걸리고, 그 가운데 한 곳이 오늘의 음악관이 됩니다.';
+        st.setAttribute('data-code', hall.code); st.setAttribute('data-name', hall.name);
+        st.setAttribute('data-video-id', s.video_id);
+        st.setAttribute('data-rect', JSON.stringify(m.screen_rect));
+        st.setAttribute('aria-label', hall.name + ' — 정문에서 오늘의 연주까지');
+        egStageMedia(st, window.EG_TODAY_MEDIA.concert[hall.code]);
+        st.querySelector('.s-title').innerHTML = titleHtml(s.name);
+        st.querySelector('.s-artist').textContent = [s.artist, s.origin].filter(Boolean).join(' · ');
+        st.querySelector('.know .scene').innerHTML = '<span class="door">문설주</span>' + esc(m.subtitle || '');
+        var L = s.liner_note || {};
+        if (L.knowledge) st.querySelector('.know .k').innerHTML = emTwo(String(L.knowledge).replace(/^\s*[〈「『][^〉」』]{1,40}[〉」』]\s*\.\s*/, ''));   /* 「〈한여름 밤의 꿈〉.」처럼 제목 조각으로 여는 해설은 그 조각을 건너뛴다 */
+      });
+    });
+  }
+
+  var left = 4;
   function tasksLeft(){ if (--left <= 0){ clearTimeout(guard); finish(); } }
   spoonTask().catch(function(e){ console.warn('[Today] 한 스푼은 손으로 적은 판으로 돈다 —', e); }).then(tasksLeft);
   galerieTask().catch(function(e){ console.warn('[Today] 미술관은 손으로 적은 판으로 돈다 —', e); }).then(tasksLeft);
+  concertTask().catch(function(e){ console.warn('[Today] 음악관은 손으로 적은 판으로 돈다 —', e); }).then(tasksLeft);
 })();
 </script>
 <script src="site.js?v=1023a"></script>
@@ -1373,7 +1427,7 @@ egWhenToday(function(){   /* 1025 파이원 — 오늘의 관 · 그림을 채�
 </script>
 <script>
 /* ── 오늘의 음악관 무대 — 미술관 무대와 같은 걸음 · 액자 자리에 앱 공연장의 스크린 ── */
-(function(){
+egWhenToday(function(){   /* 1025 파이원 — 오늘의 홀 · 곡을 채운 뒤에 출발 */
   'use strict';
   var st = document.getElementById('conStage');
   if (!st) return;
@@ -1403,6 +1457,7 @@ egWhenToday(function(){   /* 1025 파이원 — 오늘의 관 · 그림을 채�
     hall.style.transform = 'translateY(' + y + 'px)';
   }
   fit(); window.addEventListener('resize', fit);
+  if (st.dataset.rest === 'gate') gate.classList.add('on');   /* 1025 — 영상이 아직 없는 홀은 처음부터 정문 그림 */
 
   var timers = [];
   function at(ms, fn){ timers.push(setTimeout(fn, ms)); }
@@ -1415,6 +1470,7 @@ egWhenToday(function(){   /* 1025 파이원 — 오늘의 관 · 그림을 채�
     void hall.offsetWidth; hall.style.transition = '';
     try { vid.pause(); } catch(e){}
     egRestVid(vid);   /* 1025 파이원 — 쉬는 동안 첫 장면을 보인다 */
+    if (st.dataset.rest === 'gate') gate.classList.add('on');   /* 1025 — 영상이 아직 없는 홀은 쉬는 동안 정문 그림 */
   }
   function play(){
     reset(); fit();
@@ -1429,7 +1485,7 @@ egWhenToday(function(){   /* 1025 파이원 — 오늘의 관 · 그림을 채�
       vid.classList.add('on'); where.textContent = NAME + ' · 지구 위';
       try { vid.currentTime = 0; } catch(e){}
       vid.play().catch(function(){});
-      off = 3300;   /* 무지크페어아인 영상 4.3초 */
+      off = Number(st.dataset.videoOff) || 3300;   /* 무지크페어아인 영상 4.3초 · 1025 영상 명단의 넘어가는 때 */
     }
     at(off,          function(){ vid.classList.remove('on'); gate.classList.add('on'); where.textContent = NAME + ' · 정문'; });
     at(off + 3400,   function(){ gate.classList.remove('on'); hall.classList.add('on'); scr.classList.add('on'); where.textContent = NAME + ' · 공연장'; });
@@ -1450,7 +1506,7 @@ egWhenToday(function(){   /* 1025 파이원 — 오늘의 관 · 그림을 채�
       else if (e.intersectionRatio === 0 && inside){ inside = false; reset(); }
     }, { threshold:[0, 0.5] }).observe(st);
   } else play();
-})();
+});
 </script>
 <script>
 /* ── 오늘의 스타디움 무대 (1020) — 바깥 영상 → 대진 → 전광판 0 : 0 → 9칸 판 → 한 칸 → 타석 앞에서 멈춤 · 7초 뒤 처음부터 ── */
