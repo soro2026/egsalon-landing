@@ -160,6 +160,7 @@ main [id]{scroll-margin-top:calc(var(--head-top) + 72px)}
 .gstage .gplaque.on{opacity:1}
 .gstage .gplaque b{display:block;font-weight:400;font-size:clamp(12.5px,1.25vw,15px);color:#f2ead6;letter-spacing:.04em}
 .gstage .gplaque span{display:block;margin-top:4px;font-size:clamp(10.5px,1vw,12.5px);color:rgba(242,234,214,.66);letter-spacing:.06em}
+.gstage .gplaque.dark{text-shadow:0 1px 2px rgba(255,255,255,.3)}.gstage .gplaque.dark b{color:#2a2318}.gstage .gplaque.dark span{color:rgba(42,35,24,.62)}   /* 1025 — 밝은 벽(우피치 · 시카고)은 어두운 잉크 · Places 회화 방과 같은 값 */
 .gstage::after{content:'';position:absolute;inset:0;pointer-events:none;transition:background 1.2s ease;
   background:linear-gradient(0deg,rgba(8,6,4,.45) 0%,rgba(8,6,4,0) 35%)}
 .gstage.dim::after{background:linear-gradient(0deg,rgba(8,6,4,.86) 0%,rgba(8,6,4,.55) 38%,rgba(8,6,4,0) 70%)}
@@ -979,7 +980,7 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
   function shuffle(a, r){ a = a.slice(); for (var i = a.length - 1; i > 0; i--){ var j = Math.floor(r() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
   function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
   function firstTwo(t){ t = String(t || '').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
-    var m = t.match(/[^.!?]+[.!?]+[」』”’)]*\s*/g) || [t]; return m.slice(0, 2).join('').trim(); }
+    var m = t.match(/.+?[.!?]+[」』”’)]*(?=\s|$)/g) || [t]; return m.slice(0, 2).join('').trim(); }   /* 1025 — 「36.1센티미터」 같은 소수점에서 끊지 않는다(마침표 뒤에 빈칸이 올 때만 문장 끝) */
 
   function paintShelf(rows){
     var ms = document.getElementById('musStage');
@@ -1080,6 +1081,9 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
       caferoyal:   ['today_spoon_caferoyal',   '1025',  5650],
       frenchhouse: ['today_spoon_frenchhouse', '1025',  5130],
       eaglechild:  ['today_spoon_eaglechild',  '1025',  5050]
+    },
+    galerie: {
+      orsay:       ['today_galerie_orsay',     '1023',  3900]
     }
   };
   /* 무대에 영상을 걸거나 걷는다 — 걷으면 쉬는 동안 정문 그림이 보이도록 data-rest="gate" */
@@ -1128,9 +1132,52 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
       if (paras.length) st.querySelector('.table .story').innerHTML = paras.map(function(b){ return '<p class="line">' + br(b.text) + '</p>'; }).join('');
     });
   }
-  var left = 2;
+  /* ── 오늘의 미술관 (1025) — 오늘의 관 = 미술관 다섯(잠든 관 포함 · sort)[ 서울 날수 % H ] (앱 terra.html galerieGate)
+        그 방의 그림 = 그림 명단(visual · active · hang_order → id)[ (서울 날수 + floor(museum_no × N ÷ H)) % N ] (앱 artOfMuseum · Places 열나흘 표와 같은 셈)
+        10/19 = 오르세 · 히로시게 「오하시 다리에 내리는 소나기」(손으로 적은 판과 같음) ── */
+  function sceneHtml(s){ s = String(s || '').trim(); var i = s.indexOf(', '); return i > 0 ? esc(s.slice(0, i + 1)) + '<br>' + esc(s.slice(i + 2)) : esc(s); }
+  function emTwo(t){   /* **굵게** → <b> · *기울임* → <em> (앱 4겹 표기) · 첫 두 문장만 */
+    t = String(t || '').replace(/\*\*([^*]+)\*\*/g, '\u0003$1\u0004').replace(/\*([^*]+)\*/g, '\u0001$1\u0002').replace(/\s+([\u0002\u0004])/g, '$1');
+    return esc(firstTwo(t)).replace(/\u0001/g, '<em>').replace(/\u0002/g, '</em>').replace(/\u0003/g, '<b>').replace(/\u0004/g, '</b>'); }
+  function galerieTask(){
+    var dayNo = Math.floor((Date.now() + 9 * 3600000) / 86400000);
+    return Promise.all([
+      get('terra_pins?select=code,name,sort,meta&kind=eq.heritage&order=sort'),
+      get('heritage_items?select=id&category=eq.visual&status=eq.active&order=hang_order.asc.nullslast,id.asc')
+    ]).then(function(R){
+      var halls = R[0] || [], ids = R[1] || [], H = halls.length, N = ids.length;
+      if (!H || !N) throw new Error('관 · 그림 명단을 못 읽음');
+      var hall = halls[dayNo % H], m = hall.meta || {}, no = (m.museum_no != null) ? m.museum_no : halls.indexOf(hall);
+      var pick = ids[((dayNo + Math.floor(no * N / H)) % N + N) % N].id;
+      return get('heritage_items?select=id,name,artist,period,img,layers&id=eq.' + encodeURIComponent(pick) + '&limit=1').then(function(A){
+        if (done) return;
+        var a = A && A[0], st = document.getElementById('galStage'), sec = (document.getElementById('galerie-title') || {}).closest ? document.getElementById('galerie-title').closest('section') : null;
+        if (!a || !a.img || !st || !sec || !m.frame_rect || !m.plaque_pos) throw new Error('그림 · 걸이 자리를 못 읽음 · ' + pick);
+        var L = a.layers || {};
+        sec.querySelector('.eyebrow').textContent = '오늘의 미술관 · ' + md(today);
+        sec.querySelector('#galerie-title').textContent = hall.name;
+        sec.querySelector('.place').textContent = (m.city_en || '') + (m.city_en && m.subtitle ? ' · ' : '') + (m.subtitle || '');
+        sec.querySelector('.lede').textContent = (m.lede ? m.lede + ' ' : '') + '지구 위 미술관 다섯 곳에 날마다 그림이 한 점씩 걸리고, 그 가운데 한 곳이 오늘의 미술관이 됩니다.';
+        st.setAttribute('data-code', hall.code); st.setAttribute('data-name', hall.name);
+        st.setAttribute('data-art', a.img);
+        st.setAttribute('data-rect', JSON.stringify(m.frame_rect)); st.setAttribute('data-plaque', JSON.stringify(m.plaque_pos));
+        st.setAttribute('aria-label', hall.name + ' — 정문에서 오늘의 그림까지');
+        egStageMedia(st, window.EG_TODAY_MEDIA.galerie[hall.code]);
+        st.querySelector('.art img').setAttribute('alt', (a.artist ? a.artist + ' ' : '') + '「' + a.name + '」');
+        var plq = st.querySelector('.gplaque');
+        plq.innerHTML = '<b>' + esc(a.name) + '</b><span>' + esc([a.artist, a.period].filter(Boolean).join(' · ')) + '</span>';
+        plq.classList.toggle('dark', m.plaque_ink === 'dark');   /* Places 회화 방의 고정값(우피치 · 시카고) */
+        var sc = st.querySelector('.know .scene'), k = st.querySelector('.know .k');
+        if (L.scene) sc.innerHTML = sceneHtml(L.scene);
+        if (L.knowledge) k.innerHTML = emTwo(L.knowledge);
+      });
+    });
+  }
+
+  var left = 3;
   function tasksLeft(){ if (--left <= 0){ clearTimeout(guard); finish(); } }
   spoonTask().catch(function(e){ console.warn('[Today] 한 스푼은 손으로 적은 판으로 돈다 —', e); }).then(tasksLeft);
+  galerieTask().catch(function(e){ console.warn('[Today] 미술관은 손으로 적은 판으로 돈다 —', e); }).then(tasksLeft);
 })();
 </script>
 <script src="site.js?v=1023a"></script>
@@ -1237,7 +1284,7 @@ egWhenToday(function(){   /* 1025 파이원 — 오늘의 카페 · 문장을 �
 </script>
 <script>
 /* ── 오늘의 미술관 무대 — 화면에 들어오면 돈다 · 끝나면 7초 뒤 처음부터 · 나가면 멈춤 ── */
-(function(){
+egWhenToday(function(){   /* 1025 파이원 — 오늘의 관 · 그림을 채운 뒤에 출발 */
   'use strict';
   var st = document.getElementById('galStage');
   if (!st) return;
@@ -1265,6 +1312,7 @@ egWhenToday(function(){   /* 1025 파이원 — 오늘의 카페 · 문장을 �
     plq.style.left = PLQ.X+'%'; plq.style.top = PLQ.Y+'%';
   }
   artImg.addEventListener('load', hang); hang();
+  if (st.dataset.rest === 'gate') gate.classList.add('on');   /* 1025 — 영상이 아직 없는 관은 처음부터 정문 그림 */
 
   /* 방은 앱처럼 폭 100% — 세로로 긴 방을 위(유리 천장)에서 그림 높이까지 내려온다 */
   function fit(){ hall.style.height = (st.clientWidth * PH / PW) + 'px'; }
@@ -1285,6 +1333,7 @@ egWhenToday(function(){   /* 1025 파이원 — 오늘의 카페 · 문장을 �
     void hall.offsetWidth; hall.style.transition = '';
     try { vid.pause(); } catch(e){}
     egRestVid(vid);   /* 1025 파이원 — 쉬는 동안 첫 장면을 보인다 */
+    if (st.dataset.rest === 'gate') gate.classList.add('on');   /* 1025 — 영상이 아직 없는 관은 쉬는 동안 정문 그림 */
   }
   function play(){
     reset(); fit();
@@ -1299,7 +1348,7 @@ egWhenToday(function(){   /* 1025 파이원 — 오늘의 카페 · 문장을 �
       vid.classList.add('on'); where.textContent = NAME + ' · 지구 위';
       try { vid.currentTime = 0; } catch(e){}
       vid.play().catch(function(){});
-      off = 3900;
+      off = Number(st.dataset.videoOff) || 3900;   /* 1025 — 영상 명단의 넘어가는 때 */
     }
     at(off,          function(){ vid.classList.remove('on'); gate.classList.add('on'); where.textContent = NAME + ' · 정문'; });
     /* 1019 소로 — 그림은 전시실이 열릴 때부터 벽에 걸려 있다(빈 벽을 기다리게 하지 않는다) */
@@ -1320,7 +1369,7 @@ egWhenToday(function(){   /* 1025 파이원 — 오늘의 카페 · 문장을 �
       else if (e.intersectionRatio === 0 && inside){ inside = false; reset(); }
     }, { threshold:[0, 0.5] }).observe(st);
   } else play();
-})();
+});
 </script>
 <script>
 /* ── 오늘의 음악관 무대 — 미술관 무대와 같은 걸음 · 액자 자리에 앱 공연장의 스크린 ── */
