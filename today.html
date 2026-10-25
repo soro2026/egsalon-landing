@@ -867,6 +867,19 @@ window.egPhase = function(){
   return (h>=5 && h<9) ? 'm' : (h>=9 && h<17) ? 'd' : (h>=17 && h<20) ? 'e' : 'n';
 };
 </script>
+<script>
+/* 1025 파이원 — Today 칸이 쉬고 있을 때(화면에 들어오는 중 · 화면 밖 · 한 바퀴를 돌고 처음으로 돌아갈 때)
+   검정 바탕 대신 영상 첫 장면(포스터)을 보인다. 소로 「표지(첫 장면)가 없어서 그런지 까맣게 떠서 스크롤하면서 보기 흉하다」.
+   포스터 = 영상 첫 장면이라, 칸이 절반 들어와 영상이 돌기 시작해도 깜빡이지 않는다.
+   움직임 줄이기를 켠 손님은 예전 그대로(영상을 틀지 않고 정지 장면만 보이므로). */
+window.egRestVid = function(v){
+  if (!v) return;
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  try { v.pause(); if (v.readyState > 0) v.currentTime = 0; } catch(e){}
+  v.classList.add('on');
+};
+Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none"][poster]'), window.egRestVid);
+</script>
 <script src="site.js?v=1023a"></script>
 <script>
 (function(){
@@ -928,6 +941,7 @@ window.egPhase = function(){
     lines.forEach(function(l){ l.classList.remove('on'); });
     steam.classList.remove('on'); st.classList.remove('dim'); vid.classList.remove('on');
     try { vid.pause(); } catch(e){}
+    egRestVid(vid);   /* 1025 파이원 — 쉬는 동안 첫 장면을 보인다 */
   }
   function play(){
     reset();
@@ -1015,6 +1029,7 @@ window.egPhase = function(){
     st.classList.remove('dim'); hall.style.transition = 'none'; shift(false);
     void hall.offsetWidth; hall.style.transition = '';
     try { vid.pause(); } catch(e){}
+    egRestVid(vid);   /* 1025 파이원 — 쉬는 동안 첫 장면을 보인다 */
   }
   function play(){
     reset(); fit();
@@ -1095,6 +1110,7 @@ window.egPhase = function(){
     st.classList.remove('dim'); hall.style.transition = 'none'; shift(false);
     void hall.offsetWidth; hall.style.transition = '';
     try { vid.pause(); } catch(e){}
+    egRestVid(vid);   /* 1025 파이원 — 쉬는 동안 첫 장면을 보인다 */
   }
   function play(){
     reset(); fit();
@@ -1175,6 +1191,7 @@ window.egPhase = function(){
     lines.forEach(function(l){ l.classList.remove('on'); });
     title.textContent = TITLE0;
     try { vid.pause(); } catch(e){}
+    egRestVid(vid);   /* 1025 파이원 — 쉬는 동안 첫 장면을 보인다 */
   }
   /* 게이지와 공 — 공은 게이지 끝에 붙어 타자 쪽으로 굴러온다 */
   function gauge(p, el){ bar.style.transform = 'scaleX(' + p + ')'; ball.style.left = (p * 100) + '%'; ball.style.transform = 'rotate(' + (-el * 0.3) + 'deg)'; }
@@ -1302,6 +1319,7 @@ window.egPhase = function(){
     Q.el.textContent = Q.full; K.el.textContent = K.full; gauge(1, 0);
     sh.textContent = SH0; inn.textContent = INN0;
     try { vid.pause(); } catch(e){}
+    egRestVid(vid);   /* 1025 파이원 — 쉬는 동안 첫 장면을 보인다 */
   }
   function play(){
     reset();
@@ -1443,6 +1461,7 @@ window.egPhase = function(){
     void hall.offsetWidth; hall.style.transition = '';
     count(false);
     try { vid.pause(); } catch(e){}
+    egRestVid(vid);   /* 1025 파이원 — 쉬는 동안 첫 장면을 보인다 */
   }
   function play(){
     reset(); fit();
@@ -1536,6 +1555,7 @@ window.egPhase = function(){
     st.classList.remove('dim'); hall.style.transition = 'none'; hall.style.transform = 'translateY(0)';
     void hall.offsetWidth; hall.style.transition = '';
     try { vid.pause(); } catch(e){}
+    egRestVid(vid);   /* 1025 파이원 — 쉬는 동안 첫 장면을 보인다 */
   }
   function play(){
     reset(); fit();
@@ -2042,6 +2062,7 @@ window.egPhase = function(){
     st.classList.remove('dim');
     fitEl.style.transform = 'scale(1)'; iris.style.opacity = '0'; iris.style.background = 'none';
     try { vid.pause(); } catch(e){}
+    egRestVid(vid);   /* 1025 파이원 — 쉬는 동안 첫 장면을 보인다 */
   }
   var FLY = 1300, WEB = (450 + (LINKS.length - 1) * 90 + 700 + 300);
   function play(){
