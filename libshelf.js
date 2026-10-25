@@ -444,9 +444,13 @@
     }
   }
 
+  /* 1025 파이원 — 서가를 읽기 전에 DB 함수 eg_home_shelf_sync() 를 한 번 부른다(Today 와 같은 손).
+     오늘(서울)까지 경기 날마다 문항 하나 · 한스푼 날마다 책 하나가 꽂혀 있게 — Today 를 아무도 안 연 날에도 서가가 비지 않는다. */
+  var synced = fetch(SUPA + '/rest/v1/rpc/eg_home_shelf_sync', { method:'POST', headers:{ apikey:KEY, Authorization:'Bearer ' + KEY, 'Content-Type':'application/json' }, body:'{}' })
+    .catch(function(){});
   Promise.all([
     get('terra_pins?select=code,name,sort,meta&kind=eq.museum&active=eq.true&order=sort'),
-    get('home_shelf?select=shelved_on,kind,answer,question_seed,spoon_id,category&order=shelved_on.desc,id.desc')
+    synced.then(function(){ return get('home_shelf?select=shelved_on,kind,answer,question_seed,spoon_id,category&order=shelved_on.desc,id.desc'); })
   ]).then(function(r){
     var halls = r[0] || [];
     ME = halls.filter(function(h){ return h.code === CODE; })[0];

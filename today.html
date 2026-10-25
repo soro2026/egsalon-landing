@@ -880,6 +880,164 @@ window.egRestVid = function(v){
 };
 Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none"][poster]'), window.egRestVid);
 </script>
+<script>
+/* ── 오늘의 스타디움 · 서가 잇기 (1025 파이원 · 소로 「경기마다 다른 문제 · 누적된 문제는 뮤세움에 책으로 · 모두 연동」)
+      1020 스타디움 결정문 §5 미결 ①② · 1021 결정문 「브라우저가 DB 를 직접」을 따른다.
+   대진   앱 루키 3주 바퀴(stadium_v2.html buildRookieWeekRows)에 소로 계정(lonelywalden)의 기준점 — 2026-10-06(화) = 파스칼
+          주마다 상대 하나 · 파스칼 → 소크라테스 → 프루스트 · 화 = 소로파크 홈(SORO 후공 · 1회말) · 목 = 상대 구장 원정(SORO 선공 · 1회초)
+          표기는 선공(원정)이 왼쪽(1020 소로).
+   갈래   화 · 목 = 경기 전 무대(#stadStage) · 나머지 닷새 = 직전 경기 하이라이트(#stadReplay) — section.stadium[data-mode]
+   문항   DB 함수 eg_home_shelf_sync() 가 오늘(서울)까지 경기 날마다 루키 객관식 하나 · 한스푼 날마다 책 하나를 home_shelf 에 꽂는다
+          (한 번 꽂힌 줄은 그대로 · 아무도 안 온 날은 다음 손님이 채운다) → 무대는 그 경기 줄의 question_seed 로 questions 를 읽는다.
+   서가   뮤세움 칸 data-books = home_shelf 전부(가장 새 책이 맨 앞) — Places 도서관(libshelf.js)과 같은 서가.
+   9칸    앱 buildZoneBoard 규칙 — 문학 · 철학 · 예술 고정 + 나머지 아홉 분야 가운데 여섯 · 섞는 순서는 경기 날짜로 정해 그 경기 내내 같다.
+   ⚠ DB 를 4초 안에 못 읽으면 손으로 적어 둔 10/20 판 그대로 돈다(무대 셋은 egWhenToday 로 기다렸다가 출발). ── */
+(function(){
+  'use strict';
+  var waits = [], done = false;
+  window.egWhenToday = function(fn){ if (done) fn(); else waits.push(fn); };
+  function finish(){ if (done) return; done = true; waits.splice(0).forEach(function(fn){ try { fn(); } catch(e){ console.error(e); } }); }
+  var guard = setTimeout(finish, 4000);
+
+  var SUPA = 'https://cyhlotwdisjvoxvfkpnd.supabase.co', KEY = 'sb_publishable_jYYfQV_wQgMRFjSUuDq7xA_gWc9vsnR';
+  var HD = { apikey:KEY, Authorization:'Bearer ' + KEY };
+  function get(p){ return fetch(SUPA + '/rest/v1/' + p, { headers:HD }).then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }); }
+  function sync(){ return fetch(SUPA + '/rest/v1/rpc/eg_home_shelf_sync', { method:'POST', headers:{ apikey:KEY, Authorization:'Bearer ' + KEY, 'Content-Type':'application/json' }, body:'{}' }); }
+
+  /* 날짜 — 서울 */
+  function kst(){ return new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10); }
+  function add(s, k){ var d = new Date(s + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + k); return d.toISOString().slice(0, 10); }
+  function dow(s){ var w = new Date(s + 'T00:00:00Z').getUTCDay(); return w === 0 ? 7 : w; }
+  var DOW = ['', '월', '화', '수', '목', '금', '토', '일'];
+  function md(s){ return (+s.slice(5, 7)) + '/' + (+s.slice(8, 10)) + '(' + DOW[dow(s)] + ')'; }
+  function mdShort(s){ return (+s.slice(5, 7)) + '/' + (+s.slice(8, 10)); }
+
+  var TEAM = {
+    soro:     { en:'SORO',     ko:'SORO',      c:'#8B1A1A', park:'fenway'  },
+    pascal:   { en:'PASCAL',   ko:'파스칼',    c:'#1A6BA8', park:'wrigley' },
+    socrates: { en:'SOCRATES', ko:'소크라테스', c:'#0F2D5C', park:'yankee'  },
+    proust:   { en:'PROUST',   ko:'프루스트',  c:'#C94A0F', park:'oracle'  }
+  };
+  var CYCLE = ['pascal', 'socrates', 'proust'], ANCHOR = '2026-10-06';
+  var TAIL = '화요일과 목요일마다 소로파크와 상대의 구장을 오가며 루키리그 경기가 열립니다. 상대는 소크라테스 · 프루스트 · 파스칼, 우리 편은 늘 SORO입니다.';
+  /* 구장 넷 — 이름 · 설명 줄은 Places 야구장 칸과 같게 · off = 영상에서 대진으로 넘어가는 때(원정 셋은 끝의 페이드가 다 어두워진 뒤 · 1025 소로) */
+  var PARK = {
+    fenway:  { name:'소로파크', place:'BOSTON · 펜웨이파크를 본뜬 SORO의 홈', off:2900, v:'1023',
+               lede:'펜웨이파크는 지금도 경기가 열리는 메이저리그 구장 가운데 가장 오래된 곳으로, 1912년에 문을 열었습니다. 화요일과 목요일마다 이 구장과 상대의 구장을 오가며 루키리그 경기가 열립니다. 상대는 소크라테스 · 프루스트 · 파스칼, 우리 편은 늘 SORO입니다.' },
+    yankee:  { name:'양키스타디움', place:'NEW YORK · 소크라테스의 홈 구장', off:6950, v:'1025',
+               lede:'양키스타디움은 1923년에 지은 옛 구장의 길 건너편에 2009년 새로 지은 구장입니다. 소크라테스가 이 구장을 홈으로 씁니다. ' + TAIL },
+    wrigley: { name:'리글리필드', place:'CHICAGO · 파스칼의 홈 구장', off:8800, v:'1025',
+               lede:'리글리필드는 1914년에 문을 열어 펜웨이파크 다음으로 오래된 메이저리그 구장이고, 외야의 벽돌담을 담쟁이가 덮고 있습니다. 파스칼이 이 구장을 홈으로 씁니다. ' + TAIL },
+    oracle:  { name:'오라클파크', place:'SAN FRANCISCO · 프루스트의 홈 구장', off:8550, v:'1025',
+               lede:'오라클파크는 2000년에 샌프란시스코만 바닷가에 문을 열었고, 오른쪽 담장을 넘긴 공이 바다에 떨어지기도 합니다. 프루스트가 이 구장을 홈으로 씁니다. ' + TAIL }
+  };
+  var CATS = ['문학', '철학', '역사', '예술', '신화', '과학', '심리', '사회', '영성', '생태', '지리', '일상'], FIX = ['문학', '철학', '예술'];
+
+  /* 경기 — 오늘이 화 · 목이면 오늘, 아니면 직전 화 · 목 */
+  var today = kst(), isGame = (dow(today) === 2 || dow(today) === 4);
+  var g = today; while (dow(g) !== 2 && dow(g) !== 4) g = add(g, -1);
+  var wk = Math.round((Date.parse(add(g, -(dow(g) - 2))) - Date.parse(ANCHOR)) / 6048e5);
+  var opp = CYCLE[((wk % 3) + 3) % 3], home = dow(g) === 2;
+  var away = home ? opp : 'soro', host = home ? 'soro' : opp;
+  var P = PARK[TEAM[host].park], INN = home ? '1회말' : '1회초';
+  function ko(t){ return TEAM[t].ko; }
+
+  /* 경기 날짜로 정해지는 섞기 — 같은 경기는 몇 번을 열어도 같은 판 */
+  function rng(seed){ var h = 2166136261 >>> 0; for (var i = 0; i < seed.length; i++){ h ^= seed.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+    return function(){ h ^= h << 13; h >>>= 0; h ^= h >>> 17; h ^= h << 5; h >>>= 0; return h / 4294967296; }; }
+  function shuffle(a, r){ a = a.slice(); for (var i = a.length - 1; i > 0; i--){ var j = Math.floor(r() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function firstTwo(t){ t = String(t || '').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+    var m = t.match(/[^.!?]+[.!?]+[」』”’)]*\s*/g) || [t]; return m.slice(0, 2).join('').trim(); }
+
+  function paintShelf(rows){
+    var ms = document.getElementById('musStage');
+    if (!ms || !rows.length) return;
+    ms.setAttribute('data-books', JSON.stringify(rows.map(function(r){ return { a:r.answer, k:r.kind, d:r.shelved_on }; })));
+    ms.setAttribute('data-new', rows[0].shelved_on);
+  }
+
+  function paintStadium(row, q){
+    var sec = document.querySelector('section.stadium'), gs = document.getElementById('stadStage'), rs = document.getElementById('stadReplay');
+    if (!sec || !gs || !rs) return;
+    var r = rng(g + '·' + q.seed_id);
+    var cat = String(q.category || ''), main = cat.split(' · ')[0], sub = cat.split(' · ')[1] || main;
+    var inFix = FIX.indexOf(main) >= 0;
+    var board = shuffle(FIX.concat(inFix ? [] : [main]).concat(shuffle(CATS.filter(function(c){ return FIX.indexOf(c) < 0 && c !== main; }), r).slice(0, inFix ? 6 : 5)), r);
+    var zone = board.indexOf(main) + 1;
+    var right = q.choices[q.correct_index], choices = shuffle(q.choices, r);
+
+    /* 머리 — 갈래 · 날짜 · 구장 */
+    sec.setAttribute('data-mode', isGame ? 'game' : 'replay');
+    sec.querySelector('.eyebrow .m-game').textContent = md(g) + ' · 루키리그 경기';
+    sec.querySelector('.eyebrow .m-replay').textContent = md(g) + ' 경기 다시 보기';
+    sec.querySelector('#stadium-title').textContent = P.name;
+    sec.querySelector('.place').textContent = P.place;
+    sec.querySelector('.lede').textContent = P.lede;
+    var code = TEAM[host].park, base = 'media/today_stadium_' + code;
+    [gs, rs].forEach(function(st){
+      st.setAttribute('data-video-1920', base + '_1920.mp4?v=' + P.v);
+      st.setAttribute('data-video-1280', base + '_1280.mp4?v=' + P.v);
+      st.setAttribute('data-video-off', String(P.off));
+      st.setAttribute('data-name', P.name);
+      var v = st.querySelector('video'); if (v) v.setAttribute('poster', base + '_poster.jpg?v=' + P.v);
+    });
+    gs.setAttribute('aria-label', P.name + ' — 오늘의 대진에서 첫 타석까지');
+    rs.setAttribute('aria-label', P.name + ' — 지난 경기의 한 타석 다시 보기');
+
+    /* 경기 전 무대 — 대진(선공 왼쪽) · 9칸 · 타석 */
+    gs.querySelector('.mu-sub').textContent = home ? '홈 경기 · ' + ko(opp) + ' 선공 · SORO 후공' : '원정 경기 · SORO 선공 · ' + ko(opp) + ' 후공';
+    var ps = gs.querySelectorAll('.mu-p');
+    [[ps[0], away, '선공 · 원정'], [ps[1], host, '후공 · 홈']].forEach(function(x){
+      var p = x[0], t = x[1]; if (!p) return;
+      p.style.setProperty('--c', TEAM[t].c);
+      var im = p.querySelector('img'); im.src = 'https://app.egsalon.com/face_' + t + '.webp'; im.alt = ko(t) + ' 팀의 얼굴';
+      p.querySelector('.mu-name').textContent = TEAM[t].en; p.querySelector('.mu-role').textContent = x[2];
+    });
+    gs.querySelector('.zb-inning').textContent = INN + ' · SORO의 공격';
+    var cells = gs.querySelectorAll('.zb-grid .zc');
+    board.forEach(function(c, i){ var el = cells[i]; if (!el) return;
+      el.innerHTML = '<i>ZONE ' + (i + 1) + '</i>' + esc(c);
+      if (c === main) el.setAttribute('data-pick', sub); else el.removeAttribute('data-pick'); });
+    gs.querySelector('.q-cat').textContent = 'ZONE ' + zone + ' · ' + cat;
+    gs.querySelector('.q-text').textContent = q.question_text;
+    gs.querySelectorAll('.q-ch li').forEach(function(li, i){ li.textContent = choices[i] || ''; });
+
+    /* 하이라이트 — 전광판 · 타석 · 정답과 지식 · 서가 한 권 */
+    rs.setAttribute('data-soro', home ? 'r' : 'l');
+    rs.setAttribute('data-inning', INN);
+    var tms = rs.querySelectorAll('.lscore .tm'); tms[0].textContent = TEAM[away].en; tms[1].textContent = TEAM[host].en;
+    rs.querySelector('.lscore i').textContent = INN;
+    rs.querySelector('.scene.hl .mu-sub').textContent = '지난 경기 다시 보기 · ' + md(g) + ' · ' + ko(away) + ' vs ' + ko(host);
+    rs.querySelector('.scene.bat .q-cat').textContent = INN + ' · ZONE ' + zone + ' · ' + cat;
+    rs.querySelector('.scene.bat .q-text').textContent = q.question_text;
+    rs.querySelectorAll('.scene.bat .q-ch li').forEach(function(li, i){
+      li.textContent = choices[i] || '';
+      if (choices[i] === right) li.setAttribute('data-hit', ''); else li.removeAttribute('data-hit'); });
+    rs.querySelector('.scene.look .ans').innerHTML = '<small>정답</small>' + esc(right);
+    rs.querySelector('.scene.look .kn').textContent = firstTwo(q.library && q.library.knowledge);
+    rs.querySelector('.scene.look .shelf .new').textContent = row.answer;
+    rs.querySelector('.scene.look .note').textContent = '서가에 책 한 권이 꽂혔습니다 · ' + mdShort(g);
+  }
+
+  sync().catch(function(){}).then(function(){
+    return get('home_shelf?select=shelved_on,kind,answer,question_seed&order=shelved_on.desc,id.desc');
+  }).then(function(rows){
+    if (done) return;
+    paintShelf(rows);
+    var row = rows.filter(function(x){ return x.kind === 'stadium' && x.shelved_on === g; })[0];
+    if (!row || !row.question_seed) throw new Error('이 경기의 줄이 서가에 없음 · ' + g);
+    return get('questions?select=seed_id,category,question_text,choices,correct_index,library&seed_id=eq.' + encodeURIComponent(row.question_seed) + '&limit=1')
+      .then(function(qs){
+        if (done) return;
+        var q = qs[0];
+        if (!q || !Array.isArray(q.choices) || q.choices.length !== 4) throw new Error('문항을 못 읽음 · ' + row.question_seed);
+        paintStadium(row, q);
+      });
+  }).catch(function(e){ console.warn('[Today] 스타디움 · 서가는 손으로 적은 판으로 돈다 —', e); })
+    .then(function(){ clearTimeout(guard); finish(); });
+})();
+</script>
 <script src="site.js?v=1023a"></script>
 <script>
 (function(){
@@ -1150,7 +1308,7 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
 </script>
 <script>
 /* ── 오늘의 스타디움 무대 (1020) — 바깥 영상 → 대진 → 전광판 0 : 0 → 9칸 판 → 한 칸 → 타석 앞에서 멈춤 · 7초 뒤 처음부터 ── */
-(function(){
+egWhenToday(function(){   /* 1025 파이원 — 그날의 대진 · 문항을 채운 뒤에 출발(아래 「오늘의 스타디움 · 서가 잇기」) */
   'use strict';
   var st = document.getElementById('stadStage');
   if (!st) return;
@@ -1221,7 +1379,7 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
       vid.classList.add('on'); where.textContent = NAME + ' · 지구 위';
       try { vid.currentTime = 0; } catch(e){}
       vid.play().catch(function(){});
-      off = 2900;   /* 소로파크 영상 3.9초 — 끝나기 직전에 대진으로 겹쳐 넘어감 */
+      off = Number(st.dataset.videoOff) || 2900;   /* 소로파크 영상 3.9초 — 끝나기 직전에 대진으로 겹쳐 넘어감 · 원정 구장 셋은 끝의 페이드가 다 어두워진 뒤(1025 소로 「코딩과 이어지는 지점의 페이드아웃 살리기」) */
     }
     /* 대진 — 선공(원정)이 왼쪽, 홈이 오른쪽 */
     at(off,          function(){ vid.classList.remove('on'); field.classList.add('on'); scene(mu, 'TODAY MATCH UP'); });
@@ -1252,18 +1410,20 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
       else if (e.intersectionRatio === 0 && inside){ inside = false; reset(); }
     }, { threshold:[0, 0.5] }).observe(st);
   } else play();
-})();
+});
 </script>
 <script>
 /* ── 지난 경기 다시 보기 (1020) — 하이라이트 → 타석(지문 타이핑 · 게이지) → 보기를 골라 타격 → 중계 · 공이 담장을 넘고 · 스코어가 오른다
       → 이 문제, 돌아보기(해설 첫 두 문장 타이핑) → 서가에 책 한 권이 꽂힌다 → 멈춤 · 7초 뒤 처음부터 ── */
-(function(){
+egWhenToday(function(){   /* 1025 파이원 — 직전 경기의 대진 · 문항을 채운 뒤에 출발 */
   'use strict';
   var st = document.getElementById('stadReplay');
   if (!st) return;
   var NAME = st.dataset.name;
   var field = st.querySelector('.field'), where = st.querySelector('.where'), vid = st.querySelector('video');
-  var lscore = st.querySelector('.lscore'), sh = lscore.querySelector('.sh'), SH0 = sh.textContent, inn = lscore.querySelector('i'), INN0 = inn.textContent;
+  /* 1025 — 점수가 오르는 쪽은 SORO 자리(홈이면 오른쪽 .sh · 원정이면 왼쪽 .sa) · 이닝은 홈 1회말 · 원정 1회초 */
+  var lscore = st.querySelector('.lscore'), sh = lscore.querySelector(st.dataset.soro === 'l' ? '.sa' : '.sh'), SH0 = sh.textContent, inn = lscore.querySelector('i'), INN0 = inn.textContent;
+  var INN = st.dataset.inning || '1회말';
   var fly = st.querySelector('.fly');
   var hl = st.querySelector('.scene.hl'), bat = st.querySelector('.scene.bat'), call = st.querySelector('.scene.call'), look = st.querySelector('.scene.look');
   var blines = bat.querySelectorAll('.line'), choices = bat.querySelectorAll('.q-ch li'), hitLi = bat.querySelector('.q-ch li[data-hit]');
@@ -1336,12 +1496,12 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
       vid.classList.add('on'); where.textContent = NAME + ' · 지구 위';
       try { vid.currentTime = 0; } catch(e){}
       vid.play().catch(function(){});
-      off = 2900;
+      off = Number(st.dataset.videoOff) || 2900;   /* 1025 — 구장마다 영상 길이가 달라 data-video-off 로 */
     }
     at(off,        function(){ vid.classList.remove('on'); field.classList.add('on'); lscore.classList.add('on'); scene(hl, '하이라이트'); });
     /* 타석 — 지문이 85%쯤 들어왔을 때 보기를 골라 친다(앱도 지문이 다 나오기 전에 칠 수 있다) */
     var upto = Math.floor(Q.full.length * 0.85), T = Q.full.length * TS;
-    at(off + 3200, function(){ st.classList.add('deep'); scene(bat, '1회말 타석'); blines[0].classList.add('on'); Q.el.textContent = ''; });
+    at(off + 3200, function(){ st.classList.add('deep'); scene(bat, INN + ' 타석'); blines[0].classList.add('on'); Q.el.textContent = ''; });
     at(off + 3800, function(){
       blines[1].classList.add('on'); blines[3].classList.add('on');
       type(Q, TS, upto, function(el){ gauge(Math.max(0, 1 - 0.5 * el / T), el); },
@@ -1375,12 +1535,12 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
       else if (e.intersectionRatio === 0 && inside){ inside = false; reset(); }
     }, { threshold:[0, 0.5] }).observe(st);
   } else play();
-})();
+});
 </script>
 <script>
 /* ── 오늘의 뮤세움 무대 (1020) — 정문 → 서고 꼭대기 → 윗단까지 내려옴 → 오늘의 책이 위에서 내려와 꽂힘(권수가 하나 오른다)
       → 서가 끝까지 천천히 훑음 → 맺는 말 → 멈춤 · 7초 뒤 처음부터 ── */
-(function(){
+egWhenToday(function(){   /* 1025 파이원 — 서가(home_shelf)를 읽은 뒤에 출발 */
   'use strict';
   var st = document.getElementById('musStage');
   if (!st) return;
@@ -1503,7 +1663,7 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
       else if (e.intersectionRatio === 0 && inside){ inside = false; reset(); }
     }, { threshold:[0, 0.5] }).observe(st);
   } else play();
-})();
+});
 </script>
 <script>
 /* ── 오늘의 콜레주 드 콤포스텔라 무대 (1020) — 정문 → 1층 모집 홀 꼭대기 → 벽 머리말을 지나 포스터 무대까지 내려옴
