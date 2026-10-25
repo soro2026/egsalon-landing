@@ -131,7 +131,7 @@ def build(P):
     if USES.get('star'):
         tail = tail.replace('</body>', '<script src="starroom.js?v=1022b"></script>\n</body>', 1)
     if USES.get('concert'):
-        tail = tail.replace('</body>', '<script src="concertroom.js?v=1022a"></script>\n</body>', 1)
+        tail = tail.replace('</body>', '<script src="concertroom.js?v=1025a"></script>\n</body>', 1)
     page = head + '<body data-nav="cover">\n\n' + gate + hero + '\n'.join(body) + tail
     out = os.path.join(ROOT, f'guide-{P["slug"]}.html')
     open(out, 'w', encoding='utf-8').write(page)

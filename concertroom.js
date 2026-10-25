@@ -41,6 +41,7 @@
     '.concertroom .cr-gate{position:absolute;inset:0;background:center/cover no-repeat;opacity:0;transition:opacity 1.4s ease}',
     '.concertroom .cr-gate.on{opacity:1}',
     '.concertroom .cr-gate.on.drift{animation:crDrift 7s ease-out both}',
+    '.concertroom .cr-gate.on.rest{transform:scale(1.06)}',   /* 1025 파이원 — 쉬는 동안 정문 그림을 걸음의 첫 장면(1.06) 그대로 */
     '@keyframes crDrift{from{transform:scale(1.06)}to{transform:scale(1)}}',
     '.concertroom .cr-door{position:absolute;left:6%;right:6%;bottom:9%;text-align:center;opacity:0;transform:translateY(8px);',
       'transition:opacity 1.1s ease,transform 1.1s ease;text-shadow:0 1px 16px rgba(0,0,0,.65)}',
@@ -239,6 +240,13 @@
       [S.gate, S.door, S.hall, S.scr].forEach(function(e){ e.classList.remove('on'); });
       S.gate.classList.remove('drift'); S.scr.classList.remove('named'); S.scr.classList.remove('wait');
       place(S, R, false, true);
+      rest();
+    }
+    /* 1025 파이원 — 쉬는 동안(화면에 들어오는 중 · 화면 밖 · 한 바퀴 끝) 검정 대신 정문 그림을 걸음의 첫 장면으로 둔다.
+       소로 「스크롤하면서 까맣게 되는 것」. 움직임 줄이기를 켠 손님은 예전 그대로(홀 · 스크린 정지 장면). */
+    function rest(){
+      if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      S.gate.classList.add('on'); S.gate.classList.add('rest');
     }
     function play(){
       reset();
@@ -247,14 +255,14 @@
         S.hall.classList.add('on'); S.scr.classList.add('on'); S.scr.classList.add('named'); place(S, R, true, true);
         S.where.textContent = NAME + ' · 오늘의 연주'; S.where.classList.add('on'); return;
       }
-      S.gate.classList.add('on'); S.gate.classList.add('drift'); S.where.textContent = NAME + ' · 정문'; S.where.classList.add('on');
+      S.gate.classList.remove('rest'); S.gate.classList.add('on'); S.gate.classList.add('drift'); S.where.textContent = NAME + ' · 정문'; S.where.classList.add('on');
       at(900,   function(){ S.door.classList.add('on'); });
       at(4600,  function(){ S.door.classList.remove('on'); S.gate.classList.remove('on'); S.hall.classList.add('on'); S.scr.classList.add('on');
                             S.where.textContent = NAME + ' · 공연장'; });
       at(5200,  function(){ place(S, R, true, false); });
       at(10600, function(){ S.scr.classList.add('named'); S.where.textContent = NAME + ' · 오늘의 연주'; });
       at(12800, function(){ S.scr.classList.add('wait'); });
-      at(19500, function(){ S.scr.classList.remove('named'); S.scr.classList.remove('wait'); S.scr.classList.remove('on'); S.hall.classList.remove('on'); });
+      at(19500, function(){ S.scr.classList.remove('named'); S.scr.classList.remove('wait'); S.scr.classList.remove('on'); S.hall.classList.remove('on'); rest(); });   /* 1025 — 스크린에서 정문으로 곧장 겹쳐 넘어감 */
       at(21100, play);
     }
     S.play = play; S.reset = reset;
@@ -267,6 +275,7 @@
         });
       }, { threshold: .45 });
       S.running = false;
+      reset();
       S.io.observe(fig);
     } else play();
   }
