@@ -806,7 +806,7 @@ main [id]{scroll-margin-top:calc(var(--head-top) + 72px)}
   </section>
   <!-- ▲ -->
 
-  <!-- ▼ 오늘의 콜레주 드 콤포스텔라 (1020 소로) — 개막 전: 오늘의 개막작 = 포스터 하루 하나 (1026 — 플라톤 → 모비 딕 → 전쟁과 평화 → 카라마조프 → 월든 · 10/26 = 플라톤 · 아래 「날짜 기계」 collegeTask)
+  <!-- ▼ 오늘의 콜레주 드 콤포스텔라 (1020 소로) — 개막 전: 오늘의 개막작 = 포스터 하루 하나 (1026 — 플라톤 → 모비 딕 → 전쟁과 평화 → 카라마조프 → 월든 · 10/26 = 모비 딕 · 아래 「날짜 기계」 collegeTask)
        ⚠ 개막 날짜는 적지 않는다 — COMING SOON (1020 소로) · 개막 뒤에는 「지금 걷고 있는 책 · ○주째」로 바뀐다
        273권 「오늘의 한 권」은 나중에 Places 나 Guide 의 텍스트 칸에서 (1020 소로) -->
   <section class="galerie college" aria-labelledby="college-title">
@@ -1259,10 +1259,10 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
   }
 
   /* ── 오늘의 콜레주 (1026) — 개막작 포스터 하루 하나 (1025 소로 「하루 한 편씩 예고」)
-        도는 차례 = 플라톤 → 모비 딕 → 전쟁과 평화 → 카라마조프가의 형제들 → 월든 · 10/26 = 플라톤(첫날)
+        도는 차례 = 플라톤 → 모비 딕 → 전쟁과 평화 → 카라마조프가의 형제들 → 월든 · 10/26 = 모비 딕(1026 소로 — 플라톤은 손판으로 이미 8일 걸렸으니 하루 당김)
         포스터 = college-assets/posters/<번호>.webp (1 월든 · 2 플라톤 · 3 모비 딕 · 4 카라마조프 · 5 전쟁과 평화 — 앱 기수 번호)
         글 = college_books (title · author · era_chapter · weeks_num) · 개막 날짜는 적지 않는다(1020 소로) ── */
-  var COLLEGE = [ { p:2, book:120 }, { p:3, book:39 }, { p:5, book:51 }, { p:4, book:46 }, { p:1, book:194 } ], COLLEGE_FROM = '2026-10-26';
+  var COLLEGE = [ { p:2, book:120 }, { p:3, book:39 }, { p:5, book:51 }, { p:4, book:46 }, { p:1, book:194 } ], COLLEGE_FROM = '2026-10-25';
   function collegeTask(){
     var k = Math.round((Date.parse(today) - Date.parse(COLLEGE_FROM)) / 86400000);
     var c = COLLEGE[((k % COLLEGE.length) + COLLEGE.length) % COLLEGE.length];
