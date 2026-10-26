@@ -63,6 +63,7 @@
       if (on) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current');
     });
     if (scroll) sec.scrollIntoView({ behavior:'smooth', block:'start' });
+    try { document.dispatchEvent(new CustomEvent('eg-drawer', { detail:id })); } catch(x){}   /* 1026 — 숨은 채 꽂힌 서가가 제 폭으로 다시 서게 */
   }
   drawers.forEach(function(d){
     d.addEventListener('click', function(e){
@@ -322,7 +323,7 @@
   /* 책등 한 권 — k 는 크게 보기에서 앞뒤로 넘기는 차례 · 곧 문을 여는 책은 .soon(뒤에서 금빛이 숨 쉼) */
   function spBtn(x, k, big){
     var f = (88 + ((x.b.id * 7919) % 13)) / 100;
-    return '<button class="cs-sp' + (soon[x.b.id] ? ' soon' : '') + '" type="button" data-k="' + k + '" style="height:calc(var(--sp-h) * ' + (big ? 1.16 : 1) + ' * ' + f + ')"'
+    return '<button class="cs-sp' + (soon[x.b.id] ? ' soon' : '') + '" type="button" data-k="' + k + '" data-f="' + f + '" style="height:calc(var(--sp-h) * ' + (big ? 1.16 : 1) + ' * ' + f + ')"'
       + ' aria-label="' + esc('『' + x.b.title + '』 ' + (x.b.author || '') + (soon[x.b.id] ? ' · 곧 문을 엽니다' : '')) + '">'
       + '<img src="' + esc(spine(x.b.id)) + '" alt="" loading="lazy" decoding="async" onerror="this.parentNode.style.display=\'none\'">'
       + (soon[x.b.id] ? '<i class="tw" aria-hidden="true">✦</i>' : '') + '</button>';
@@ -374,6 +375,32 @@
       out.push('</section>');
     }
     colBox.innerHTML = out.join('') || '<p class="wall-note">이 갈래의 책이 아직 없습니다.</p>';
+    /* 1026 파이원 — 책등 폭은 「제 몫」으로 (파이스 메모 · 앱 college.html 066b93c 와 같은 까닭)
+       책등이 두께 다섯 단계(폭 ÷ 키 0.12~0.46)로 새로 구워지면서, 선반 폭 ÷ 권수로 똑같이 묶던 상한이
+       두꺼운 책의 키를 꺼뜨렸다(EG312 인간지성론). 그림이 뜨는 대로 실제 폭 ÷ 키를 재서
+       한 줄의 선반 폭을 그 비율대로 나눠 준다 — 넓으면 모두 제 키로 · 좁으면 한 줄이 같은 비율로 함께 줄어 키가 고르다.
+       재기 전(그림이 아직 안 뜬 책)은 예전처럼 0.34로 셈한다. */
+    colBox.querySelectorAll('.cs-row').forEach(function(row){
+      var btns = row.querySelectorAll('.cs-sp');
+      var fit = function(){
+        var W = 0;
+        btns.forEach(function(b){ W += Number(b.dataset.rf) || 0.34 * (Number(b.dataset.f) || 1); });
+        var gap = parseFloat(getComputedStyle(row).columnGap) || 0;
+        row.style.setProperty('--W', W.toFixed(4));
+        row.style.setProperty('--gaps', (gap * Math.max(0, btns.length - 1)).toFixed(1) + 'px');
+      };
+      btns.forEach(function(b){
+        var img = b.querySelector('img'); if (!img) return;
+        var got = function(){
+          if (!img.naturalWidth || !img.naturalHeight) return;
+          b.dataset.rf = (img.naturalWidth / img.naturalHeight * (Number(b.dataset.f) || 1)).toFixed(4);
+          b.style.setProperty('--rf', b.dataset.rf);
+          fit();
+        };
+        if (img.complete) got(); else img.addEventListener('load', got);
+      });
+      fit();
+    });
     /* 별 ✦ 자리 — 책등 그림은 칸 안에서 아래로 붙어 줄어들 수 있다(갈래 화면) · 그만큼 별을 내려 책등 바로 위에 */
     colBox.querySelectorAll('.cs-sp.soon img').forEach(function(img){
       var place = function(){
@@ -395,6 +422,11 @@
   window.addEventListener('resize', function(){
     clearTimeout(rsT);
     rsT = setTimeout(function(){ if (college.list.length && perRow() !== colN) renderCollege(); }, 200);
+  });
+  /* 1026 파이원 — 서랍이 숨은 채로 꽂으면 서가 폭을 0으로 재서(perRow 최소 8) 한 장이 6 + 6 두 선반으로 갈라졌다.
+     서랍이 열릴 때 제 폭으로 다시 잰다 — 데스크톱에서 시대의 장 하나가 선반 하나(12권)로 선다. */
+  document.addEventListener('eg-drawer', function(e){
+    if (e.detail === 'college' && college.list.length && perRow() !== colN) renderCollege();
   });
 
   /* 판본 카드 — 표지 · 출판사 · 옮긴이 · 해 · 까닭 한 줄 · 절판이면 「절판 · 도서관에서」 */

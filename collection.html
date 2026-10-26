@@ -183,6 +183,8 @@ section.drawer{scroll-margin-top:calc(var(--head-top) + 52px)}
 .cs-sp{display:block;height:var(--sp-h);width:auto;max-width:calc(100% / var(--n,12));object-fit:contain;object-position:bottom;
   background:none;border:0;padding:0;cursor:pointer;filter:drop-shadow(0 3px 5px rgba(0,0,0,.55));transition:transform .22s ease}
 .cs-sp img{display:block;height:100%;width:auto;max-width:100%;object-fit:contain;object-position:bottom}
+/* 1026 — 그림을 잰 책등은 선반 폭을 제 몫(폭 ÷ 키 × 키 비율)만큼 — 두꺼운 책도 제 키로(collection.js) */
+.cs-sp[data-rf]{max-width:calc((100% - var(--gaps,0px)) * var(--rf) / var(--W))}
 .cs-sp:hover,.cs-sp:focus-visible{transform:translateY(-8px);outline:none}
 .cs-plank{position:relative;height:24px;border-radius:2px;margin:-2px 2px 0;
   background:linear-gradient(180deg,#5a4020 0%,#3d2a13 42%,#2a1c0c 100%);
@@ -461,6 +463,6 @@ section.drawer{scroll-margin-top:calc(var(--head-top) + 52px)}
 
 <script src="https://app.egsalon.com/eg_device.js?v=20260729"></script>
 <script src="site.js?v=1023a"></script>
-<script src="collection.js?v=1024d"></script>
+<script src="collection.js?v=1026"></script>
 </body>
 </html>
