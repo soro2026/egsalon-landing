@@ -806,7 +806,7 @@ main [id]{scroll-margin-top:calc(var(--head-top) + 72px)}
   </section>
   <!-- ▲ -->
 
-  <!-- ▼ 오늘의 콜레주 드 콤포스텔라 (1020 소로) — 개막 전: 오늘의 개막작 = 포스터 다섯 장[ KST날수 % 5 ] (포스터 번호 순 1 월든 · 2 플라톤 · 3 모비 딕 · 4 카라마조프 · 5 전쟁과 평화)
+  <!-- ▼ 오늘의 콜레주 드 콤포스텔라 (1020 소로) — 개막 전: 오늘의 개막작 = 포스터 하루 하나 (1026 — 플라톤 → 모비 딕 → 전쟁과 평화 → 카라마조프 → 월든 · 10/26 = 플라톤 · 아래 「날짜 기계」 collegeTask)
        ⚠ 개막 날짜는 적지 않는다 — COMING SOON (1020 소로) · 개막 뒤에는 「지금 걷고 있는 책 · ○주째」로 바뀐다
        273권 「오늘의 한 권」은 나중에 Places 나 Guide 의 텍스트 칸에서 (1020 소로) -->
   <section class="galerie college" aria-labelledby="college-title">
@@ -1087,6 +1087,12 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
     },
     concert: {
       wien:        ['today_concert_wien',      '1023',  3300]
+    },
+    museum: {
+      seattle:     ['today_museum_seattle',    '1023',  3900]
+    },
+    observatory: {
+      tablemountain: ['today_observatory_tablemountain', '1023', 4300]
     }
   };
   /* 무대에 영상을 걸거나 걷는다 — 걷으면 쉬는 동안 정문 그림이 보이도록 data-rest="gate" */
@@ -1227,11 +1233,121 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
     });
   }
 
-  var left = 4;
+  /* ── 오늘의 뮤세움 (1026) — 오늘의 도서관 = 도서관 일곱(sort)[ 서울 날수 % 7 ] (앱 terra.html pinOf('museum') · bibliotheca kstDay 와 같은 셈)
+        글 = terra_pins.meta (city_en · subtitle · lede · note) · 서가 자리 = meta.shelf_rect · 서가 책은 위 paintShelf(home_shelf)
+        10/20 = 시애틀(손으로 적은 판과 같음) ── */
+  function museumTask(){
+    var dayNo = Math.floor((Date.now() + 9 * 3600000) / 86400000);
+    return get('terra_pins?select=code,name,sort,meta&kind=eq.museum&active=eq.true&order=sort').then(function(L){
+      if (done) return;
+      L = L || [];
+      var st = document.getElementById('musStage'), sec = document.getElementById('museum-title') && document.getElementById('museum-title').closest('section');
+      if (!L.length || !st || !sec) throw new Error('도서관 명단을 못 읽음');
+      var c = L[((dayNo % L.length) + L.length) % L.length], m = c.meta || {};
+      if (!m.shelf_rect) throw new Error('서가 자리를 못 읽음 · ' + c.code);
+      sec.querySelector('.eyebrow').textContent = '오늘의 뮤세움 · ' + md(today);
+      sec.querySelector('#museum-title').textContent = c.name;
+      sec.querySelector('.place').textContent = (m.city_en || '') + (m.city_en && m.subtitle ? ' · ' : '') + (m.subtitle || '');
+      sec.querySelector('.lede').textContent = (m.lede ? m.lede + ' ' : '') + '지구 위 도서관 일곱 곳이 날마다 돌아가며 오늘의 도서관이 되고, 이 서가에는 Today에 나온 책이 차례로 꽂힙니다. 한 번 꽂힌 책은 빠지지 않습니다.';
+      st.setAttribute('data-code', c.code); st.setAttribute('data-name', c.name); st.setAttribute('data-name-en', m.name_en || c.name);
+      if (m.tz) st.setAttribute('data-tz', m.tz);
+      st.setAttribute('data-rect', JSON.stringify(m.shelf_rect));
+      st.setAttribute('aria-label', c.name + ' — 정문에서 서가까지');
+      egStageMedia(st, window.EG_TODAY_MEDIA.museum[c.code]);
+      if (m.note) st.querySelector('.know .scene').textContent = m.note;
+    });
+  }
+
+  /* ── 오늘의 콜레주 (1026) — 개막작 포스터 하루 하나 (1025 소로 「하루 한 편씩 예고」)
+        도는 차례 = 플라톤 → 모비 딕 → 전쟁과 평화 → 카라마조프가의 형제들 → 월든 · 10/26 = 플라톤(첫날)
+        포스터 = college-assets/posters/<번호>.webp (1 월든 · 2 플라톤 · 3 모비 딕 · 4 카라마조프 · 5 전쟁과 평화 — 앱 기수 번호)
+        글 = college_books (title · author · era_chapter · weeks_num) · 개막 날짜는 적지 않는다(1020 소로) ── */
+  var COLLEGE = [ { p:2, book:120 }, { p:3, book:39 }, { p:5, book:51 }, { p:4, book:46 }, { p:1, book:194 } ], COLLEGE_FROM = '2026-10-26';
+  function collegeTask(){
+    var k = Math.round((Date.parse(today) - Date.parse(COLLEGE_FROM)) / 86400000);
+    var c = COLLEGE[((k % COLLEGE.length) + COLLEGE.length) % COLLEGE.length];
+    return get('college_books?select=id,title,author,era_chapter,weeks_num&id=eq.' + c.book + '&limit=1').then(function(B){
+      if (done) return;
+      var b = B && B[0], st = document.getElementById('colStage'), sec = document.getElementById('college-title') && document.getElementById('college-title').closest('section');
+      if (!b || !b.title || !st || !sec) throw new Error('개막작을 못 읽음 · ' + c.book);
+      sec.querySelector('.eyebrow').textContent = '오늘의 콜레주 드 콤포스텔라 · ' + md(today);
+      st.setAttribute('data-poster', 'https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/college-assets/posters/' + c.p + '.webp');
+      st.querySelector('.poster').setAttribute('alt', '『' + b.title + '』 개막작 포스터');
+      st.querySelector('.know .scene').innerHTML = '<span class="door">개막작</span>『' + esc(b.title) + '』';
+      var ch = String(b.era_chapter || '').replace(/\s*·\s*/, ' ');
+      st.querySelector('.know .k').textContent = [b.author, ch, b.weeks_num ? '함께 걸으면 ' + b.weeks_num + '주' : ''].filter(Boolean).join(' · ');
+    });
+  }
+
+  /* ── 오늘의 천문대 · 오늘의 별자리 (1026)
+        천문대 = 천문대 서른다섯(active · sort, code)[ 서울 날수 % N ] (1020 소로 — 앱처럼 「지금 밤인 곳」이 아니라 날마다 하나 · 10/20 = 테이블마운틴)
+        렌즈 = meta.lens_rect · 정문 = tour-assets/observatory/<code>_n.webp · 이름 줄 = city_en (없으면 name_en)
+        별자리 = star_links 를 가진 사람(star_a) — 만든 차례(첫 줄 id)로 하루에 하나씩, 새로 만든 사람은 줄 끝 (1018 결정문 §5)
+          「어제 누구였는지」를 기억하는 대신 10/20(바흐)부터 날마다 「어제 다음 사람」을 짚어 온다 — 그날까지 만들어진 사람만 줄에 선다.
+          그래서 별자리가 늘어도 지난 날의 순서는 밀리지 않는다.
+        하늘 = stars 전부 [id, birth(, 북극성 1)] — 앱 constella 와 같은 별 · 같은 셈 ── */
+  var OBS_FROM = '2026-10-20', OBS_FIRST = 205;   /* 10/20 = 바흐 (손으로 적은 판과 같음) */
+  function natKo(n){   /* 고유어 수 — 「열한 갈래」 */
+    var U = ['', '한', '두', '세', '네', '다섯', '여섯', '일곱', '여덟', '아홉'], T = ['', '열', '스물', '서른', '마흔', '쉰', '예순', '일흔', '여든', '아흔'];
+    var t = Math.floor(n / 10), u = n % 10;
+    return (t === 2 && !u ? '스무' : T[t]) + U[u];
+  }
+  function shortName(s){   /* 첫 별명이 이름보다 짧은 한글이면 그것(바흐 · J. C. 바흐) · 아니면 이름의 끝 낱말(소로 · 캠벨) */
+    var a0 = (s.aliases || [])[0], nm = String(s.name || '');
+    if (a0 && /[가-힣]/.test(a0) && a0.replace(/\s/g, '').length < nm.replace(/\s/g, '').length) return a0;
+    var w = nm.split(' '); return w[w.length - 1] || nm;
+  }
+  function obsTask(){
+    var dayNo = Math.floor((Date.now() + 9 * 3600000) / 86400000);
+    return Promise.all([
+      get('terra_pins?select=code,name,sort,meta&kind=eq.constellatio&active=eq.true&order=sort,code'),
+      get('star_links?select=id,star_a,star_b,head,created_at&active=eq.true&order=id'),
+      get('stars?select=id,name,aliases,birth,is_polaris&order=id')
+    ]).then(function(R){
+      if (done) return;
+      var obs = (R[0] || []).slice().sort(function(a, b){ return (a.sort || 0) - (b.sort || 0) || (a.code < b.code ? -1 : a.code > b.code ? 1 : 0); });
+      var links = R[1] || [], stars = R[2] || [];
+      var st = document.getElementById('obsStage'), sec = document.getElementById('obs-title') && document.getElementById('obs-title').closest('section');
+      if (!obs.length || !links.length || !stars.length || !st || !sec) throw new Error('천문대 · 별자리 · 별을 못 읽음');
+      var o = obs[((dayNo % obs.length) + obs.length) % obs.length], m = o.meta || {};
+
+      /* 별자리 줄 — 사람마다 첫 줄 id(만든 차례)와 그 날짜(서울) */
+      var kd = function(ts){ return new Date(Date.parse(ts) + 9 * 3600000).toISOString().slice(0, 10); };
+      var Q = {}; links.forEach(function(L){ var q = Q[L.star_a]; if (!q) Q[L.star_a] = { id:L.star_a, first:L.id, from:kd(L.created_at) }; });
+      var line = Object.keys(Q).map(function(k){ return Q[k]; }).sort(function(a, b){ return a.first - b.first; });
+      var cur = line.filter(function(q){ return q.id === OBS_FIRST; })[0] || line[0];
+      for (var d = add(OBS_FROM, 1); d <= today; d = add(d, 1)){
+        var avail = line.filter(function(q){ return q.from <= d; });
+        cur = avail.filter(function(q){ return q.first > cur.first; })[0] || avail[0] || cur;
+      }
+      var byId = {}; stars.forEach(function(s){ byId[s.id] = s; });
+      var c = byId[cur.id];
+      if (!c) throw new Error('오늘의 별을 못 찾음 · ' + cur.id);
+      var web = links.filter(function(L){ return L.star_a === c.id || L.star_b === c.id; }).map(function(L){
+        var x = byId[L.star_a === c.id ? L.star_b : L.star_a]; return x ? { id:x.id, n:x.name, s:shortName(x), h:L.head || '' } : null; }).filter(Boolean);
+
+      sec.querySelector('.eyebrow').textContent = '오늘의 천문대 · ' + md(today);
+      sec.querySelector('#obs-title').textContent = o.name;
+      sec.querySelector('.place').textContent = (m.city_en || String(m.name_en || '').toUpperCase()) + ' · 오늘의 별자리 ' + c.name;
+      st.setAttribute('data-code', o.code); st.setAttribute('data-name', o.name);
+      if (m.lens_rect) st.setAttribute('data-lens', JSON.stringify(m.lens_rect)); else st.removeAttribute('data-lens');
+      st.setAttribute('data-center', JSON.stringify({ id:c.id, n:c.name, s:shortName(c) }));
+      st.setAttribute('data-links', JSON.stringify(web));
+      st.setAttribute('data-stars', JSON.stringify(stars.map(function(s){ return s.is_polaris ? [s.id, s.birth, 1] : [s.id, s.birth]; })));
+      st.setAttribute('aria-label', o.name + ' — 정문에서 망원경 너머 오늘의 별자리까지');
+      egStageMedia(st, window.EG_TODAY_MEDIA.observatory[o.code]);
+      st.querySelector('.know .scene').textContent = shortName(c) + '에게서 ' + natKo(web.length) + ' 갈래의 선이 뻗어 있습니다.';
+    });
+  }
+
+  var left = 7;
   function tasksLeft(){ if (--left <= 0){ clearTimeout(guard); finish(); } }
+  obsTask().catch(function(e){ console.warn('[Today] 천문대 · 별자리는 손으로 적은 판으로 돈다 —', e); }).then(tasksLeft);
+  collegeTask().catch(function(e){ console.warn('[Today] 콜레주는 손으로 적은 판으로 돈다 —', e); }).then(tasksLeft);
   spoonTask().catch(function(e){ console.warn('[Today] 한 스푼은 손으로 적은 판으로 돈다 —', e); }).then(tasksLeft);
   galerieTask().catch(function(e){ console.warn('[Today] 미술관은 손으로 적은 판으로 돈다 —', e); }).then(tasksLeft);
   concertTask().catch(function(e){ console.warn('[Today] 음악관은 손으로 적은 판으로 돈다 —', e); }).then(tasksLeft);
+  museumTask().catch(function(e){ console.warn('[Today] 뮤세움은 손으로 적은 판으로 돈다 —', e); }).then(tasksLeft);
 })();
 </script>
 <script src="site.js?v=1023a"></script>
@@ -1758,6 +1874,7 @@ egWhenToday(function(){   /* 1025 파이원 — 서가(home_shelf)를 읽은 뒤
   hName.textContent = st.dataset.nameEn;
   var RECT = JSON.parse(st.dataset.rect);
   shelf.style.left = RECT.L + '%'; shelf.style.top = RECT.T + '%'; shelf.style.width = RECT.W + '%'; shelf.style.height = RECT.H + '%';
+  if (st.dataset.rest === 'gate') gate.classList.add('on');   /* 1026 — 영상이 아직 없는 도서관은 처음부터 정문 그림 */
 
   /* ── 앱 서고와 같은 판짜기 (bibliotheca.html) — ⚠ 책등 해시 · 키 변주 · 글자 수는 앱과 글자 하나 다르지 않게 ── */
   var RACKS = 3, PER_RACK = 12, PER_PAGE = RACKS * PER_RACK, SPINE_MAX = 13;
@@ -1824,6 +1941,7 @@ egWhenToday(function(){   /* 1025 파이원 — 서가(home_shelf)를 읽은 뒤
     count(false);
     try { vid.pause(); } catch(e){}
     egRestVid(vid);   /* 1025 파이원 — 쉬는 동안 첫 장면을 보인다 */
+    if (st.dataset.rest === 'gate') gate.classList.add('on');   /* 1026 — 영상이 아직 없는 도서관은 쉬는 동안 정문 그림 */
   }
   function play(){
     reset(); fit();
@@ -1870,7 +1988,7 @@ egWhenToday(function(){   /* 1025 파이원 — 서가(home_shelf)를 읽은 뒤
 <script>
 /* ── 오늘의 콜레주 드 콤포스텔라 무대 (1020) — 정문 → 1층 모집 홀 꼭대기 → 벽 머리말을 지나 포스터 무대까지 내려옴
       → 오늘의 개막작 포스터가 걸림 → COMING SOON 인장이 찍힘 → 책 이름 · 지은이 · 진도 → 멈춤 · 7초 뒤 처음부터 ── */
-(function(){
+egWhenToday(function(){   /* 1026 파이원 — 오늘의 개막작(포스터 · 글)을 채운 뒤에 출발 */
   'use strict';
   var st = document.getElementById('colStage');
   if (!st) return;
@@ -1953,7 +2071,7 @@ egWhenToday(function(){   /* 1025 파이원 — 서가(home_shelf)를 읽은 뒤
       else if (e.intersectionRatio === 0 && inside){ inside = false; reset(); }
     }, { threshold:[0, 0.5] }).observe(st);
   } else play();
-})();
+});
 </script>
 <script>
 /* ── 오늘의 천문대 · 오늘의 별자리 무대 (1020 소로 — 한 무대로)
@@ -1964,7 +2082,7 @@ egWhenToday(function(){   /* 1025 파이원 — 서가(home_shelf)를 읽은 뒤
      그래서 하늘은 앱 constella.html 의 엔진(배치 · 등급 · 반짝임 · 자전 · 은하수 · 달 · 유성 · 그물)을 그대로 옮긴다.
      ⚠ 별 자리는 DB 별 전체(id · birth · 북극성)에서 앱과 같은 셈으로 나온다(data-stars) — 한 별이라도 빠지면 띠 안 순번이 밀려 하늘이 달라진다.
      ⚠ 앱은 창 크기 캔버스, 여기는 무대 크기 캔버스 — 앱의 canvas.width 자리가 CW 다. ── */
-(function(){
+egWhenToday(function(){   /* 1026 파이원 — 오늘의 천문대 · 별자리 · 하늘을 채운 뒤에 출발 */
   'use strict';
   var st = document.getElementById('obsStage');
   if (!st) return;
@@ -2425,6 +2543,13 @@ egWhenToday(function(){   /* 1025 파이원 — 서가(home_shelf)를 읽은 뒤
     fitEl.style.transform = 'scale(1)'; iris.style.opacity = '0'; iris.style.background = 'none';
     try { vid.pause(); } catch(e){}
     egRestVid(vid);   /* 1025 파이원 — 쉬는 동안 첫 장면을 보인다 */
+    restGate();
+  }
+  /* 1026 — 영상이 아직 없는 천문대는 쉬는 동안(처음 열 때 · reset 때) 정문 그림 */
+  function restGate(){
+    if (st.dataset.rest !== 'gate') return;
+    if (!img.getAttribute('src')) img.src = gateSrc;
+    layout(); fitEl.classList.add('on');
   }
   var FLY = 1300, WEB = (450 + (LINKS.length - 1) * 90 + 700 + 300);
   function play(){
@@ -2434,7 +2559,7 @@ egWhenToday(function(){   /* 1025 파이원 — 서가(home_shelf)를 읽은 뒤
     var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     var center = function(){ return starById[CENTER.id]; };
     if (reduce){
-      canvas.classList.add('on'); startSky();
+      fitEl.classList.remove('on'); canvas.classList.add('on'); startSky();
       var c0 = center(); if (c0){ viewX = c0.x - CW / 2; viewY = c0.y - CH / 2; } showStarWeb();
       st.classList.add('dim'); lines.forEach(function(l){ l.classList.add('on'); }); where.textContent = '오늘의 별자리 · ' + CENTER.n; return;
     }
@@ -2468,6 +2593,7 @@ egWhenToday(function(){   /* 1025 파이원 — 서가(home_shelf)를 읽은 뒤
     at(end + 8200,   play);
   }
   window.addEventListener('resize', function(){ layout(); if (raf){ sizeSky(); clampView(); } });
+  restGate();
   if ('IntersectionObserver' in window){
     var inside = false;
     new IntersectionObserver(function(es){
@@ -2476,7 +2602,7 @@ egWhenToday(function(){   /* 1025 파이원 — 서가(home_shelf)를 읽은 뒤
       else if (e.intersectionRatio === 0 && inside){ inside = false; reset(); }
     }, { threshold:[0, 0.5] }).observe(st);
   } else play();
-})();
+});
 </script>
 </body>
 </html>
