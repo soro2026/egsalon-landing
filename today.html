@@ -1292,10 +1292,12 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
     var t = Math.floor(n / 10), u = n % 10;
     return (t === 2 && !u ? '스무' : T[t]) + U[u];
   }
-  function shortName(s){   /* 첫 별명이 이름보다 짧은 한글이면 그것(바흐 · J. C. 바흐) · 아니면 이름의 끝 낱말(소로 · 캠벨) */
-    var a0 = (s.aliases || [])[0], nm = String(s.name || '');
-    if (a0 && /[가-힣]/.test(a0) && a0.replace(/\s/g, '').length < nm.replace(/\s/g, '').length) return a0;
-    var w = nm.split(' '); return w[w.length - 1] || nm;
+  function shortName(s){   /* 머리글자 별명이면 그대로(J. C. 바흐) · 아니면 이름 낱말 가운데 별명으로 등록된 것(렘브란트 · 위고 · 포)
+                              · 둘 다 없으면 이름의 끝 낱말(고흐 · 캠벨) — 1026 「반고흐」 「레인」을 바로잡음 */
+    var nm = String(s.name || ''), w = nm.split(' '), al = s.aliases || [];
+    if (al[0] && /\./.test(al[0]) && /[가-힣]/.test(al[0])) return al[0];
+    for (var i = 0; i < al.length; i++) if (/[가-힣]/.test(al[i]) && w.indexOf(al[i]) >= 0) return al[i];
+    return w[w.length - 1] || nm;
   }
   function obsTask(){
     var dayNo = Math.floor((Date.now() + 9 * 3600000) / 86400000);
