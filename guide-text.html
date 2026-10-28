@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500&display=swap">
 <link rel="stylesheet" href="site.css?v=1020h">
 <link rel="stylesheet" href="guide.css?v=1020h">
-
+<style>.hero{background-image:url('media/guide_text_shelf_poster.jpg?v=1020h')}</style>
 </head>
 <body data-nav="cover">
 
@@ -34,7 +34,11 @@
   </ul>
 </nav>
 
-<header class="hero pending" aria-label="Text — 맨 위 영상 자리" data-kind="영상" data-shot="도서관 서가에서 책등 하나를 눌러 책을 펼치는 장면" data-where="오늘의 도서관 · 서가 · 책등 하나" data-len="10~12초" data-key="Shift+F9 — 방 안을 누르기 전에 미리 켜 두기" data-must="책등이 늘어선 서가 → 하나를 누르면 → 표지가 열리고 → 지식 · 사유 · 연결 · 큐레이션 네 장이 차례로 넘어가는 데까지 · Today 의 뮤세움(홈페이지 자체 서가)과 다른 앱 안 도서관">
+<header class="hero" aria-label="Text — 맨 위 영상">
+  <video id="heroClip" muted playsinline autoplay loop preload="auto"
+         poster="media/guide_text_shelf_poster.jpg?v=1020h" aria-hidden="true"
+         data-src-1920="media/guide_text_shelf_1920.mp4?v=1020h"
+         data-src-1280="media/guide_text_shelf_1280.mp4?v=1020h"></video>
   <div class="plate">
     <p class="tag"><span><a href="guide.html">Guide</a> · 06 · 텍스트</span></p>
     <h1>Text</h1>
