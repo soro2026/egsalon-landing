@@ -325,7 +325,7 @@ body.fx-edit .fx-panel{display:block}
 
 <!-- ══════════ ① 공고 — 맨 위 그림 + 명패 (다른 페이지와 같은 틀) ══════════ -->
 <header class="hero cover" id="top" aria-label="Expedition — 맨 위 그림">
-  <img class="still" src="media/exp_hero_polaris.webp?v=1103" alt="" aria-hidden="true">
+  <img class="still" src="media/exp_hero_polaris.webp?v=1103b" alt="" aria-hidden="true">
   <div class="fx" id="fx">
     <span class="glow star" data-k="star"></span>
     <span class="glow lamp" data-k="lamp1"></span>
@@ -604,9 +604,9 @@ body.fx-edit .fx-panel{display:block}
      그림은 object-fit:cover · object-position 30% 50% · 좌우 뒤집기(scaleX -1) */
   (function(){
     var IW=1592, IH=896, POSX=.30, POSY=.5;
-    var DEF={ star:{u:.3813,v:.0949,s:.05}, lamp1:{u:.7544,v:.6496,s:.06}, lamp2:{u:.6143,v:.6741,s:.055} };
+    var DEF={ star:{u:.3813,v:.2400,s:.05}, lamp1:{u:.7544,v:.6496,s:.06}, lamp2:{u:.6143,v:.6741,s:.055} };
     var NAME={star:'북극성',lamp1:'등불 1',lamp2:'등불 2'};
-    var KEY='eg_exp_fx_1103', P=JSON.parse(JSON.stringify(DEF));
+    var KEY='eg_exp_fx_1103b', P=JSON.parse(JSON.stringify(DEF));
     try{ var saved=JSON.parse(localStorage.getItem(KEY)||'null'); if(saved) for(var k in DEF) if(saved[k]) P[k]=saved[k]; }catch(e){}
     var cv=document.querySelector('.cover'); if(!cv) return;
     var geo={};
