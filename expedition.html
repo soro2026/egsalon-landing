@@ -337,6 +337,8 @@ body.fx-edit .fx-panel{display:block}
 .card .no,.card h3,.card p,.card .go{position:relative;z-index:1;text-shadow:0 1px 10px rgba(0,0,0,.55)}
 .card .go{background:rgba(8,12,20,.35);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 /* ── 1104 에펠탑 상영 — 앱 쪽 화면(?live)을 창으로 끼운다 · 구글 키는 앱 주소에만 열려 있어 창이 앱 주소를 연다 ── */
+.tower-sub{margin-top:10px;font-family:var(--sans);font-size:15px;letter-spacing:.04em;color:var(--ink-dim)}
+#tower .lead{margin-top:22px}
 .tower-live{margin:clamp(28px,4vw,44px) 0 0}
 .tower-live .tv{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#03050b;
   box-shadow:0 18px 50px rgba(20,14,4,.28)}
@@ -586,15 +588,29 @@ body.fx-edit .fx-panel{display:block}
 <section class="sec" id="tower">
   <div class="main">
     <div class="eyebrow">에펠탑</div>
-    <h2>당신의 이름이 새겨지는 탑</h2>
+    <h2>세상에서 가장 큰 크리스마스트리 만들기</h2>
+    <p class="tower-sub">당신의 이름이 새겨지는 탑</p>
     <p class="lead">출항하는 날, EG유니버스의 에펠탑 1층 띠에 대원의 이름이 새겨집니다. 첫 대원은 띠 한 면을 혼자 채우고, 대원이 늘수록 명패가 작아지며 여럿이 그 띠를 나눠 듭니다. 탑 꼭대기의 숫자는 지금 함께 오른 대원의 수입니다. 탐험하는 40일 동안 탑은 크리스마스트리처럼 날마다 조금씩 차오르고, 크리스마스이브 밤에는 모든 이름에 불이 켜집니다.</p>
     <figure class="tower-live">
-      <div class="tv"><iframe src="https://app.egsalon.com/eiffel_engrave_test_1104.html?live" title="EG유니버스 에펠탑 — 지금 새겨진 탐험대원" loading="lazy"></iframe></div>
+      <div class="tv"><iframe data-src="https://app.egsalon.com/eiffel_engrave_test_1104.html?live" title="EG유니버스 에펠탑 — 지금 새겨진 탐험대원"></iframe></div>
       <figcaption>지금 이 순간의 탑 — 대원이 오를 때마다 저절로 자랍니다</figcaption>
       <p class="mob lead">지금 이 순간의 탑은 큰 화면에서 보실 수 있습니다.</p>
     </figure>
   </div>
 </section>
+
+<script>
+/* 1104 — 에펠탑 상영 화면은 손님이 두세 화면 앞까지 오면 미리 불러 둔다(눈앞에서 기다리지 않게) · 휴대폰(760px 이하)은 불러오지 않는다 */
+(function () {
+  var f = document.querySelector('#tower iframe[data-src]');
+  if (!f || window.matchMedia('(max-width:760px)').matches) return;
+  var go = function () { if (!f.src) f.src = f.getAttribute('data-src'); };
+  if (!('IntersectionObserver' in window)) { go(); return; }
+  var io = new IntersectionObserver(function (es) { if (es.some(function (e) { return e.isIntersecting; })) { go(); io.disconnect(); } },
+    { rootMargin: '2000px 0px' });
+  io.observe(f);
+})();
+</script>
 
 <!-- ══════════ ⑥-2 탐험대 참가비 (1103 소로 글 — 「돈을 받는 건 우리 철학을 밝히는 좋은 기회」 · 귀환 선물을 본 다음에) ══════════ -->
 <section class="sec" id="fare">
