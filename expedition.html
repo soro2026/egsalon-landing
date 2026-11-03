@@ -315,6 +315,10 @@ body.fx-edit .fx-panel{display:block}
 .shot figcaption{margin-top:8px;font-size:12.5px;color:var(--ink-dim)}
 .shot.pending .ph{aspect-ratio:var(--r);justify-content:flex-end}
 .wall-note{margin-top:6px;font-size:12.5px;color:var(--ink-dim)}
+
+.fan{margin:clamp(28px,4vw,44px) 0 0}
+.fan img{display:block;width:100%;height:auto;border-radius:8px;box-shadow:0 18px 44px rgba(11,9,7,.22)}
+.fan figcaption{margin-top:10px;font-size:13px;color:var(--ink-dim)}
 </style>
 </head>
 <body data-nav="cover">
@@ -493,6 +497,10 @@ body.fx-edit .fx-panel{display:block}
     <div class="eyebrow">귀환 선물</div>
     <h2>돌아오는 날, 손에 쥐는 것</h2>
     <p class="lead">12월 24일 귀환한 대원은 모두 같은 선물을 받습니다. 카드를 몇 장 뒤집었는지와 상관없습니다. 다만 무엇을 받을지는 대원이 고릅니다.</p>
+    <figure class="fan">
+        <img src="media/exp_card_10_ten_fan.webp?v=1103" alt="나무 탁자 위 열 장 — 고르시는 열 장이 이렇게 놓입니다" loading="lazy" width="1600" height="900">
+        <figcaption>나무 탁자 위 열 장 — 고르시는 열 장이 이렇게 놓입니다</figcaption>
+      </figure>
     <div class="wall" id="wall">
       <figure class="shot" data-file="exp_card_01_thoreau_desk.webp">
         <img src="media/exp_card_01_thoreau_desk.webp?v=1103" alt="서재의 책상 위 · 헨리 데이비드 소로" loading="lazy" width="1122" height="1402">
@@ -502,17 +510,21 @@ body.fx-edit .fx-panel{display:block}
         <img src="media/exp_card_02_exupery_desert.webp?v=1103" alt="사막 위 낡은 트렁크 · 앙투안 드 생텍쥐페리" loading="lazy" width="1200" height="800">
         <figcaption>사막 위 낡은 트렁크 · 앙투안 드 생텍쥐페리</figcaption>
       </figure>
-      <figure class="shot pending" style="--r:4/5" data-file="exp_card_03_kafka_rain.webp">
-        <div class="ph"><span class="tag">카드 3</span><span class="what">비 오는 창가 — 유리창의 빗방울, 창밖으로 젖은 지붕들</span><span class="ratio">붙일 카드 · 프란츠 카프카</span></div>
+      <figure class="shot" data-file="exp_card_03_kafka_rain.webp">
+        <img src="media/exp_card_03_kafka_rain.webp?v=1103" alt="비 오는 창가 · 프란츠 카프카" loading="lazy" width="1122" height="1402">
+        <figcaption>비 오는 창가 · 프란츠 카프카</figcaption>
       </figure>
-      <figure class="shot pending" style="--r:1/1" data-file="exp_card_04_baudelaire_cafe.webp">
-        <div class="ph"><span class="tag">카드 4</span><span class="what">파리 카페의 대리석 탁자 — 에스프레소 한 잔, 접힌 신문</span><span class="ratio">붙일 카드 · 샤를 보들레르</span></div>
+      <figure class="shot" data-file="exp_card_04_baudelaire_cafe.webp">
+        <img src="media/exp_card_04_baudelaire_cafe.webp?v=1103" alt="파리 카페의 대리석 탁자 · 샤를 보들레르" loading="lazy" width="1200" height="1200">
+        <figcaption>파리 카페의 대리석 탁자 · 샤를 보들레르</figcaption>
       </figure>
-      <figure class="shot pending" style="--r:3/2" data-file="exp_card_05_hesse_train.webp">
-        <div class="ph"><span class="tag">카드 5</span><span class="what">기차 객실 창가 — 창밖으로 지나가는 알프스, 펼친 문고본</span><span class="ratio">붙일 카드 · 헤르만 헤세</span></div>
+      <figure class="shot" data-file="exp_card_05_hesse_train.webp">
+        <img src="media/exp_card_05_hesse_train.webp?v=1103" alt="기차 객실 창가 · 헤르만 헤세" loading="lazy" width="1200" height="800">
+        <figcaption>기차 객실 창가 · 헤르만 헤세</figcaption>
       </figure>
-      <figure class="shot pending" style="--r:4/5" data-file="exp_card_06_woolf_bedside.webp">
-        <div class="ph"><span class="tag">카드 6</span><span class="what">침대 머리맡 — 작은 독서등, 펼쳐 엎어 둔 책, 찻잔</span><span class="ratio">붙일 카드 · 버지니아 울프</span></div>
+      <figure class="shot" data-file="exp_card_06_woolf_bedside.webp">
+        <img src="media/exp_card_06_woolf_bedside.webp?v=1103" alt="침대 머리맡 · 버지니아 울프" loading="lazy" width="1122" height="1402">
+        <figcaption>침대 머리맡 · 버지니아 울프</figcaption>
       </figure>
       <figure class="shot" data-file="exp_card_07_gogh_atelier.webp">
         <img src="media/exp_card_07_gogh_atelier.webp?v=1103" alt="아틀리에 작업대 · 빈센트 반 고흐" loading="lazy" width="1200" height="1200">
@@ -525,9 +537,6 @@ body.fx-edit .fx-panel{display:block}
       <figure class="shot" data-file="exp_card_09_homer_sea.webp">
         <img src="media/exp_card_09_homer_sea.webp?v=1103" alt="바다가 보이는 흰 창틀 · 호메로스" loading="lazy" width="1200" height="800">
         <figcaption>바다가 보이는 흰 창틀 · 호메로스</figcaption>
-      </figure>
-      <figure class="shot pending" style="--r:16/9" data-file="exp_card_10_ten_fan.webp">
-        <div class="ph"><span class="tag">카드 10</span><span class="what">나무 탁자 위 열 장 — 보호 케이스에 든 카드 열 장을 부채꼴로 펼침</span><span class="ratio">붙일 카드 · 여러 장(소로 · 생텍쥐페리 · 카프카 · 보들레르 · 헤세 · 울프 · 고흐 · 베토벤 · 호메로스 · 아렌트)</span></div>
       </figure>
       <figure class="shot pending" style="--r:4/3" data-file="exp_post_01_five.webp">
         <div class="ph"><span class="tag">엽서 1</span><span class="what">봉랍 찍힌 봉투 곁 — 명화 엽서 다섯 장을 겹쳐 펼침</span><span class="ratio">붙일 카드 · 미술관 명화 엽서 5장</span></div>
