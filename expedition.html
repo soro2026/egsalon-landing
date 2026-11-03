@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>탐험대원 모집 · EG유니버스</title>
+<meta name="description" content="EG유니버스 탐험대 — 폴라리스호 2026년 11월 14일 첫 출항 · 12월 5일 마지막 배 · 12월 24일 전원 귀환">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600&display=swap">
+<meta name="theme-color" content="#0b0907">
+<link rel="stylesheet" href="site.css?v=1020h">
+<style>
+/* ══════════════════════════════════════════════════════════════
+   EG유니버스 탐험대 모집공고 — v0.3 (2026.11.03 · 파이스)
+   v0.1(1102) 위에 1103 「승선 한 줄」을 얹음 — ⑦ 오르는 길 두 갈래 · ⑧ 휴대폰 물음
+   v0.5 — 북극성 반짝임 · 등불 둘 · 좌표 편집기
+   v0.4 — 맨 위 그림 + 명패(다른 페이지 틀) · 기획 메모 걷음
+   v0.3 — ① 첫 화면 본문을 광고 본문으로(네 칸 표 걷음) · 「모집」 · 매주 토요일 한 척씩 띠 · 지금 오르시면
+   expedition.html — egsalon.com 탐험대 공고 페이지 (1103 홈페이지에 올림) · 메뉴 띠 · 바닥 지도 · 오른쪽 위 단추는 site.css / site.js
+   · 연필 쪽지 = 기획 메모 (오른쪽 아래 단추로 숨김)
+   · 빗금 = 그림 자리 (프롬프트는 채팅 본문으로 따로)
+   · 연노랑 바탕 쪽지 = 1103에 새로 바뀐 곳
+   ══════════════════════════════════════════════════════════════ */
+:root{
+  --ink:#0b0907; --paper:#f4efe6; --paper-2:#ebe4d7;
+  --ink-soft:#3a332b; --ink-dim:#7a6f62; --arrow:#f2c94c;
+  --gutter:clamp(16px,4.2vw,64px);
+  --serif:'Noto Serif KR','Nanum Myeongjo',serif;
+  --sans:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+  --note:#2f5d8a; --note-bg:#eef3f8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;
+  word-break:keep-all;overflow-x:hidden}
+a{color:inherit}
+
+
+/* ── 공통 마디 ── */
+.sec{max-width:1180px;margin:0 auto;padding:clamp(72px,10vw,140px) var(--gutter) 0;
+  display:block}
+.sec > .main{min-width:0}
+.eyebrow{font-size:12.5px;letter-spacing:.3em;color:var(--ink-dim)}
+h2{margin-top:16px;font-family:var(--serif);font-weight:400;font-size:clamp(30px,4.2vw,52px);line-height:1.25;letter-spacing:-.02em}
+.lead{margin-top:clamp(20px,3vw,32px);max-width:36em;font-family:var(--serif);font-weight:300;
+  font-size:clamp(17px,1.6vw,20px);line-height:1.95;color:var(--ink-soft);text-wrap:pretty}
+.lead + .lead{margin-top:1em}
+
+/* ── 기획 메모 (연필 쪽지) ── */
+.note{align-self:start;margin-top:8px;padding:14px 16px 15px;border-radius:4px;background:var(--note-bg);
+  border-left:3px solid var(--note);color:#1f3a56;font-size:13px;line-height:1.7;position:relative}
+.note::before{content:'기획 메모';display:block;font-size:11px;letter-spacing:.2em;color:var(--note);margin-bottom:6px;font-weight:600}
+.note.new{background:#fdf6dc;border-left-color:#b8901f;color:#4a3a10}
+.note.new::before{content:'1103 새로';color:#9a7612}
+.note + .note{margin-top:14px}
+.note b{color:#13283d}
+.note.new b{color:#3a2c06}
+.note code{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:rgba(47,93,138,.1);padding:1px 4px;border-radius:3px}
+.notes{display:flex;flex-direction:column;gap:14px}
+.notes .note + .note{margin-top:0}
+body.clean .note, body.clean .notes{display:none}
+body.clean .sec{grid-template-columns:minmax(0,1fr)}
+@media (max-width:900px){
+  .sec{grid-template-columns:minmax(0,1fr)}
+  .note,.notes{margin-top:28px}
+}
+
+/* ── 그림 자리 (빗금) ── */
+.ph{position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;
+  padding:18px 20px;border:1.5px dashed rgba(11,9,7,.38);border-radius:6px;color:var(--ink-soft);
+  background:repeating-linear-gradient(45deg,rgba(11,9,7,.075) 0 2px,transparent 2px 13px),var(--paper-2);
+  font-size:13.5px;line-height:1.65}
+.ph .tag{position:absolute;top:12px;left:14px;font-size:11px;letter-spacing:.18em;color:var(--ink-dim);font-weight:600}
+.ph .what{font-family:var(--serif);font-size:15px;color:var(--ink)}
+.ph .ratio{font-size:12px;color:var(--ink-dim)}
+.ph.dark{border-color:rgba(244,239,230,.42);color:rgba(244,239,230,.82);
+  background:repeating-linear-gradient(45deg,rgba(244,239,230,.10) 0 2px,transparent 2px 13px),rgba(255,255,255,.03)}
+.ph.dark .what{color:var(--paper)}
+.ph.dark .tag,.ph.dark .ratio{color:rgba(244,239,230,.55)}
+
+/* ══ ① 공고 (어둠) ══ */
+.call{background:radial-gradient(120% 90% at 50% 0%,#1d2633 0%,#0b0f15 55%,#07090c 100%);color:var(--paper);
+  padding:clamp(56px,8vw,110px) 0 clamp(70px,9vw,120px);position:relative;overflow:hidden}
+.call .sec{padding-top:0}
+.call .eyebrow{color:rgba(244,239,230,.55)}
+.heroimg{margin:0 0 clamp(40px,6vw,72px);border-radius:6px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.heroimg img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
+.call .ph{min-height:clamp(220px,32vw,420px);margin-bottom:clamp(40px,6vw,72px)}
+.notice{max-width:48em;font-family:var(--serif)}
+.notice h1{font-weight:500;font-size:clamp(44px,7.4vw,104px);line-height:1.05;letter-spacing:-.03em;margin-top:18px}
+.notice .sub{margin-top:18px;font-weight:300;font-size:clamp(18px,2vw,24px);color:rgba(244,239,230,.82)}
+.notice .sign{margin-top:28px;font-size:clamp(15px,1.5vw,18px);color:rgba(244,239,230,.75);line-height:1.8}
+.notice .sign strong{color:var(--paper);font-weight:500}
+.call .note{background:rgba(238,243,248,.95)}
+.call .note.new{background:rgba(253,246,220,.96)}
+
+/* 광고 본문 (1103) */
+.copy{margin-top:clamp(34px,4.6vw,56px);font-weight:300;font-size:clamp(17px,1.75vw,21px);line-height:2;color:rgba(244,239,230,.9)}
+.copy p + p{margin-top:1.35em}
+.copy .why{color:var(--paper);font-weight:400}
+.copy .once{margin-top:1.9em;font-weight:500;font-size:1.12em;color:var(--arrow);letter-spacing:-.005em}
+
+/* 매주 토요일 띠 (1103) */
+.strip{margin-top:clamp(40px,5vw,60px);padding-top:28px;border-top:1px solid rgba(244,239,230,.18)}
+.strip-h{font-size:clamp(17px,1.7vw,20px);font-weight:500;color:var(--paper)}
+.strip ol{list-style:none;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));margin-top:22px;position:relative}
+.strip ol::before{content:'';position:absolute;left:6px;right:6px;top:6px;height:1px;background:rgba(244,239,230,.3)}
+.strip li{position:relative;padding-top:24px;padding-right:8px}
+.strip li::before{content:'';position:absolute;left:0;top:0;width:13px;height:13px;border-radius:50%;background:#0b0f15;border:1.5px solid rgba(244,239,230,.7)}
+.strip li b{display:block;font-family:var(--sans);font-weight:600;font-size:14.5px;color:var(--paper);letter-spacing:.01em}
+.strip li span{display:block;margin-top:4px;font-family:var(--sans);font-size:13px;color:rgba(244,239,230,.62)}
+.strip li.last::before{background:rgba(244,239,230,.7)}
+.strip li.home::before{background:var(--arrow);border-color:var(--arrow)}
+.strip li.home b{color:var(--arrow)}
+.strip li.now::before{background:var(--arrow);border-color:var(--arrow);box-shadow:0 0 0 5px rgba(242,201,76,.22)}
+@media (max-width:640px){
+  .strip ol{grid-template-columns:1fr;gap:16px}
+  .strip ol::before{left:6px;right:auto;top:6px;bottom:6px;width:1px;height:auto}
+  .strip li{display:flex;align-items:baseline;gap:14px;padding:0 0 0 28px}
+  .strip li::before{top:3px}
+  .strip li b{min-width:5.6em}
+  .strip li span{margin-top:0}
+}
+.nowline{margin-top:24px;font-family:var(--sans);font-size:clamp(15px,1.5vw,17px);color:rgba(244,239,230,.8)}
+.nowline b{color:var(--arrow);font-weight:600}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 22px;border-radius:999px;text-decoration:none;
+  font-size:15px;font-weight:600;letter-spacing:.02em;border:1px solid transparent;cursor:pointer}
+.btn.y{background:var(--arrow);color:var(--ink)}
+.btn.o{border-color:rgba(244,239,230,.45);color:var(--paper)}
+.btn.k{background:var(--ink);color:var(--paper)}
+.btn.ok{border-color:rgba(11,9,7,.35);color:var(--ink)}
+.dead{margin-top:14px;font-size:13px;color:rgba(244,239,230,.55)}
+
+/* ══ ② 폴라리스호 ══ */
+.ship{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,4vw,48px);align-items:end;margin-top:clamp(28px,4vw,44px)}
+.ship .ph{min-height:clamp(240px,28vw,340px)}
+@media (max-width:760px){.ship{grid-template-columns:1fr}}
+
+/* ══ ③ 미션 카드 ══ */
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.8vw,22px);margin-top:clamp(30px,4vw,48px)}
+@media (max-width:760px){.cards{grid-template-columns:1fr}}
+.card{position:relative;aspect-ratio:3/4.3;border-radius:14px;padding:22px 20px;display:flex;flex-direction:column;
+  color:var(--paper);overflow:hidden;
+  background:radial-gradient(130% 80% at 30% 0%,#2a3442 0%,#141a22 60%,#0d1117 100%);
+  box-shadow:0 14px 34px rgba(11,9,7,.22)}
+.card::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(60% 40% at 70% 85%,rgba(244,239,230,.10),transparent 70%),
+             radial-gradient(50% 35% at 20% 60%,rgba(244,239,230,.06),transparent 70%);filter:blur(2px)}
+.card .no{font-family:var(--serif);font-size:13px;letter-spacing:.24em;color:var(--arrow)}
+.card h3{margin-top:12px;font-family:var(--serif);font-weight:400;font-size:clamp(22px,2.2vw,28px);line-height:1.3}
+.card p{margin-top:auto;font-family:var(--serif);font-weight:300;font-size:15px;line-height:1.85;color:rgba(244,239,230,.86)}
+.card .go{margin-top:18px;align-self:flex-start;padding:9px 16px;border-radius:999px;border:1px solid rgba(244,239,230,.4);
+  font-size:13px;letter-spacing:.04em;color:var(--paper)}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 6px;margin-top:clamp(28px,4vw,40px);font-size:14.5px;color:var(--ink-soft)}
+.flow span{padding:8px 13px;border-radius:999px;background:var(--paper-2)}
+.flow i{font-style:normal;color:var(--ink-dim)}
+.facts{margin-top:28px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.facts{grid-template-columns:1fr}}
+.fact{padding:18px 18px 20px;border-top:2px solid var(--ink)}
+.fact b{display:block;font-family:var(--serif);font-weight:500;font-size:18px}
+.fact span{display:block;margin-top:8px;font-size:14px;line-height:1.75;color:var(--ink-soft)}
+
+/* ══ ④ 항해 일정 ══ */
+.voyage{margin-top:clamp(30px,4vw,44px);border-top:1px solid rgba(11,9,7,.2)}
+.leg{display:grid;grid-template-columns:7.5em 1fr auto;gap:1.2em;align-items:baseline;padding:18px 0;border-bottom:1px solid rgba(11,9,7,.14)}
+.leg .n{font-family:var(--serif);font-size:15px;letter-spacing:.08em;color:var(--ink-dim)}
+.leg .w{font-family:var(--serif);font-size:clamp(17px,1.7vw,20px)}
+.leg .w small{display:block;margin-top:4px;font-family:var(--sans);font-size:13px;color:var(--ink-dim)}
+.leg .d{font-size:14px;color:var(--ink-soft);white-space:nowrap}
+.leg.last .n,.leg.last .d{color:var(--ink);font-weight:600}
+.leg.home{background:linear-gradient(90deg,rgba(242,201,76,.22),transparent 70%)}
+.leg.home .n{color:var(--ink);font-weight:600}
+@media (max-width:600px){.leg{grid-template-columns:1fr}.leg .d{white-space:normal}}
+
+/* ══ ⑤ 받으시는 것 ══ */
+.gift{margin-top:clamp(28px,4vw,40px);border:1px solid rgba(11,9,7,.18);border-radius:14px;background:#fbf8f2;overflow:hidden}
+.gift .top{padding:clamp(22px,3vw,32px);border-bottom:1px solid rgba(11,9,7,.12)}
+.gift .top h3{font-family:var(--serif);font-weight:500;font-size:clamp(20px,2vw,24px)}
+.gift .top p{margin-top:6px;font-size:14.5px;color:var(--ink-dim)}
+.gift ol{list-style:none;counter-reset:g}
+.gift li{counter-increment:g;display:grid;grid-template-columns:2.4em 1fr;gap:.8em;padding:18px clamp(22px,3vw,32px);border-bottom:1px solid rgba(11,9,7,.08)}
+.gift li::before{content:counter(g,decimal-leading-zero);font-family:var(--serif);color:var(--ink-dim);font-size:15px;padding-top:2px}
+.gift li b{font-family:var(--serif);font-weight:500;font-size:17px}
+.gift li span{display:block;margin-top:4px;font-size:14px;line-height:1.75;color:var(--ink-soft)}
+.price{padding:clamp(22px,3vw,32px);background:var(--paper-2)}
+.price .row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.price .big{font-family:var(--serif);font-size:clamp(28px,3.4vw,40px);font-weight:500;letter-spacing:-.01em}
+.price .strike{font-size:14px;color:var(--ink-dim);text-decoration:line-through}
+.price .vat{margin-top:6px;font-size:13.5px;color:var(--ink-dim)}
+.price .after{margin-top:18px;padding-top:16px;border-top:1px dashed rgba(11,9,7,.2);font-size:14.5px;line-height:1.85;color:var(--ink-soft)}
+.price .after b{color:var(--ink)}
+.small{margin-top:18px;font-size:12.5px;line-height:1.7;color:var(--ink-dim)}
+
+/* ══ ⑥ 귀환 선물 (견물생심) ══ */
+.goods{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(12px,1.6vw,18px);margin-top:clamp(28px,4vw,44px)}
+.goods .ph:nth-child(1){grid-column:span 4;min-height:clamp(260px,30vw,380px)}
+.goods .ph:nth-child(2){grid-column:span 2}
+.goods .ph:nth-child(3){grid-column:span 3;min-height:220px}
+.goods .ph:nth-child(4){grid-column:span 3;min-height:220px}
+@media (max-width:760px){.goods{grid-template-columns:1fr}.goods .ph{grid-column:auto!important;min-height:220px!important}}
+
+/* ══ ⑦ 오르는 길 — 두 갈래 (1103) ══ */
+.lanes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,3vw,36px);margin-top:clamp(28px,4vw,40px)}
+@media (max-width:760px){.lanes{grid-template-columns:1fr}}
+.lane{border:1px solid rgba(11,9,7,.16);border-radius:14px;padding:clamp(20px,2.6vw,28px);background:#fbf8f2}
+.lane.fast{border-color:rgba(184,144,31,.55);background:linear-gradient(180deg,rgba(242,201,76,.16),#fbf8f2 55%)}
+.lane h3{font-family:var(--serif);font-weight:500;font-size:clamp(19px,1.9vw,22px);line-height:1.4}
+.lane .who{margin-top:6px;font-size:14px;color:var(--ink-dim)}
+.steps{counter-reset:s;margin-top:18px;display:grid;gap:0}
+.step{counter-increment:s;display:grid;grid-template-columns:2.6em 1fr;gap:.9em;padding:16px 0;border-top:1px solid rgba(11,9,7,.12)}
+.step::before{content:counter(s);display:grid;place-items:center;width:2em;height:2em;border-radius:50%;
+  background:var(--ink);color:var(--paper);font-family:var(--serif);font-size:14px}
+.lane.fast .step::before{background:#b8901f}
+.step b{font-family:var(--serif);font-weight:500;font-size:17px}
+.step span{display:block;margin-top:4px;font-size:14px;line-height:1.8;color:var(--ink-soft)}
+.lane .btn{margin-top:20px}
+.after-lanes{margin-top:clamp(22px,3vw,32px);padding:18px 20px;border-left:3px solid var(--arrow);background:var(--paper-2);
+  font-size:14.5px;line-height:1.85;color:var(--ink-soft)}
+.after-lanes b{color:var(--ink);font-family:var(--serif);font-weight:500}
+
+/* 승선 띠 미리보기 (앱 화면 맨 위에 걸릴 것) */
+.band{display:flex;gap:4px;margin-top:14px;font-size:12px}
+.band span{flex:1;text-align:center;padding:7px 4px;border-radius:999px;background:rgba(11,9,7,.07);color:var(--ink-dim)}
+.band span.on{background:var(--arrow);color:var(--ink);font-weight:600}
+
+/* ══ ⑧ 묻고 답하기 ══ */
+.faq{margin-top:clamp(24px,3vw,36px)}
+.faq details{border-top:1px solid rgba(11,9,7,.14);padding:16px 0}
+.faq details:last-child{border-bottom:1px solid rgba(11,9,7,.14)}
+.faq summary{cursor:pointer;font-family:var(--serif);font-size:17px;list-style:none}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:'＋';display:inline-block;width:1.6em;color:var(--ink-dim)}
+.faq details[open] summary::before{content:'－'}
+.faq p{margin:10px 0 0 1.6em;font-size:14.5px;line-height:1.85;color:var(--ink-soft);max-width:44em}
+
+/* ══ ⑨ 마지막 부름 ══ */
+.final{margin-top:clamp(90px,12vw,160px);background:var(--ink);color:var(--paper);padding:clamp(70px,9vw,120px) 0}
+.final .sec{padding-top:0}
+.final h2{color:var(--paper)}
+.final .lead{color:rgba(244,239,230,.8)}
+.credit{margin-top:clamp(44px,6vw,70px);font-size:12.5px;line-height:1.8;color:rgba(244,239,230,.45);max-width:44em}
+
+/* 기획 메모 단추 */
+.toggle{position:fixed;right:16px;bottom:16px;z-index:40;padding:10px 16px;border-radius:999px;border:1px solid var(--note);
+  background:#fff;color:var(--note);font:600 13px var(--sans);cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.15)}
+
+/* ══ 맨 위 그림 — 다른 페이지(guide.css .hero/.plate)와 같은 틀 ══ */
+.cover{position:relative;height:100vh;height:100svh;min-height:440px;overflow:hidden;color:var(--paper);background:#07090c}
+.cover .still{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:30% 50%;transform:scaleX(-1)}   /* 좌우를 뒤집어 배를 오른쪽에 — 왼쪽 아래 명패가 배를 가리지 않게 */
+.cover::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(0deg, rgba(7,9,12,.82) 0%, rgba(7,9,12,.38) 28%, rgba(7,9,12,0) 52%)}
+.plate{position:absolute;z-index:3;left:var(--gutter);right:var(--gutter);
+  bottom:calc(var(--gutter) + env(safe-area-inset-bottom) + 6px);max-width:36em;text-shadow:0 1px 18px rgba(0,0,0,.4)}
+.plate .tag{display:flex;align-items:center;gap:10px;font-size:13px;letter-spacing:.1em;color:rgba(244,239,230,.62)}
+.plate .tag::before{content:'';width:22px;height:2px;background:var(--arrow)}
+.plate h1{margin-top:14px;font-family:var(--serif);font-weight:500;color:var(--paper);font-size:clamp(44px,6.4vw,92px);line-height:1.08;letter-spacing:-.02em}
+.plate .face{margin-top:14px;font-family:var(--serif);font-size:clamp(17px,1.8vw,24px);line-height:1.6;color:rgba(244,239,230,.92);text-wrap:pretty}
+.plate .book{margin-top:16px;font-size:clamp(14px,1.3vw,16px);line-height:1.7;color:rgba(244,239,230,.62)}
+.plate .book b{font-weight:500;color:var(--paper)}
+.call{padding-top:clamp(64px,9vw,120px)}
+.call .copy{margin-top:0}
+
+/* ══ 북극성 반짝임 · 등불 (1103) — 자리는 그림 기준(뒤집힌 그대로) 0~1 · 좌표 편집기로 맞춘다 ══ */
+.fx{position:absolute;inset:0;pointer-events:none}
+.glow{position:absolute;left:0;top:0;width:40px;height:40px;border-radius:50%;mix-blend-mode:screen;will-change:opacity,transform}
+.glow.star{background:radial-gradient(circle, rgba(255,255,255,.98) 0 5%, rgba(214,228,255,.62) 12%, rgba(176,204,255,.2) 30%, transparent 60%);
+  animation:twinkle 3.6s ease-in-out infinite}
+.glow.star::before,.glow.star::after{content:'';position:absolute;left:50%;top:50%;width:230%;height:2px;border-radius:2px;
+  background:linear-gradient(90deg,transparent,rgba(236,243,255,.9) 50%,transparent);transform:translate(-50%,-50%);animation:spike 3.6s ease-in-out infinite}
+.glow.star::after{transform:translate(-50%,-50%) rotate(90deg);width:170%}
+@keyframes twinkle{0%,100%{opacity:.72;transform:scale(.84)}42%{opacity:1;transform:scale(1.14)}58%{opacity:.9;transform:scale(1)}}
+@keyframes spike{0%,100%{opacity:.3}45%{opacity:1}}
+.glow.lamp{background:radial-gradient(circle, rgba(255,222,150,.92) 0 6%, rgba(255,174,72,.46) 18%, rgba(255,140,40,.15) 40%, transparent 66%);
+  animation:flicker 3.1s linear infinite}
+.glow.lamp.b{animation-duration:2.6s;animation-delay:-1.1s}
+@keyframes flicker{0%{opacity:.78}11%{opacity:.93}19%{opacity:.7}31%{opacity:.96}44%{opacity:.82}58%{opacity:1}70%{opacity:.75}83%{opacity:.9}100%{opacity:.78}}
+@media (prefers-reduced-motion:reduce){.glow,.glow::before,.glow::after{animation:none}}
+
+/* 좌표 편집기 — 밝은 바탕 · 끌어서 맞추고 [복사]로 파이스에게 */
+.fx-btn{display:none;position:fixed;right:16px;bottom:16px;z-index:60;padding:10px 16px;border-radius:999px;border:1px solid #b8901f;
+  background:#fffaf0;color:#5a4410;font:600 13px 'Pretendard',sans-serif;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.fx-h{display:none;position:absolute;z-index:40;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;
+  border:2px solid #f2c94c;background:rgba(242,201,76,.18);cursor:grab;touch-action:none}
+.fx-h::after{content:attr(data-name);position:absolute;left:30px;top:2px;white-space:nowrap;padding:2px 7px;border-radius:4px;
+  background:#fffaf0;color:#3a2c06;font:600 12px 'Pretendard',sans-serif}
+.fx-h.on{border-color:#fff;background:rgba(255,255,255,.25)}
+body.fx-edit .fx-h{display:block}
+.fx-panel{display:none;position:fixed;z-index:60;right:16px;top:74px;width:290px;padding:14px 16px 16px;border-radius:10px;
+  background:#fffaf0;color:#2c2317;box-shadow:0 10px 30px rgba(0,0,0,.3);font:13px/1.55 'Pretendard',sans-serif}
+body.fx-edit .fx-panel{display:block}
+.fx-panel h4{font-size:14px;font-weight:700;margin-bottom:4px}
+.fx-panel .hint{font-size:12px;color:#7a6f62;margin-bottom:10px}
+.fx-row{padding:8px 0;border-top:1px solid rgba(44,35,23,.12)}
+.fx-row b{display:inline-block;width:4.2em}
+.fx-row code{font-family:ui-monospace,Menlo,monospace;font-size:12px}
+.fx-row input{width:100%;margin-top:4px}
+.fx-acts{display:flex;gap:8px;margin-top:12px}
+.fx-acts button{flex:1;padding:8px 0;border-radius:6px;border:1px solid rgba(44,35,23,.3);background:#fff;font:600 13px 'Pretendard',sans-serif;cursor:pointer}
+.fx-acts button.go{background:#f2c94c;border-color:#d8ad2c}
+</style>
+</head>
+<body data-nav="cover">
+
+<a class="gate in" href="#board">폴라리스호에 오르기</a>
+
+<!-- 메뉴 띠 — 다른 페이지와 같은 한 벌 · Expedition 칸을 메뉴 전체에 걸지는 테이프 커팅 전에 정한다 -->
+<nav class="eg-nav" aria-label="EG유니버스 메뉴">
+  <a class="home" href="home.html">EG유니버스</a>
+  <ul>
+    <li><a href="today.html">Today</a></li>
+    <li><a href="guide.html">Guide</a></li>
+    <li><a href="places.html">Places</a></li>
+    <li><a href="collection.html">Collection</a></li>
+    <li><a href="expedition.html">Expedition</a></li>
+    <li class="sep" aria-hidden="true"></li>
+    <li class="minor"><a href="letters.html">Letters</a></li>
+    <li class="minor"><a href="news.html">News</a></li>
+    <li class="minor"><a href="voices.html">Voices</a></li>
+    <li class="minor"><a href="making.html">Making</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════ ① 공고 — 맨 위 그림 + 명패 (다른 페이지와 같은 틀) ══════════ -->
+<header class="hero cover" id="top" aria-label="Expedition — 맨 위 그림">
+  <img class="still" src="media/exp_hero_polaris.webp?v=1103" alt="" aria-hidden="true">
+  <div class="fx" id="fx">
+    <span class="glow star" data-k="star"></span>
+    <span class="glow lamp" data-k="lamp1"></span>
+    <span class="glow lamp b" data-k="lamp2"></span>
+  </div>
+  <span class="fx-h" data-k="star" data-name="북극성"></span>
+  <span class="fx-h" data-k="lamp1" data-name="등불 1"></span>
+  <span class="fx-h" data-k="lamp2" data-name="등불 2"></span>
+  <div class="plate">
+    <p class="tag"><span>EG유니버스 탐험대 · 폴라리스호</span></p>
+    <h1>탐험대원 모집</h1>
+    <p class="face">EG유니버스라는 낯선 우주로 떠날 사람을 찾습니다.</p>
+    <p class="book"><b>11월 14일(토) 첫 출항</b> · 매주 토요일 한 척씩 · 12월 24일 모두 함께 귀환</p>
+  </div>
+</header>
+
+<section class="call" id="call">
+  <div class="sec">
+    <div class="main">
+
+      <div class="notice">
+
+        <div class="copy">
+          <p class="why">우리는 평생 누군가 그려 준 지도를 따라 걸어왔습니다.<br>학교가, 회사가, 남들이 좋다는 것이 그려 준 지도.</p>
+          <p>이번 탐험에는 그 흔한 지도도,<br>안내판도 없습니다.<br>처음 며칠은 여기서 내가 뭘 하는지도 어리둥절한<br>상태에 빠질 위험도 감수해야 합니다.</p>
+          <p>흔들리는 복엽기 안에서 기요메처럼 안데스 산맥을 넘어야 하고,<br>어둠이 내리면 273개의 별 가운데 낯선 얼굴 하나가 당신을 놓아주지 않을 것입니다.<br>끝내 답이 나오지 않는 물음 하나를 품고 잠드는 밤도 있을 것입니다.</p>
+          <p>길을 잃는 날이 옵니다.<br>그때부터가 진짜 탐험입니다.</p>
+          <p>2026년 크리스마스이브.<br>모든 대원이 함께 돌아옵니다.<br>그리고 EG유니버스의 에펠탑에 당신을 포함한<br>모든 탐험대원의 명단이 새겨집니다.</p>
+          <p>다만, 떠날 때의 당신으로 돌아온다는 보장은 없습니다.</p>
+          <p class="once">폴라리스호의 첫 항해는 단 한 번뿐입니다.</p>
+        </div>
+
+        <div class="strip">
+          <p class="strip-h">매주 토요일, 한 척씩 떠납니다</p>
+          <ol id="ships">
+            <li data-d="2026-11-14"><b>11.14(토)</b><span>1차</span></li>
+            <li data-d="2026-11-21"><b>11.21(토)</b><span>2차</span></li>
+            <li data-d="2026-11-28"><b>11.28(토)</b><span>3차</span></li>
+            <li data-d="2026-12-05" class="last"><b>12.5(토)</b><span>4차 · 마지막 배</span></li>
+            <li class="home"><b>12.24(목)</b><span>모두 함께 귀환</span></li>
+          </ol>
+          <p class="nowline" id="nowline">지금 오르시면 → <b>11월 14일(토) 첫 배</b></p>
+        </div>
+
+        <div class="hero-cta">
+          <a class="btn y" href="#board">폴라리스호에 오르기</a>
+          <a class="btn o" href="#ways">먼저 둘러보기 — 무료</a>
+        </div>
+        <p class="dead">둘러보기는 12월 24일까지 누구나 무료입니다.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════ ② 폴라리스호 ══════════ -->
+<section class="sec" id="ship">
+  <div class="main">
+    <div class="eyebrow">배 이름</div>
+    <h2>폴라리스호</h2>
+    <div class="ship">
+      <div class="ph">
+        <span class="tag">그림 자리 ② · 배의 내력</span>
+        <span class="what">1912년 겨울 노르웨이의 조선소. 갓 진수한 목조 범선의 뱃머리에 POLARIS라는 이름이 막 칠해진 모습. 오래된 사진처럼 갈색으로 바랜 결.</span>
+        <span class="ratio">4 : 3 · 옛 사진 결 · 실제 사진을 쓰면 권리 확인 먼저</span>
+      </div>
+      <div>
+        <p class="lead">1914년 남극으로 떠난 섀클턴의 배 인듀어런스호에는 처음 이름이 따로 있었습니다. 1912년 노르웨이에서 진수할 때 붙인 이름은 폴라리스, 북극성이었습니다.</p>
+        <p class="lead">EG유니버스의 하늘 한가운데에도 혼자 움직이지 않는 별이 하나 있습니다. 그 별의 이름을 배에 다시 붙였습니다. 이 배는 대원들을 그 별 아래로 데려갑니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ ③ 무엇을 탐험하나 ══════════ -->
+<section class="sec" id="cards">
+  <div class="main">
+    <div class="eyebrow">탐험하는 것</div>
+    <h2>하루에 한 장, 미션 카드</h2>
+    <p class="lead">대원은 33장의 카드를 받습니다. 카드 앞면에는 번호와 제목, 문장 한 줄만 적혀 있습니다. 어디로 가야 하는지는 고른 다음에야 보입니다.</p>
+    <div class="cards">
+      <div class="card"><span class="no">01</span><h3>북극성</h3><p>하늘 한가운데, 혼자 움직이지 않는 별이 하나 있습니다.</p><span class="go">미션 시작</span></div>
+      <div class="card"><span class="no">02</span><h3>끝내 보지 못한 집</h3><p>설계한 사람이 완성된 모습을 끝내 보지 못한 음악당이 있습니다.</p><span class="go">미션 시작</span></div>
+      <div class="card"><span class="no">07</span><h3>안데스를 넘는 책</h3><p>종이책 한 권을 무릎에 올리고, 눈 덮인 산맥을 넘는 비행기가 있습니다.</p><span class="go">미션 시작</span></div>
+    </div>
+    <div class="flow">
+      <span>카드 고르기</span><i>→</i><span>미션 시작</span><i>→</i><span>찾아가기</span><i>→</i><span>닿으면 물음 하나</span><i>→</i><span>200자 이상 소감</span><i>→</i><span>카드가 뒤집힘</span>
+    </div>
+    <div class="facts">
+      <div class="fact"><b>하루 한 장</b><span>한 장을 마치면 그날은 끝입니다. 못 마친 카드는 다음 날에도 그대로 열려 있습니다.</span></div>
+      <div class="fact"><b>순서는 자유</b><span>번호는 이름표일 뿐입니다. 그날 마음이 가는 카드를 고르시면 됩니다.</span></div>
+      <div class="fact"><b>정답 없는 물음</b><span>닿은 곳에서 물음 하나가 열립니다. 맞히는 물음이 아니라, 당신에게로 돌아오는 물음입니다.</span></div>
+    </div>
+    <p class="lead">카드를 마치면 같은 카드를 먼저 마친 대원들의 글이 열립니다. 먼저 쓰고, 그다음에 읽습니다. 동의해 주신 글은 홈페이지 Voices에 실릴 수 있습니다.</p>
+  </div>
+</section>
+
+<!-- ══════════ ④ 항해 일정 ══════════ -->
+<section class="sec" id="voyage">
+  <div class="main">
+    <div class="eyebrow">항해 일정</div>
+    <h2>배는 네 번 떠나고, 한 번 돌아옵니다</h2>
+    <p class="lead">같은 주에 오른 대원들이 한 원정대가 됩니다. 원정대마다 그 주에 태어난 별의 이름이 붙습니다. 어느 배를 타든 모두 같은 날 함께 돌아옵니다.</p>
+    <div class="voyage">
+      <div class="leg"><span class="n">1차 원정대</span><span class="w">○○○ 원정대<small>문이 열린 날 ~ 11월 14일에 오른 대원</small></span><span class="d">11월 14일(토) 출항</span></div>
+      <div class="leg"><span class="n">2차 원정대</span><span class="w">○○○ 원정대<small>11월 15일 ~ 21일에 오른 대원</small></span><span class="d">11월 21일(토) 출항</span></div>
+      <div class="leg"><span class="n">3차 원정대</span><span class="w">○○○ 원정대<small>11월 22일 ~ 28일에 오른 대원</small></span><span class="d">11월 28일(토) 출항</span></div>
+      <div class="leg last"><span class="n">4차 원정대</span><span class="w">○○○ 원정대 · 마지막 배<small>11월 29일 ~ 12월 5일에 오른 대원</small></span><span class="d">12월 5일(토) 출항</span></div>
+      <div class="leg home"><span class="n">귀환</span><span class="w">모든 대원이 함께 돌아옵니다<small>탐험 기간은 오른 날부터 12월 24일까지 — 일찍 오를수록 길어집니다</small></span><span class="d">12월 24일(목)</span></div>
+      <div class="leg"><span class="n">개관</span><span class="w">EG유니버스 정식 개관 · 대원 모두 정회원 첫날<small>&nbsp;</small></span><span class="d">12월 25일(금)</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ ⑤ 오르시면 받으시는 것 ══════════ -->
+<section class="sec" id="board">
+  <div class="main">
+    <div class="eyebrow">승선</div>
+    <h2>폴라리스호에 오르시면</h2>
+    <div class="gift">
+      <div class="top">
+        <h3>12월 5일까지 마음을 정하신 분께 드리는 선물입니다</h3>
+        <p>대원이 되는 일이 곧 정회원이 되는 일입니다. 첫 달은 반값으로, 크리스마스이브까지의 탐험과 선물은 덤으로.</p>
+      </div>
+      <ol>
+        <li><div><b>정회원 첫 달 반값</b><span>2026년 12월 25일 ~ 2027년 1월 24일</span></div></li>
+        <li><div><b>크리스마스이브까지 탐험</b><span>오른 날부터 12월 24일 귀환까지 · 하루 한 장의 미션 카드</span></div></li>
+        <li><div><b>귀환 선물</b><span>포토카드 35종 가운데 10장 · 명화 엽서 20종 가운데 5장 — 직접 고르시면 우편으로 보내 드립니다</span></div></li>
+        <li><div><b>황금사과 15알로 출항</b><span>EG 안에서 그림을 거실에 들이고, 별 곁에 서는 데 씁니다 · 소감 한 편마다 한 알씩 더</span></div></li>
+        <li><div><b>탐험대원 No.와 에펠탑의 이름</b><span>대원 명부에 번호가 남고, 에펠탑에 「EG유니버스 탐험대원」으로 이름이 새겨집니다</span></div></li>
+      </ol>
+      <div class="price">
+        <div class="row">
+          <div><div class="small" style="margin:0">오늘 결제하실 금액 · 정회원 첫 달 반값</div><div class="big">15,015원</div></div>
+          <div class="strike">정가 30,030원</div>
+        </div>
+        <div class="vat">회비 13,650원 + 부가세 1,365원 · 계좌는 영업일로 이틀 뒤 출금 · 카드는 바로 승인</div>
+        <div class="after"><b>12월 25일부터 정회원</b> · 매월 25일 30,030원 (회비 27,300원 + 부가세 2,730원) · 첫 정기 결제 2027년 1월 25일</div>
+      </div>
+    </div>
+    <div class="hero-cta" style="margin-top:28px">
+      <a class="btn k" href="#ways">폴라리스호에 오르기</a>
+    </div>
+    <p class="small">탐험을 이어 가기 어려우시면 편지 한 통 주세요. 참가비는 결제 수수료를 뺀 나머지를 보내 드립니다.</p>
+  </div>
+</section>
+
+<!-- ══════════ ⑥ 귀환 선물 ══════════ -->
+<section class="sec" id="gifts">
+  <div class="main">
+    <div class="eyebrow">귀환 선물</div>
+    <h2>돌아오는 날, 손에 쥐는 것</h2>
+    <p class="lead">12월 24일 귀환한 대원은 모두 같은 선물을 받습니다. 카드를 몇 장 뒤집었는지와 상관없습니다. 다만 무엇을 받을지는 대원이 고릅니다.</p>
+    <div class="goods">
+      <div class="ph">
+        <span class="tag">그림 자리 ③ · 포토카드</span>
+        <span class="what">짙은 나무 탁자 위에 부채꼴로 펼친 인물 포토카드 열 장. 갈색으로 바랜 옛 초상들, 모서리가 둥근 두꺼운 카드. 한 장은 뒤집혀 뒷면이 보인다.</span>
+        <span class="ratio">3 : 2 가로 · 실물 시안이 나오면 실물 사진으로 교체 · 카드 뒷면 문구는 그림에 넣지 않음</span>
+      </div>
+      <div class="ph">
+        <span class="tag">그림 자리 ④ · 카드 뒷면</span>
+        <span class="what">카드 한 장의 뒷면을 가까이. 「탐험대원 No. ___ · 귀환 2026.12.24」가 찍힐 자리만 비워 둔 모습.</span>
+        <span class="ratio">2 : 3 세로 · 문구는 화면 글자로 얹음</span>
+      </div>
+      <div class="ph">
+        <span class="tag">그림 자리 ⑤ · 명화 엽서</span>
+        <span class="what">명화 엽서 다섯 장이 겹쳐 놓인 모습. 오르세 · 우피치에 걸리는 그 그림들의 결. 곁에 봉랍 찍힌 봉투 하나.</span>
+        <span class="ratio">4 : 3 · 그림은 퍼블릭 도메인 명화만</span>
+      </div>
+      <div class="ph">
+        <span class="tag">그림 자리 ⑥ · 서가의 책 한 권</span>
+        <span class="what">EG 집 2층 서가에 새로 꽂힌 책 한 권의 책등. 「폴라리스호 · 탐험대원 No.017」. 앱 화면 캡처로 대신할 수 있음.</span>
+        <span class="ratio">4 : 3 · 앱의 서가 디자인 그대로 캡처가 가장 정직함</span>
+      </div>
+    </div>
+    <div class="facts">
+      <div class="fact"><b>포토카드 10장</b><span>준비한 35종 가운데 직접 고르십니다. 뒷면에 탐험대원 번호와 귀환 날이 찍힙니다.</span></div>
+      <div class="fact"><b>명화 엽서 5장</b><span>준비한 20종 가운데 직접 고르십니다.</span></div>
+      <div class="fact"><b>소감이 묶인 책 한 권</b><span>탐험하는 동안 쓴 글이 차례대로 묶여, 당신의 EG 집 2층 서가에 꽂힙니다.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ ⑦ 오르는 길 — 두 갈래 (1103) ══════════ -->
+<section class="sec" id="ways">
+  <div class="main">
+    <div class="eyebrow">오르는 길</div>
+    <h2>어느 쪽으로 오셔도 됩니다</h2>
+    <div class="lanes">
+      <div class="lane fast">
+        <h3>마음이 이미 정해지셨다면</h3>
+        <p class="who">가입하시고 곧장 배에 오르십니다.</p>
+        <div class="steps">
+          <div class="step"><div><b>가입</b><span>메일 확인과 이름 하나면 됩니다. 휴대폰으로도 하실 수 있습니다.</span></div></div>
+          <div class="step"><div><b>승선 확인</b><span>받으시는 것과 결제 금액, 출금 날짜를 한 번 더 보여 드립니다.</span></div></div>
+          <div class="step"><div><b>결제</b><span>효성CMS 결제 화면에서 계좌나 카드를 고르고 서명합니다.</span></div></div>
+          <div class="step"><div><b>승선 완료</b><span>그 주의 원정대에 오르셨습니다. 이제 EG유니버스로 들어가시면 됩니다.</span></div></div>
+        </div>
+        <a class="btn k" href="#board">폴라리스호에 오르기</a>
+      </div>
+      <div class="lane">
+        <h3>먼저 둘러보고 싶으시다면</h3>
+        <p class="who">12월 24일까지 누구나 무료입니다.</p>
+        <div class="steps">
+          <div class="step"><div><b>가입 — 무료</b><span>메일 확인과 이름 하나면 됩니다.</span></div></div>
+          <div class="step"><div><b>둘러보기</b><span>미술관과 음악관, 하늘의 별과 야구장을 마음껏 걸어 보세요.</span></div></div>
+          <div class="step"><div><b>대원 합류</b><span>마음이 정해지면 EG 안에서 [폴라리스호에 오르기]. 승선은 12월 5일 자정까지입니다.</span></div></div>
+        </div>
+        <a class="btn ok" href="#">먼저 둘러보기 — 무료 회원가입</a>
+      </div>
+    </div>
+    <div class="after-lanes"><b>출항</b> — 오르신 주의 토요일에 미션 카드가 열립니다. 그 전까지는 짐을 풀며 EG유니버스를 둘러보시면 됩니다.</div>
+  </div>
+</section>
+
+<!-- ══════════ ⑧ 묻고 답하기 ══════════ -->
+<section class="sec" id="faq">
+  <div class="main">
+    <div class="eyebrow">묻고 답하기</div>
+    <h2>떠나기 전에</h2>
+    <div class="faq">
+      <details><summary>대원이 되지 않고 둘러보기만 해도 되나요?</summary><p>네. 12월 24일까지는 누구나 무료로 EG유니버스를 둘러보실 수 있습니다. 미션 카드와 귀환 선물, 황금사과, 탐험대원 번호는 대원의 몫입니다.</p></details>
+      <details><summary>12월 5일이 지나면요?</summary><p>마지막 배가 떠난 뒤로는 새로 오를 수 없습니다. 12월 6일부터 24일 사이에는 정회원 신청(월 30,030원)으로 12월 25일 개관을 함께 맞으실 수 있습니다.</p></details>
+      <details><summary>일찍 정회원이 되면 무료 기간이 줄어드나요?</summary><p>아닙니다. 언제 마음을 정하시든 정회원 첫 달은 12월 25일부터 셉니다. 12월 24일까지의 시간은 정회원 기간에 들어가지 않습니다.</p></details>
+      <details><summary>하루를 빠지면 어떻게 되나요?</summary><p>아무 일도 없습니다. 시작한 카드는 다음 날에도 그대로 열려 있고, 하루 한 장은 하루 한 장의 기회일 뿐 의무가 아닙니다. 귀환 선물도 카드를 몇 장 뒤집었는지와 상관없이 같습니다.</p></details>
+      <details><summary>휴대폰으로도 탈 수 있나요?</summary><p>가입과 승선은 휴대폰으로도 하실 수 있습니다. 다만 EG유니버스 안의 탐험은 3D 지구를 실시간으로 그리는 곳이라 노트북이나 데스크톱에서 열립니다. 휴대폰으로 오르셨다면, 탐험은 큰 화면에서 app.egsalon.com으로 들어와 이어 가시면 됩니다.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ ⑨ 마지막 부름 ══════════ -->
+<section class="final">
+  <div class="sec">
+    <div class="main">
+      <div class="eyebrow" style="color:rgba(244,239,230,.5)">AS SLOW AS POSSIBLE</div>
+      <h2>지도는 아직 없습니다.<br>그래서 함께 떠날 분을 찾습니다.</h2>
+      <p class="lead">EG유니버스는 이제 막 문을 여는 곳입니다. 아직 아무도 다 걸어 보지 못한 이 우주를, 첫 대원들과 함께 한 장씩 그려 가려 합니다.</p>
+      <div class="hero-cta">
+        <a class="btn y" href="#board">폴라리스호에 오르기</a>
+        <a class="btn o" href="#ways">먼저 둘러보기 — 무료 회원가입</a>
+      </div>
+      <p class="credit">1914년 남극 탐험대의, 전설로 전해지는 모집공고에 경의를 표하며.<br>그 공고 「MEN WANTED」는 실제로 신문에 실린 적이 없을 가능성이 큽니다. 그래도 백 년 넘게 사람들을 떠나게 했습니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 바닥 지도 — 글은 site.js 한 곳 -->
+<footer class="eg-map" aria-label="EG유니버스의 지도"></footer>
+
+<button class="fx-btn" id="fxBtn" type="button">좌표 편집</button>
+<div class="fx-panel" id="fxPanel">
+  <h4>좌표 편집</h4>
+  <p class="hint">동그라미를 끌어 자리를 맞추고, 막대로 크기를 고르세요. 다 되면 [복사]를 눌러 파이스 창에 붙여 주세요.</p>
+  <div id="fxRows"></div>
+  <div class="fx-acts"><button type="button" id="fxReset">처음 값으로</button><button type="button" class="go" id="fxCopy">복사</button></div>
+</div>
+
+<script>
+
+  /* 지금 오르시면 — 서울 날짜로 탈 배를 셈한다 (출항일 자정까지 오른 분은 그 배 · 1102 결정) */
+  (function(){
+    var today;
+    try { today = new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul'}).format(new Date()); }
+    catch(e){ today = new Date().toISOString().slice(0,10); }
+    var legs = document.querySelectorAll('#ships li[data-d]');
+    var line = document.getElementById('nowline');
+    var names = ['첫 배','2차 배','3차 배','마지막 배'];
+    var hit = -1;
+    for (var i=0;i<legs.length;i++){ if (today <= legs[i].getAttribute('data-d')){ hit = i; break; } }
+    if (hit < 0){ line.innerHTML = '승선은 마감되었습니다 · 둘러보기는 <b>12월 24일까지</b> 누구나'; return; }
+    legs[hit].classList.add('now');
+    var d = legs[hit].getAttribute('data-d').split('-');
+    line.innerHTML = '지금 오르시면 → <b>' + (+d[1]) + '월 ' + (+d[2]) + '일(토) ' + names[hit] + '</b>';
+  })();
+  /* 북극성 · 등불 — 그림 기준 좌표(u, v = 0~1, 화면에 보이는 뒤집힌 그림 그대로) → 화면 자리
+     그림은 object-fit:cover · object-position 30% 50% · 좌우 뒤집기(scaleX -1) */
+  (function(){
+    var IW=1592, IH=896, POSX=.30, POSY=.5;
+    var DEF={ star:{u:.3813,v:.0949,s:.05}, lamp1:{u:.7544,v:.6496,s:.06}, lamp2:{u:.6143,v:.6741,s:.055} };
+    var NAME={star:'북극성',lamp1:'등불 1',lamp2:'등불 2'};
+    var KEY='eg_exp_fx_1103', P=JSON.parse(JSON.stringify(DEF));
+    try{ var saved=JSON.parse(localStorage.getItem(KEY)||'null'); if(saved) for(var k in DEF) if(saved[k]) P[k]=saved[k]; }catch(e){}
+    var cv=document.querySelector('.cover'); if(!cv) return;
+    var geo={};
+    function measure(){
+      var W=cv.clientWidth, H=cv.clientHeight, sc=Math.max(W/IW, H/IH), dw=IW*sc, dh=IH*sc;
+      var offU=(W-dw)*POSX;                       /* 뒤집기 전 왼쪽 */
+      geo={W:W,H:H,dw:dw,dh:dh,left:W-offU-dw,top:(H-dh)*POSY};
+    }
+    function place(){
+      measure();
+      for(var k in P){
+        var x=geo.left+P[k].u*geo.dw, y=geo.top+P[k].v*geo.dh, d=P[k].s*geo.dw;
+        var g=cv.querySelector('.glow[data-k="'+k+'"]'); if(g){ g.style.left=x+'px'; g.style.top=y+'px'; g.style.width=d+'px'; g.style.height=d+'px'; g.style.marginLeft=(-d/2)+'px'; g.style.marginTop=(-d/2)+'px'; }
+        var h=cv.querySelector('.fx-h[data-k="'+k+'"]'); if(h){ h.style.left=x+'px'; h.style.top=y+'px'; }
+      }
+      rows();
+    }
+    function save(){ try{ localStorage.setItem(KEY, JSON.stringify(P)); }catch(e){} }
+    var rowsBox=document.getElementById('fxRows');
+    function rows(){
+      if(!document.body.classList.contains('fx-edit')) return;
+      for(var k in P){
+        var r=document.getElementById('fxr-'+k);
+        if(!r){
+          r=document.createElement('div'); r.className='fx-row'; r.id='fxr-'+k;
+          r.innerHTML='<b>'+NAME[k]+'</b><code></code><input type="range" min="0.01" max="0.16" step="0.002">';
+          (function(k,r){ r.querySelector('input').addEventListener('input',function(){ P[k].s=+this.value; save(); place(); }); })(k,r);
+          rowsBox.appendChild(r);
+        }
+        r.querySelector('code').textContent='u '+P[k].u.toFixed(4)+' · v '+P[k].v.toFixed(4)+' · 크기 '+P[k].s.toFixed(3);
+        r.querySelector('input').value=P[k].s;
+      }
+    }
+    /* 끌기 */
+    cv.querySelectorAll('.fx-h').forEach(function(h){
+      h.addEventListener('pointerdown',function(ev){
+        ev.preventDefault(); h.setPointerCapture(ev.pointerId); h.classList.add('on');
+        var k=h.getAttribute('data-k'), rc=cv.getBoundingClientRect();
+        function mv(e){
+          P[k].u=Math.min(1,Math.max(0,(e.clientX-rc.left-geo.left)/geo.dw));
+          P[k].v=Math.min(1,Math.max(0,(e.clientY-rc.top-geo.top)/geo.dh));
+          place();
+        }
+        function up(){ h.classList.remove('on'); save(); h.removeEventListener('pointermove',mv); h.removeEventListener('pointerup',up); }
+        h.addEventListener('pointermove',mv); h.addEventListener('pointerup',up);
+      });
+    });
+    if(/[?&]edit\b/.test(location.search)) document.getElementById('fxBtn').style.display='block';
+    document.getElementById('fxBtn').addEventListener('click',function(){
+      var on=document.body.classList.toggle('fx-edit');
+      this.textContent=on?'편집 끝내기':'좌표 편집';
+      if(on) window.scrollTo({top:0,behavior:'smooth'});
+      place();
+    });
+    document.getElementById('fxReset').addEventListener('click',function(){
+      P=JSON.parse(JSON.stringify(DEF)); try{ localStorage.removeItem(KEY); }catch(e){} place();
+    });
+    document.getElementById('fxCopy').addEventListener('click',function(){
+      var out={}; for(var k in P) out[k]={u:+P[k].u.toFixed(4),v:+P[k].v.toFixed(4),s:+P[k].s.toFixed(3)};
+      var txt='폴라리스호 좌표 '+JSON.stringify(out), b=this;
+      function done(){ b.textContent='복사됨 ✓'; setTimeout(function(){ b.textContent='복사'; },1600); }
+      if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done,fallback); } else fallback();
+      function fallback(){ var t=document.createElement('textarea'); t.value=txt; document.body.appendChild(t); t.select(); try{ document.execCommand('copy'); }catch(e){} t.remove(); done(); }
+    });
+    window.addEventListener('resize',place); place();
+  })();
+</script>
+<script src="https://app.egsalon.com/eg_device.js?v=20260729"></script>
+<script src="site.js?v=1023a"></script>
+</body>
+</html>
