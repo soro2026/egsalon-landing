@@ -336,6 +336,15 @@ body.fx-edit .fx-panel{display:block}
 .card::after{background:linear-gradient(180deg,rgba(13,22,40,1) 0%,rgba(13,22,40,1) 14%,rgba(13,22,40,0) 26%,rgba(8,12,20,0) 52%,rgba(8,12,20,.62) 78%,rgba(8,12,20,.86) 100%);filter:none}
 .card .no,.card h3,.card p,.card .go{position:relative;z-index:1;text-shadow:0 1px 10px rgba(0,0,0,.55)}
 .card .go{background:rgba(8,12,20,.35);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+/* ── 1104 에펠탑 상영 — 앱 쪽 화면(?live)을 창으로 끼운다 · 구글 키는 앱 주소에만 열려 있어 창이 앱 주소를 연다 ── */
+.tower-live{margin:clamp(28px,4vw,44px) 0 0}
+.tower-live .tv{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#03050b;
+  box-shadow:0 18px 50px rgba(20,14,4,.28)}
+.tower-live iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+.tower-live figcaption{margin-top:10px;font-size:13px;color:var(--ink-dim)}
+.tower-live .mob{display:none}
+/* 휴대폰은 앱처럼 지구를 띄우지 않는다 — 녹화 영상이 서기 전까지는 안내 한 줄 */
+@media (max-width:760px){.tower-live .tv,.tower-live figcaption{display:none}.tower-live .mob{display:block}}
 </style>
 </head>
 <body data-nav="cover">
@@ -568,6 +577,22 @@ body.fx-edit .fx-panel{display:block}
       <div class="fact"><b>명화 엽서 5장</b><span>준비한 20종 가운데 직접 고르십니다.</span></div>
       <div class="fact"><b>소감이 묶인 책 한 권</b><span>탐험하는 동안 쓴 글이 차례대로 묶여, 당신의 EG 집 2층 서가에 꽂힙니다.</span></div>
     </div>
+  </div>
+</section>
+
+<!-- ══════════ ⑥-1 에펠탑 — 이름이 새겨지는 탑 (1104 소로 · 귀환 선물 바로 아래 큼직하게) ══════════
+     창 안은 app.egsalon.com/eiffel_engrave_test_1104.html?live — 카메라 넷이 같은 속도로 돌며 5초씩 차례로
+     (위에서 · 명패 띠 · 크리스마스트리 · 꼭대기 숫자) · 이름과 숫자는 DB eg_tower_crew()(출항한 대원)에서 저절로 -->
+<section class="sec" id="tower">
+  <div class="main">
+    <div class="eyebrow">에펠탑</div>
+    <h2>당신의 이름이 새겨지는 탑</h2>
+    <p class="lead">출항하는 날, EG유니버스의 에펠탑 1층 띠에 대원의 이름이 새겨집니다. 첫 대원은 띠 한 면을 혼자 채우고, 대원이 늘수록 명패가 작아지며 여럿이 그 띠를 나눠 듭니다. 탑 꼭대기의 숫자는 지금 함께 오른 대원의 수입니다. 탐험하는 40일 동안 탑은 크리스마스트리처럼 날마다 조금씩 차오르고, 크리스마스이브 밤에는 모든 이름에 불이 켜집니다.</p>
+    <figure class="tower-live">
+      <div class="tv"><iframe src="https://app.egsalon.com/eiffel_engrave_test_1104.html?live" title="EG유니버스 에펠탑 — 지금 새겨진 탐험대원" loading="lazy"></iframe></div>
+      <figcaption>지금 이 순간의 탑 — 대원이 오를 때마다 저절로 자랍니다</figcaption>
+      <p class="mob lead">지금 이 순간의 탑은 큰 화면에서 보실 수 있습니다.</p>
+    </figure>
   </div>
 </section>
 
