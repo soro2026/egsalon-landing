@@ -325,6 +325,13 @@ body.fx-edit .fx-panel{display:block}
 .book .bk img{box-shadow:none;border-radius:0}
 .book figcaption{line-height:1.7}
 .book figcaption b{color:var(--ink);font-weight:600}
+
+/* ③ 미션 카드 얼굴 (1103) — 옛 판화풍 금선 그림 · 아래는 안개라 글자가 얹힌다 · 장소는 흐릿하게(고른 뒤에야 보인다) */
+.card{background:#0d1117}
+.card::before{content:'';position:absolute;left:0;right:0;top:15%;bottom:-6%;background:var(--bg) center top/cover no-repeat;pointer-events:none}   /* 그림을 15% 내려 위쪽 빈 하늘에 번호 · 제목 */
+.card::after{background:linear-gradient(180deg,rgba(13,22,40,1) 0%,rgba(13,22,40,1) 14%,rgba(13,22,40,0) 26%,rgba(8,12,20,0) 52%,rgba(8,12,20,.62) 78%,rgba(8,12,20,.86) 100%);filter:none}
+.card .no,.card h3,.card p,.card .go{position:relative;z-index:1;text-shadow:0 1px 10px rgba(0,0,0,.55)}
+.card .go{background:rgba(8,12,20,.35);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 </style>
 </head>
 <body data-nav="cover">
@@ -431,9 +438,9 @@ body.fx-edit .fx-panel{display:block}
     <h2>하루에 한 장, 미션 카드</h2>
     <p class="lead">대원은 33장의 카드를 받습니다. 카드 앞면에는 번호와 제목, 문장 한 줄만 적혀 있습니다. 어디로 가야 하는지는 고른 다음에야 보입니다.</p>
     <div class="cards">
-      <div class="card"><span class="no">01</span><h3>북극성</h3><p>하늘 한가운데, 혼자 움직이지 않는 별이 하나 있습니다.</p><span class="go">미션 시작</span></div>
-      <div class="card"><span class="no">02</span><h3>끝내 보지 못한 집</h3><p>설계한 사람이 완성된 모습을 끝내 보지 못한 음악당이 있습니다.</p><span class="go">미션 시작</span></div>
-      <div class="card"><span class="no">07</span><h3>안데스를 넘는 책</h3><p>종이책 한 권을 무릎에 올리고, 눈 덮인 산맥을 넘는 비행기가 있습니다.</p><span class="go">미션 시작</span></div>
+      <div class="card" style="--bg:url(media/exp_mc_01_polaris.webp?v=1103)"><span class="no">01</span><h3>북극성</h3><p>하늘 한가운데, 혼자 움직이지 않는 별이 하나 있습니다.</p><span class="go">미션 시작</span></div>
+      <div class="card" style="--bg:url(media/exp_mc_02_sydney.webp?v=1103)"><span class="no">02</span><h3>끝내 보지 못한 집</h3><p>설계한 사람이 완성된 모습을 끝내 보지 못한 음악당이 있습니다.</p><span class="go">미션 시작</span></div>
+      <div class="card" style="--bg:url(media/exp_mc_07_andes.webp?v=1103)"><span class="no">07</span><h3>안데스를 넘는 책</h3><p>종이책 한 권을 무릎에 올리고, 눈 덮인 산맥을 넘는 비행기가 있습니다.</p><span class="go">미션 시작</span></div>
     </div>
     <div class="flow">
       <span>카드 고르기</span><i>→</i><span>미션 시작</span><i>→</i><span>찾아가기</span><i>→</i><span>닿으면 물음 하나</span><i>→</i><span>200자 이상 소감</span><i>→</i><span>카드가 뒤집힘</span>
