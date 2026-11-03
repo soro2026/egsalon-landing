@@ -305,6 +305,16 @@ body.fx-edit .fx-panel{display:block}
 .photo{margin:0}
 .photo img{display:block;width:100%;height:auto;border-radius:4px;box-shadow:0 18px 40px rgba(11,9,7,.28)}
 .photo figcaption{margin-top:12px;font-size:12.5px;letter-spacing:.02em;color:var(--ink-dim)}
+
+/* ⑥ 귀환 선물 — 사진 벽 (1103 소로 「견물생심, 많이 많이」) · 장면 칸은 사진이 오면 img 로 바꿔 끼운다 */
+.wall{column-count:3;column-gap:clamp(12px,1.6vw,18px);margin-top:clamp(28px,4vw,44px)}
+@media (max-width:900px){.wall{column-count:2}}
+@media (max-width:560px){.wall{column-count:1}}
+.shot{break-inside:avoid;margin:0 0 clamp(12px,1.6vw,18px)}
+.shot img{display:block;width:100%;height:auto;border-radius:6px;box-shadow:0 10px 28px rgba(11,9,7,.18)}
+.shot figcaption{margin-top:8px;font-size:12.5px;color:var(--ink-dim)}
+.shot.pending .ph{aspect-ratio:var(--r);justify-content:flex-end}
+.wall-note{margin-top:6px;font-size:12.5px;color:var(--ink-dim)}
 </style>
 </head>
 <body data-nav="cover">
@@ -483,28 +493,51 @@ body.fx-edit .fx-panel{display:block}
     <div class="eyebrow">귀환 선물</div>
     <h2>돌아오는 날, 손에 쥐는 것</h2>
     <p class="lead">12월 24일 귀환한 대원은 모두 같은 선물을 받습니다. 카드를 몇 장 뒤집었는지와 상관없습니다. 다만 무엇을 받을지는 대원이 고릅니다.</p>
-    <div class="goods">
-      <div class="ph">
-        <span class="tag">그림 자리 ③ · 포토카드</span>
-        <span class="what">짙은 나무 탁자 위에 부채꼴로 펼친 인물 포토카드 열 장. 갈색으로 바랜 옛 초상들, 모서리가 둥근 두꺼운 카드. 한 장은 뒤집혀 뒷면이 보인다.</span>
-        <span class="ratio">3 : 2 가로 · 실물 시안이 나오면 실물 사진으로 교체 · 카드 뒷면 문구는 그림에 넣지 않음</span>
-      </div>
-      <div class="ph">
-        <span class="tag">그림 자리 ④ · 카드 뒷면</span>
-        <span class="what">카드 한 장의 뒷면을 가까이. 「탐험대원 No. ___ · 귀환 2026.12.24」가 찍힐 자리만 비워 둔 모습.</span>
-        <span class="ratio">2 : 3 세로 · 문구는 화면 글자로 얹음</span>
-      </div>
-      <div class="ph">
-        <span class="tag">그림 자리 ⑤ · 명화 엽서</span>
-        <span class="what">명화 엽서 다섯 장이 겹쳐 놓인 모습. 오르세 · 우피치에 걸리는 그 그림들의 결. 곁에 봉랍 찍힌 봉투 하나.</span>
-        <span class="ratio">4 : 3 · 그림은 퍼블릭 도메인 명화만</span>
-      </div>
-      <div class="ph">
-        <span class="tag">그림 자리 ⑥ · 서가의 책 한 권</span>
-        <span class="what">EG 집 2층 서가에 새로 꽂힌 책 한 권의 책등. 「폴라리스호 · 탐험대원 No.017」. 앱 화면 캡처로 대신할 수 있음.</span>
-        <span class="ratio">4 : 3 · 앱의 서가 디자인 그대로 캡처가 가장 정직함</span>
-      </div>
+    <div class="wall" id="wall">
+      <figure class="shot pending" style="--r:4/5" data-file="exp_card_01_thoreau_desk.webp">
+        <div class="ph"><span class="tag">카드 1</span><span class="what">서재의 책상 위 — 놋쇠 램프 불빛, 만년필, 오래된 가죽 책</span><span class="ratio">붙일 카드 · 헨리 데이비드 소로</span></div>
+      </figure>
+      <figure class="shot pending" style="--r:3/2" data-file="exp_card_02_exupery_desert.webp">
+        <div class="ph"><span class="tag">카드 2</span><span class="what">사막 위 낡은 트렁크 — 해 질 녘, 멀리 복엽기 한 대</span><span class="ratio">붙일 카드 · 앙투안 드 생텍쥐페리</span></div>
+      </figure>
+      <figure class="shot pending" style="--r:4/5" data-file="exp_card_03_kafka_rain.webp">
+        <div class="ph"><span class="tag">카드 3</span><span class="what">비 오는 창가 — 유리창의 빗방울, 창밖으로 젖은 지붕들</span><span class="ratio">붙일 카드 · 프란츠 카프카</span></div>
+      </figure>
+      <figure class="shot pending" style="--r:1/1" data-file="exp_card_04_baudelaire_cafe.webp">
+        <div class="ph"><span class="tag">카드 4</span><span class="what">파리 카페의 대리석 탁자 — 에스프레소 한 잔, 접힌 신문</span><span class="ratio">붙일 카드 · 샤를 보들레르</span></div>
+      </figure>
+      <figure class="shot pending" style="--r:3/2" data-file="exp_card_05_hesse_train.webp">
+        <div class="ph"><span class="tag">카드 5</span><span class="what">기차 객실 창가 — 창밖으로 지나가는 알프스, 펼친 문고본</span><span class="ratio">붙일 카드 · 헤르만 헤세</span></div>
+      </figure>
+      <figure class="shot pending" style="--r:4/5" data-file="exp_card_06_woolf_bedside.webp">
+        <div class="ph"><span class="tag">카드 6</span><span class="what">침대 머리맡 — 작은 독서등, 펼쳐 엎어 둔 책, 찻잔</span><span class="ratio">붙일 카드 · 버지니아 울프</span></div>
+      </figure>
+      <figure class="shot pending" style="--r:1/1" data-file="exp_card_07_gogh_atelier.webp">
+        <div class="ph"><span class="tag">카드 7</span><span class="what">아틀리에 작업대 — 물감 묻은 붓, 해바라기 꽃병</span><span class="ratio">붙일 카드 · 빈센트 반 고흐</span></div>
+      </figure>
+      <figure class="shot pending" style="--r:4/5" data-file="exp_card_08_beethoven_piano.webp">
+        <div class="ph"><span class="tag">카드 8</span><span class="what">피아노 위 — 펼친 악보, 촛불 하나</span><span class="ratio">붙일 카드 · 루트비히 판 베토벤</span></div>
+      </figure>
+      <figure class="shot pending" style="--r:3/2" data-file="exp_card_09_homer_sea.webp">
+        <div class="ph"><span class="tag">카드 9</span><span class="what">바다가 보이는 흰 창틀 — 지중해의 파란 물, 올리브 가지</span><span class="ratio">붙일 카드 · 호메로스</span></div>
+      </figure>
+      <figure class="shot pending" style="--r:16/9" data-file="exp_card_10_ten_fan.webp">
+        <div class="ph"><span class="tag">카드 10</span><span class="what">나무 탁자 위 열 장 — 보호 케이스에 든 카드 열 장을 부채꼴로 펼침</span><span class="ratio">붙일 카드 · 여러 장(소로 · 생텍쥐페리 · 카프카 · 보들레르 · 헤세 · 울프 · 고흐 · 베토벤 · 호메로스 · 아렌트)</span></div>
+      </figure>
+      <figure class="shot pending" style="--r:4/3" data-file="exp_post_01_five.webp">
+        <div class="ph"><span class="tag">엽서 1</span><span class="what">봉랍 찍힌 봉투 곁 — 명화 엽서 다섯 장을 겹쳐 펼침</span><span class="ratio">붙일 카드 · 미술관 명화 엽서 5장</span></div>
+      </figure>
+      <figure class="shot pending" style="--r:4/5" data-file="exp_post_02_shelf.webp">
+        <div class="ph"><span class="tag">엽서 2</span><span class="what">책장 한 칸 — 책 사이에 세워 둔 명화 엽서 한 장</span><span class="ratio">붙일 카드 · 명화 엽서 1장</span></div>
+      </figure>
+      <figure class="shot pending" style="--r:3/2" data-file="exp_post_03_writing.webp">
+        <div class="ph"><span class="tag">엽서 3</span><span class="what">창가 책상 — 엽서 뒷면에 만년필로 몇 줄 쓰는 손</span><span class="ratio">붙일 카드 · 명화 엽서 1장</span></div>
+      </figure>
+      <figure class="shot pending" style="--r:4/3" data-file="exp_shelf_book.webp">
+        <div class="ph"><span class="tag">서가</span><span class="what">EG 집 2층 서가 — 「폴라리스호 · 탐험대원 No.017」 책 한 권이 새로 꽂힌 모습</span><span class="ratio">붙일 카드 · 앱 화면 캡처(파이스가 만듦)</span></div>
+      </figure>
     </div>
+    <p class="wall-note">사진 속 카드와 엽서는 실물로 연출한 장면입니다.</p>
     <div class="facts">
       <div class="fact"><b>포토카드 10장</b><span>준비한 35종 가운데 직접 고르십니다. 뒷면에 탐험대원 번호와 귀환 날이 찍힙니다.</span></div>
       <div class="fact"><b>명화 엽서 5장</b><span>준비한 20종 가운데 직접 고르십니다.</span></div>
