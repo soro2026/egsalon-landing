@@ -18,7 +18,29 @@
 (function(){
   'use strict';
   var APP_URL  = 'https://app.egsalon.com/';
-  var LOOK_URL = '';   /* 입장 화면이 서기 전에는 비워 둔다 — 누르면 아무 데도 가지 않는다 */
+
+  /* ── 초대 번호 (결정문 1031 v1.1 §8 · 1103) ──
+        대원 링크(egsalon.com/…?by=017)로 오신 분 — 번호를 이 브라우저에 적어 두었다가,
+        며칠 둘러본 뒤 가입 단추를 누를 때 앱 주소에 실어 넘긴다 */
+  var BY = (function(){
+    var clean = function(s){ return String(s || '').replace(/[^0-9A-Za-z_-]/g, '').slice(0, 24); };
+    var b = '';
+    try{ b = clean(new URLSearchParams(location.search).get('by')); }catch(e){}
+    try{ if (b) localStorage.setItem('eg_by', b); else b = clean(localStorage.getItem('eg_by')); }catch(e){}
+    return b;
+  })();
+  function signupUrl(board){
+    var q = [];
+    if (board) q.push('board=1');
+    if (BY) q.push('by=' + encodeURIComponent(BY));
+    return APP_URL + 'signup.html' + (q.length ? '?' + q.join('&') : '');
+  }
+  /* ⭐ 1103 — 「EG 둘러보기」는 무료 가입 화면으로(12/24까지 누구나 · 결정문 1031 v1.1 §1) */
+  var LOOK_URL = signupUrl(false);
+  /* 페이지 안의 가입 단추 — data-signup(무료 가입) · data-signup="board"(승선 한 줄) */
+  document.querySelectorAll('a[data-signup]').forEach(function(a){
+    a.href = signupUrl(a.getAttribute('data-signup') === 'board');
+  });
 
   /* ── Guide 일곱 가지 (1020 오후 소로) — 하나마다 페이지 하나 · 길게 이어 내려가지 않는다
         「하나 소화하고 내려오면 다음 아이템이 이어 나오기보다 일곱이 쭉 펼쳐지게」
