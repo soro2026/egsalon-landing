@@ -393,10 +393,10 @@ body.fx-edit .fx-panel{display:block}
         <div class="strip">
           <p class="strip-h">매주 토요일, 한 척씩 떠납니다</p>
           <ol id="ships">
-            <li data-d="2026-11-14"><b>11.14(토)</b><span>1차</span></li>
-            <li data-d="2026-11-21"><b>11.21(토)</b><span>2차</span></li>
-            <li data-d="2026-11-28"><b>11.28(토)</b><span>3차</span></li>
-            <li data-d="2026-12-05" class="last"><b>12.5(토)</b><span>4차 · 마지막 배</span></li>
+            <li data-d="2026-11-14"><b>11.14(토)</b><span>1차 · 모네</span></li>
+            <li data-d="2026-11-21"><b>11.21(토)</b><span>2차 · 볼테르</span></li>
+            <li data-d="2026-11-28"><b>11.28(토)</b><span>3차 · 스피노자</span></li>
+            <li data-d="2026-12-05" class="last"><b>12.5(토)</b><span>4차 · 트웨인 · 마지막 배</span></li>
             <li class="home"><b>12.24(목)</b><span>모두 함께 귀환</span></li>
           </ol>
           <p class="nowline" id="nowline">지금 오르시면 → <b>11월 14일(토) 첫 배</b></p>
@@ -461,10 +461,10 @@ body.fx-edit .fx-panel{display:block}
     <h2>배는 네 번 떠나고, 한 번 돌아옵니다</h2>
     <p class="lead">같은 주에 오른 대원들이 한 원정대가 됩니다. 원정대마다 그 주에 태어난 별의 이름이 붙습니다. 어느 배를 타든 모두 같은 날 함께 돌아옵니다.</p>
     <div class="voyage">
-      <div class="leg"><span class="n">1차 원정대</span><span class="w">○○○ 원정대<small>문이 열린 날 ~ 11월 14일에 오른 대원</small></span><span class="d">11월 14일(토) 출항</span></div>
-      <div class="leg"><span class="n">2차 원정대</span><span class="w">○○○ 원정대<small>11월 15일 ~ 21일에 오른 대원</small></span><span class="d">11월 21일(토) 출항</span></div>
-      <div class="leg"><span class="n">3차 원정대</span><span class="w">○○○ 원정대<small>11월 22일 ~ 28일에 오른 대원</small></span><span class="d">11월 28일(토) 출항</span></div>
-      <div class="leg last"><span class="n">4차 원정대</span><span class="w">○○○ 원정대 · 마지막 배<small>11월 29일 ~ 12월 5일에 오른 대원</small></span><span class="d">12월 5일(토) 출항</span></div>
+      <div class="leg"><span class="n">1차 원정대</span><span class="w">모네 원정대<small>클로드 모네가 태어난 날 떠나는 배 · 문이 열린 날 ~ 11월 14일에 오른 대원</small></span><span class="d">11월 14일(토) 출항</span></div>
+      <div class="leg"><span class="n">2차 원정대</span><span class="w">볼테르 원정대<small>볼테르가 태어난 날 떠나는 배 · 11월 15일 ~ 21일에 오른 대원</small></span><span class="d">11월 21일(토) 출항</span></div>
+      <div class="leg"><span class="n">3차 원정대</span><span class="w">스피노자 원정대<small>11월 24일에 태어난 스피노자의 배 · 11월 22일 ~ 28일에 오른 대원</small></span><span class="d">11월 28일(토) 출항</span></div>
+      <div class="leg last"><span class="n">4차 원정대</span><span class="w">트웨인 원정대 · 마지막 배<small>11월 30일에 태어난 마크 트웨인의 배 — 그 이름은 「배가 지나가도 안전한 물」이라는 뱃사람의 말 · 11월 29일 ~ 12월 5일에 오른 대원</small></span><span class="d">12월 5일(토) 출항</span></div>
       <div class="leg home"><span class="n">귀환</span><span class="w">모든 대원이 함께 돌아옵니다<small>탐험 기간은 오른 날부터 12월 24일까지 — 일찍 오를수록 길어집니다</small></span><span class="d">12월 24일(목)</span></div>
       <div class="leg"><span class="n">개관</span><span class="w">EG유니버스 정식 개관 · 대원 모두 정회원 첫날<small>&nbsp;</small></span><span class="d">12월 25일(금)</span></div>
     </div>
@@ -662,7 +662,7 @@ body.fx-edit .fx-panel{display:block}
     catch(e){ today = new Date().toISOString().slice(0,10); }
     var legs = document.querySelectorAll('#ships li[data-d]');
     var line = document.getElementById('nowline');
-    var names = ['첫 배','2차 배','3차 배','마지막 배'];
+    var names = ['첫 배 · 모네 원정대','2차 배 · 볼테르 원정대','3차 배 · 스피노자 원정대','마지막 배 · 트웨인 원정대'];
     var hit = -1;
     for (var i=0;i<legs.length;i++){ if (today <= legs[i].getAttribute('data-d')){ hit = i; break; } }
     if (hit < 0){ line.innerHTML = '승선은 마감되었습니다 · 둘러보기는 <b>12월 24일까지</b> 누구나'; return; }
