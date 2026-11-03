@@ -300,6 +300,11 @@ body.fx-edit .fx-panel{display:block}
 .fx-acts{display:flex;gap:8px;margin-top:12px}
 .fx-acts button{flex:1;padding:8px 0;border-radius:6px;border:1px solid rgba(44,35,23,.3);background:#fff;font:600 13px 'Pretendard',sans-serif;cursor:pointer}
 .fx-acts button.go{background:#f2c94c;border-color:#d8ad2c}
+
+/* ② 배의 내력 — 옛 사진 한 장 */
+.photo{margin:0}
+.photo img{display:block;width:100%;height:auto;border-radius:4px;box-shadow:0 18px 40px rgba(11,9,7,.28)}
+.photo figcaption{margin-top:12px;font-size:12.5px;letter-spacing:.02em;color:var(--ink-dim)}
 </style>
 </head>
 <body data-nav="cover">
@@ -387,11 +392,10 @@ body.fx-edit .fx-panel{display:block}
     <div class="eyebrow">배 이름</div>
     <h2>폴라리스호</h2>
     <div class="ship">
-      <div class="ph">
-        <span class="tag">그림 자리 ② · 배의 내력</span>
-        <span class="what">1912년 겨울 노르웨이의 조선소. 갓 진수한 목조 범선의 뱃머리에 POLARIS라는 이름이 막 칠해진 모습. 오래된 사진처럼 갈색으로 바랜 결.</span>
-        <span class="ratio">4 : 3 · 옛 사진 결 · 실제 사진을 쓰면 권리 확인 먼저</span>
-      </div>
+      <figure class="photo">
+        <img src="media/exp_polaris_1912.webp?v=1103" alt="1912년 겨울 노르웨이의 조선소, 막 물에 띄운 세 돛대 목조 범선" loading="lazy" width="1448" height="1086">
+        <figcaption>1912년 겨울, 노르웨이 · 그때를 떠올려 그린 그림</figcaption>
+      </figure>
       <div>
         <p class="lead">1914년 남극으로 떠난 섀클턴의 배 인듀어런스호에는 처음 이름이 따로 있었습니다. 1912년 노르웨이에서 진수할 때 붙인 이름은 폴라리스, 북극성이었습니다.</p>
         <p class="lead">EG유니버스의 하늘 한가운데에도 혼자 움직이지 않는 별이 하나 있습니다. 그 별의 이름을 배에 다시 붙였습니다. 이 배는 대원들을 그 별 아래로 데려갑니다.</p>
