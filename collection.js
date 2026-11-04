@@ -633,7 +633,7 @@
       if (poster) h += '<div class="cb-pframe"><img src="' + esc(poster) + '" alt="' + esc(b.title + ' 개막작 포스터') + '" loading="lazy" onerror="this.closest(\'.cb-pst\').classList.add(\'solo\');this.parentNode.remove()">'
         + (soon[b.id] ? '<div class="cb-seal" style="--x:' + (b.sticker_x != null ? b.sticker_x : 62) + '%;--y:' + (b.sticker_y != null ? b.sticker_y : 78) + '%"><b>COMING<br>SOON</b></div>' : '') + '</div>';
       if (plan.length) h += '<div class="cb-plan"><h4>' + esc((b.weeks_raw || plan.length + '주')) + ' 진도표</h4>'
-        + '<p class="note">쪽수가 아니라 장과 소제목으로 짜여 있어, 어떤 판을 들고 오셔도 같은 주에 같은 대목을 읽습니다.</p><ol>'
+        + '<p class="note">쪽수가 아니라 장과 소제목으로 짜여 있어, 어떤 판을 들고 오셔도 한 주 분량을 똑같이 짚으실 수 있습니다.</p><ol>'
         + plan.map(function(p){ return '<li><i>' + esc(p.n) + '주</i><div><b>' + esc(p.t) + '</b>' + (p.r ? '<span>' + esc(p.r) + '</span>' : '') + '</div></li>'; }).join('')
         + '</ol></div>';
       h += '</div></section>';
