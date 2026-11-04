@@ -652,7 +652,7 @@
             + '<span class="ti">' + esc(edTitle(e.title)) + '</span>' + (e.why ? '<p>' + esc(e.why) + '</p>' : '') + tag
             + (i === 0 ? '<span class="first">먼저 권하는 판</span>' : '') + '</div>';
         }).join('') + '</div>';
-    h += '</section><p class="cb-app">종 달기와 등록, 같은 책을 든 사람들과 함께 읽는 일은 EG유니버스 안에서.</p>';
+    h += '</section><p class="cb-app">수강 신청과 개설 요청, 같은 책을 든 사람들과 함께 읽는 일은 EG유니버스 안에서.</p>';
     return h;
   }
   function openBook(k){
