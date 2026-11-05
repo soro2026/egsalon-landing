@@ -25,7 +25,8 @@
       · 헤드라인 — 뱃사람은 별에 가려고 / 별을 읽지 않았습니다. · 길을 찾으려 바라보았습니다.
         (영화 끝 「그들이 별로 떠 있는 곳」을 받아 왜 속도가 아닌 방향인지를 장면으로)
       · 책을 맨 끝, 도착지에 세운다 — 그림 · 음악 · 별을 만나다가 어느 날 책 한 권
-      · 날짜 자리 = 탐험대 출발 — 출항일마다 저절로 넘어간다(아래 SAIL 표 · 출항일 자정까지는 그 배)
+      · 날짜 자리 = 탐험대 출발 — 출항일마다 저절로 넘어간다(스크립트 SAIL 표 · 출항일 자정까지는 그 배)
+      · 영화 끝 장면 아랫줄도 같은 셈 — 「탐험대원 모집 중」 · 마지막 배가 떠나면 SAIL_AFTER
       · 값은 이 페이지에 두지 않는다 — 왜를 다루는 첫 페이지라서(1105 오후 소로). 값은 Expedition 페이지에서
    ③ 오른쪽 위 단추 · 메뉴 띠 · 휴대폰 안내는 site.css / site.js 가 맡는다(1018 저녁 — 모든 페이지 공용) */
 :root{
@@ -397,6 +398,23 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
 /* ── ① 후킹 층 — 느린 자들 (1105) ──
    ms · pos = 세로 화면(폰)에서 남길 자리 · place = 글 자리(bottom · br 오른쪽 아래 · top)
    ?cut=N 을 붙이면 그 컷에 멈춘다(점검용) */
+/* ── 탐험대 출발 셈 (1105 오후 소로) — 영화 끝 장면과 정의 층이 함께 쓴다
+   서울 날짜로 다음 출항일을 셈한다. 출항일 자정까지는 그 배(expedition.html · 1102 결정과 같은 셈)
+   ⚠ 출항일을 바꾸면 expedition.html #ships 의 data-d 도 함께
+   점검용 ?sail=2026-11-22 */
+const SAIL = [
+  ['2026-11-14','첫'], ['2026-11-21','두 번째'], ['2026-11-28','세 번째'], ['2026-12-05','마지막']
+];
+const SAIL_AFTER = '2026년 12월 25일(금) 개관';   /* 12/5 마지막 배가 떠난 뒤 — 문구는 그 전에 소로가 정한다 */
+const SAIL_HIT = (() => {
+  let today;
+  try { today = new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul'}).format(new Date()); }
+  catch(e){ today = new Date(Date.now() + 9*3600e3).toISOString().slice(0,10); }
+  const q = new URLSearchParams(location.search).get('sail');
+  if (q && /^\d{4}-\d{2}-\d{2}$/.test(q)) today = q;
+  return SAIL.find(s => today <= s[0]) || null;
+})();
+
 const M = 'media/slow_', VV = '?v=1105';
 const IMG = {
   soro_face:M+'soro_face.webp'+VV, soro_act:M+'soro_act.webp'+VV, soro_act_v:M+'soro_act.mp4'+VV,
@@ -424,7 +442,7 @@ const CUTS = [
     text:'악보에 「되도록 느리게」라고만 적고, 얼마나 느릴지는 연주자에게 맡겼습니다. 한 도시가 639년으로 답했습니다.' },
   { kind:'card', text:'그들은 속도 대신 방향을 골랐습니다.', type:true, speed:140, dur:5600 },
   { kind:'card', text:'AS SLOW AS POSSIBLE', aslap:true, type:true, speed:220, dur:7300 },
-  { kind:'sky',  text:'그들이 별로 떠 있는 곳, EG유니버스', sub:'2026년 12월 25일(금) 개관', pos:'86% 50%', dur:6800 },
+  { kind:'sky',  text:'그들이 별로 떠 있는 곳, EG유니버스', sub: SAIL_HIT ? '탐험대원 모집 중' : SAIL_AFTER, pos:'86% 50%', dur:6800 },
   { kind:'blank', dur:1400 },
 ];
 
@@ -549,25 +567,13 @@ const CUTS = [
   }
 })();
 
-/* ② 정의 층 — 탐험대 출발 줄 (1105 오후 소로)
-   서울 날짜로 다음 출항일을 셈한다. 출항일 자정까지는 그 배(expedition.html · 1102 결정과 같은 셈)
-   ⚠ 출항일을 바꾸면 expedition.html #ships 의 data-d 도 함께 */
+/* ② 정의 층 — 탐험대 출발 줄 (셈은 맨 위 SAIL_HIT) */
 (function(){
-  const SAIL = [
-    ['2026-11-14','첫'], ['2026-11-21','두 번째'], ['2026-11-28','세 번째'], ['2026-12-05','마지막']
-  ];
-  const AFTER = '2026년 12월 25일(금) 개관';      /* 12/5 마지막 배가 떠난 뒤 — 문구는 그 전에 소로가 정한다 */
   const el = document.getElementById('sailLine'); if (!el) return;
-  let today;
-  try { today = new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul'}).format(new Date()); }
-  catch(e){ today = new Date(Date.now() + 9*3600e3).toISOString().slice(0,10); }
-  const q = new URLSearchParams(location.search).get('sail');   /* 점검용 ?sail=2026-11-22 */
-  if (q && /^\d{4}-\d{2}-\d{2}$/.test(q)) today = q;
-  const hit = SAIL.find(s => today <= s[0]);
   const span = el.querySelector('span');
-  if (!hit){ span.textContent = AFTER; el.removeAttribute('href'); return; }
-  const d = hit[0].split('-');
-  span.innerHTML = '<b>' + (+d[1]) + '월 ' + (+d[2]) + '일(토)</b>, ' + hit[1] + ' 탐험대가 출발합니다.<br>함께 원정길에 오를 대원을 모으고 있습니다.';
+  if (!SAIL_HIT){ span.textContent = SAIL_AFTER; el.removeAttribute('href'); return; }
+  const d = SAIL_HIT[0].split('-');
+  span.innerHTML = '<b>' + (+d[1]) + '월 ' + (+d[2]) + '일(토)</b>, ' + SAIL_HIT[1] + ' 탐험대가 출발합니다.<br>함께 원정길에 오를 대원을 모으고 있습니다.';
 })();
 
 /* 왜의 층 — 한 단락씩 떠오르게 */
