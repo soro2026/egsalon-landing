@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>EG유니버스</title>
-<meta name="description" content="지구 위에 세운 인문학 구독. 하루 10분, 지구 위를 날아 그림 한 점, 음악 한 곡, 별 하나를 만나고 그 끝에서 책 한 권을 손에 듭니다.">
+<meta name="description" content="EG유니버스 — 인문학 구독. 그림 한 점, 음악 한 곡, 별 하나를 만나다가 어느 날 책 한 권을 손에 듭니다.">
 <meta name="theme-color" content="#0b0907">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
@@ -20,9 +20,13 @@
       · 「그들은 속도 대신 방향을 골랐습니다.」 「AS SLOW AS POSSIBLE」 타이핑 → 별자리 하늘
       · 영상에는 글자를 굽지 않는다 — 글은 HTML 글자로 얹는다 · 소리 없음
       · 첫 화면에 값은 넣지 않는다 — 돈부터 드러내지 않는다(1017 소로)
-   ② 정의 층 — 영상 아래 첫 화면. 세 줄과 문 하나(1017 소로 확정)
-      · 책을 맨 끝, 도착지에 세운다 — 그림 · 음악 · 별이 모두 책으로 가는 길
-      · 값은 여기서 처음 말한다 — 무엇을 하는 곳인지 다 들은 뒤라 정보로 읽힌다
+   ② 정의 층 — 영상 아래 첫 화면(1105 오후 소로 · 번벅 · 카리 · 파이스 다시 씀)
+      · 머리글 「인문학 구독」 — 무엇을 하는 곳인지 정직하게
+      · 헤드라인 — 뱃사람은 별에 가려고 / 별을 읽지 않았습니다. · 길을 찾으려 바라보았습니다.
+        (영화 끝 「그들이 별로 떠 있는 곳」을 받아 왜 속도가 아닌 방향인지를 장면으로)
+      · 책을 맨 끝, 도착지에 세운다 — 그림 · 음악 · 별을 만나다가 어느 날 책 한 권
+      · 날짜 자리 = 탐험대 출발 — 출항일마다 저절로 넘어간다(아래 SAIL 표 · 출항일 자정까지는 그 배)
+      · 값은 여기 두지 않는다 — 영화 바로 뒤에 값이 오지 않게(번벅). 「누구에게나」 끝으로 옮김
    ③ 오른쪽 위 단추 · 메뉴 띠 · 휴대폰 안내는 site.css / site.js 가 맡는다(1018 저녁 — 모든 페이지 공용) */
 :root{
   --ink:#0b0907;
@@ -103,18 +107,21 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
   min-height:100vh;min-height:100svh;display:flex;align-items:center;
   padding:clamp(72px,14vh,160px) var(--gutter)}
 .define .inner{width:100%;max-width:1080px;margin:0 auto}
+.define .eyebrow{font-size:12.5px;letter-spacing:.32em;color:var(--ink-dim);margin-bottom:clamp(18px,2.4vw,28px)}
 .define h1{font-family:var(--serif);font-weight:400;
-  font-size:clamp(34px,6.2vw,84px);line-height:1.18;letter-spacing:-.025em;
+  font-size:clamp(32px,5.4vw,74px);line-height:1.24;letter-spacing:-.025em;
   word-break:keep-all;color:var(--ink)}
+.define .turn{margin-top:clamp(18px,2.6vw,30px);font-family:var(--serif);font-weight:400;
+  font-size:clamp(21px,2.5vw,34px);line-height:1.5;letter-spacing:-.015em;color:var(--ink);word-break:keep-all}
 .define .gloss{margin-top:clamp(28px,4.4vw,52px);max-width:34em;
   font-family:var(--serif);font-weight:300;
   font-size:clamp(17px,1.75vw,24px);line-height:1.85;letter-spacing:-.005em;
   color:var(--ink-soft);word-break:keep-all;text-wrap:pretty}
 .define .gloss .book{font-weight:500;color:var(--ink)}
-.define .terms{margin-top:clamp(36px,5vw,64px);padding-top:18px;border-top:1px solid rgba(11,9,7,.14);
-  display:flex;flex-wrap:wrap;gap:6px 22px;
-  font-size:14px;letter-spacing:.02em;color:var(--ink-dim)}
-.define .terms b{font-weight:600;color:var(--ink-soft)}
+.define .sail{display:block;margin-top:clamp(36px,5vw,64px);padding-top:18px;border-top:1px solid rgba(11,9,7,.14);
+  font-size:15px;line-height:1.8;letter-spacing:.01em;color:var(--ink-dim);text-decoration:none;word-break:keep-all}
+.define .sail b{font-weight:600;color:var(--ink-soft)}
+.define a.sail:hover span{text-decoration:underline;text-underline-offset:4px}
 .define .door{margin-top:clamp(32px,4.5vw,52px);display:inline-flex;align-items:center;gap:12px;
   min-width:220px;justify-content:center;padding:16px 30px;border-radius:999px;
   background:var(--ink);color:var(--paper);text-decoration:none;
@@ -193,6 +200,9 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
 .who .closing{max-width:34em;margin:clamp(72px,10vh,120px) auto 0;text-align:center;font-family:var(--serif);
   font-weight:400;font-size:clamp(24px,3vw,38px);line-height:1.6;letter-spacing:-.01em;color:var(--ink);word-break:keep-all}
 .who .closing span{display:block;margin-top:10px;font-weight:300;font-size:clamp(17px,1.7vw,21px);color:var(--ink-soft)}
+.who .fee{max-width:34em;margin:clamp(28px,4vw,44px) auto 0;padding-top:18px;border-top:1px solid rgba(11,9,7,.14);
+  text-align:center;font-family:inherit;font-size:14.5px;letter-spacing:.02em;color:var(--ink-dim)}
+.who .fee b{font-weight:600;color:var(--ink-soft)}
 .who .rise{opacity:0;transform:translateY(14px);transition:opacity 1s ease,transform 1s ease}
 .who .rise.in{opacity:1;transform:none}
 /* 스크롤하며 한 단락씩 떠오른다 — 읽는 속도를 재촉하지 않게 짧고 조용하게 */
@@ -203,9 +213,10 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
   .hero .line{max-width:15em}
   .hero .cut.top .line,.hero .cut.br .line{top:calc(var(--head-top) + 71px);bottom:auto;left:var(--gutter);right:var(--gutter);text-align:left}
   .hero .cut.br::after{background:linear-gradient(180deg,rgba(8,6,4,.72) 0%,rgba(8,6,4,.25) 30%,rgba(8,6,4,0) 48%)}
-  .define h1{font-size:clamp(32px,9.4vw,44px)}
+  .define h1{font-size:clamp(25px,7.2vw,36px)}
+  .define .turn{font-size:clamp(19px,5.2vw,24px)}
   .define .gloss br{display:none}
-  .define .terms{font-size:13px}
+  .define .sail{font-size:14px}
   .define .door{width:100%}
   .why .table br{display:block}
   .who .bookcard{align-items:flex-start}
@@ -254,10 +265,13 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
 <main>
   <section class="define" aria-labelledby="def-title">
     <div class="inner">
-      <h1 id="def-title">지구 위에 세운<br>인문학 구독</h1>
-      <p class="gloss">하루 10분, 지구 위를 날아 그림 한 점, 음악 한 곡, 별 하나를 만나고<br>
-        그 끝에서 <span class="book">책 한 권</span>을 손에 듭니다.</p>
-      <p class="terms"><span><b>월 30,030원</b></span><span>2026년 12월 25일(금) 개관</span></p>
+      <div class="eyebrow">인문학 구독</div>
+      <h1 id="def-title">뱃사람은 별에 가려고<br>별을 읽지 않았습니다.</h1>
+      <p class="turn">길을 찾으려 바라보았습니다.</p>
+      <p class="gloss">그림 한 점, 음악 한 곡, 별 하나를 만나다가<br>
+        어느 날 <span class="book">책 한 권</span>을 손에 듭니다.</p>
+      <!-- 탐험대 출발 — 글자는 아래 SAIL 스크립트가 날짜에 맞춰 바꾼다(스크립트가 없어도 첫 배가 보이게) -->
+      <a class="sail" id="sailLine" href="expedition.html"><span><b>11월 14일(토)</b>, 첫 탐험대가 출발합니다.<br>함께 원정길에 오를 대원을 모으고 있습니다.</span></a>
       <!-- 문 이름 — 「EG 둘러보기」 · 「EG 들어가기」 (1018 소로 확정). 글자와 주소는 아래 스크립트가 정한다 -->
       <a class="door" data-gate href="#">EG 둘러보기</a>
     </div>
@@ -373,6 +387,8 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
     </div>
 
     <p class="closing rise">허기는 계층의 것이 아닙니다.<span>그래서 가장 낮은 곳에서도 자라는 것을 짓습니다.</span></p>
+    <!-- 값 — 정의 층에서 옮김(1105 오후 · 영화 바로 뒤가 아니라, 누구에게나 닿게 지은 이야기 끝에) -->
+    <p class="fee rise">정회원 <b>월 30,030원</b></p>
   </section>
 </main>
 
@@ -536,6 +552,27 @@ const CUTS = [
       else if (v) v.pause();
     }, { threshold:0 }).observe(hero);
   }
+})();
+
+/* ② 정의 층 — 탐험대 출발 줄 (1105 오후 소로)
+   서울 날짜로 다음 출항일을 셈한다. 출항일 자정까지는 그 배(expedition.html · 1102 결정과 같은 셈)
+   ⚠ 출항일을 바꾸면 expedition.html #ships 의 data-d 도 함께 */
+(function(){
+  const SAIL = [
+    ['2026-11-14','첫'], ['2026-11-21','두 번째'], ['2026-11-28','세 번째'], ['2026-12-05','마지막']
+  ];
+  const AFTER = '2026년 12월 25일(금) 개관';      /* 12/5 마지막 배가 떠난 뒤 — 문구는 그 전에 소로가 정한다 */
+  const el = document.getElementById('sailLine'); if (!el) return;
+  let today;
+  try { today = new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul'}).format(new Date()); }
+  catch(e){ today = new Date(Date.now() + 9*3600e3).toISOString().slice(0,10); }
+  const q = new URLSearchParams(location.search).get('sail');   /* 점검용 ?sail=2026-11-22 */
+  if (q && /^\d{4}-\d{2}-\d{2}$/.test(q)) today = q;
+  const hit = SAIL.find(s => today <= s[0]);
+  const span = el.querySelector('span');
+  if (!hit){ span.textContent = AFTER; el.removeAttribute('href'); return; }
+  const d = hit[0].split('-');
+  span.innerHTML = '<b>' + (+d[1]) + '월 ' + (+d[2]) + '일(토)</b>, ' + hit[1] + ' 탐험대가 출발합니다.<br>함께 원정길에 오를 대원을 모으고 있습니다.';
 })();
 
 /* 왜의 층 — 한 단락씩 떠오르게 */
