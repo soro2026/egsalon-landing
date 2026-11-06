@@ -48,7 +48,7 @@
     if (!n) return;   /* 못 읽었거나 손님 읽기가 막힌 표(0)면 html 에 적힌 수 그대로 */
     document.querySelectorAll('[data-count="' + key + '"]').forEach(function(el){ el.textContent = n; });
   }
-  get('stars?select=id&limit=1', true).then(function(n){ setCount('stars', n); }).catch(function(){});
+  get('stars?select=id&photo_url=not.is.null&limit=1', true).then(function(n){ setCount('stars', n); }).catch(function(){});
   get('college_books?select=id&limit=1', true).then(function(n){ setCount('college', n); }).catch(function(){});
 
   /* ── 서랍 바꾸기 — 다른 페이지로 보내지 않고 이 페이지 안에서(1022 소로 「링크로 보내지 말고」) ── */
