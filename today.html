@@ -638,10 +638,10 @@ main [id]{scroll-margin-top:calc(var(--head-top) + 72px)}
        9칸 = 앱 buildZoneBoard 와 같은 규칙(문학 · 철학 · 예술 고정 + 나머지 아홉 분야 가운데 여섯) · 문항은 정규(rookie) 풀의 객관식
        그림 = 앱 경기 인트로와 같은 파일 — 배경은 stadium_bg_01~30 가운데 하나를 한 바퀴 돌 때마다 새로(바로 앞 장면은 피함 · 1020 소로) · face_<팀>.webp (app.egsalon.com) -->
   <section class="galerie stadium" data-mode="game" aria-labelledby="stadium-title">
-    <div class="eyebrow">오늘의 스타디움 · <span class="m-game">10/20(화) · 루키리그 경기</span><span class="m-replay">10/20(화) 경기 다시 보기</span></div>
+    <div class="eyebrow">오늘의 스타디움 · <span class="m-game">10/20(화) · 퀴즈 경기</span><span class="m-replay">10/20(화) 경기 다시 보기</span></div>
     <h1 id="stadium-title">소로파크</h1>
     <p class="place">BOSTON · 펜웨이파크를 본뜬 SORO의 홈</p>
-    <p class="lede">펜웨이파크는 지금도 경기가 열리는 메이저리그 구장 가운데 가장 오래된 곳으로, 1912년에 문을 열었습니다. 화요일과 목요일마다 이 구장과 상대의 구장을 오가며 루키리그 경기가 열립니다. 상대는 소크라테스 · 프루스트 · 파스칼, 우리 편은 늘 SORO입니다.</p>
+    <p class="lede">펜웨이파크는 지금도 경기가 열리는 메이저리그 구장 가운데 가장 오래된 곳으로, 1912년에 문을 열었습니다. 화요일과 목요일마다 10분짜리 교양 퀴즈 경기가 열립니다. 야구의 스트라이크 존처럼 나눈 9칸에서 분야 하나를 골라 문제를 풀면, 그 답으로 타구가 정해집니다. 다른 회원과 겨루는 경기가 아닙니다. 회원은 누구나 SORO 팀으로 타석에 서고, 상대는 EG유니버스가 세운 소크라테스 · 프루스트 · 파스칼 팀입니다. 점수와 경기 내용은 본인만 봅니다.</p>
 
     <div class="sstage m-game" id="stadStage"
          data-video-1920="media/today_stadium_fenway_1920.mp4?v=1023" data-video-1280="media/today_stadium_fenway_1280.mp4?v=1023"
@@ -952,11 +952,12 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
     proust:   { en:'PROUST',   ko:'프루스트',  c:'#C94A0F', park:'oracle'  }
   };
   var CYCLE = ['pascal', 'socrates', 'proust'], ANCHOR = '2026-10-06';
-  var TAIL = '화요일과 목요일마다 소로파크와 상대의 구장을 오가며 루키리그 경기가 열립니다. 상대는 소크라테스 · 프루스트 · 파스칼, 우리 편은 늘 SORO입니다.';
+  /* 1106 소로 — 퀴즈라는 말 · 다른 회원과 겨루지 않음 · 점수는 본인만 (비교의식) */
+  var TAIL = '화요일과 목요일마다 10분짜리 교양 퀴즈 경기가 열립니다. 야구의 스트라이크 존처럼 나눈 9칸에서 분야 하나를 골라 문제를 풀면, 그 답으로 타구가 정해집니다. 다른 회원과 겨루는 경기가 아닙니다. 회원은 누구나 SORO 팀으로 타석에 서고, 상대는 EG유니버스가 세운 소크라테스 · 프루스트 · 파스칼 팀입니다. 점수와 경기 내용은 본인만 봅니다.';
   /* 구장 넷 — 이름 · 설명 줄은 Places 야구장 칸과 같게 · off = 영상에서 대진으로 넘어가는 때(원정 셋은 끝의 페이드가 다 어두워진 뒤 · 1025 소로) */
   var PARK = {
     fenway:  { name:'소로파크', place:'BOSTON · 펜웨이파크를 본뜬 SORO의 홈', off:2900, v:'1023',
-               lede:'펜웨이파크는 지금도 경기가 열리는 메이저리그 구장 가운데 가장 오래된 곳으로, 1912년에 문을 열었습니다. 화요일과 목요일마다 이 구장과 상대의 구장을 오가며 루키리그 경기가 열립니다. 상대는 소크라테스 · 프루스트 · 파스칼, 우리 편은 늘 SORO입니다.' },
+               lede:'펜웨이파크는 지금도 경기가 열리는 메이저리그 구장 가운데 가장 오래된 곳으로, 1912년에 문을 열었습니다. 화요일과 목요일마다 10분짜리 교양 퀴즈 경기가 열립니다. 야구의 스트라이크 존처럼 나눈 9칸에서 분야 하나를 골라 문제를 풀면, 그 답으로 타구가 정해집니다. 다른 회원과 겨루는 경기가 아닙니다. 회원은 누구나 SORO 팀으로 타석에 서고, 상대는 EG유니버스가 세운 소크라테스 · 프루스트 · 파스칼 팀입니다. 점수와 경기 내용은 본인만 봅니다.' },
     yankee:  { name:'양키스타디움', place:'NEW YORK · 소크라테스의 홈 구장', off:6950, v:'1025',
                lede:'양키스타디움은 1923년에 지은 옛 구장의 길 건너편에 2009년 새로 지은 구장입니다. 소크라테스가 이 구장을 홈으로 씁니다. ' + TAIL },
     wrigley: { name:'리글리필드', place:'CHICAGO · 파스칼의 홈 구장', off:8800, v:'1025',
@@ -1002,7 +1003,7 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
 
     /* 머리 — 갈래 · 날짜 · 구장 */
     sec.setAttribute('data-mode', isGame ? 'game' : 'replay');
-    sec.querySelector('.eyebrow .m-game').textContent = md(g) + ' · 루키리그 경기';
+    sec.querySelector('.eyebrow .m-game').textContent = md(g) + ' · 퀴즈 경기';
     sec.querySelector('.eyebrow .m-replay').textContent = md(g) + ' 경기 다시 보기';
     sec.querySelector('#stadium-title').textContent = P.name;
     sec.querySelector('.place').textContent = P.place;
