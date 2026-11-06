@@ -813,15 +813,15 @@ main [id]{scroll-margin-top:calc(var(--head-top) + 72px)}
   <section class="galerie college" aria-labelledby="college-title">
     <div class="eyebrow">오늘의 콜레주 드 콤포스텔라 · 10/20(화)</div>
     <h1 id="college-title">Coming Soon</h1>
-    <p class="place">PARIS · LONDON · NEW YORK · 개막작 다섯 권</p>
-    <p class="lede">혼자서 끝내 완독하지 못한 책은 누구에게나 한 권쯤 있습니다. 콜레주 드 콤포스텔라는 그런 긴 책을 같은 길 위의 벗들과 함께 끝까지 걷는 학술원입니다. 273권의 서가에서 다섯 권이 먼저 문을 열 날을 기다리고 있습니다.</p>
+    <p class="place">PARIS · LONDON · NEW YORK · 12월 7일(월) 『월든』 첫 출발</p>
+    <p class="lede">혼자서 끝내 완독하지 못한 책은 누구에게나 한 권쯤 있습니다. 콜레주 드 콤포스텔라는 그런 긴 책을 같은 길 위의 벗들과 함께 끝까지 걷는 학술원입니다. 12월 7일(월) 『월든』이 첫 출발이고, 소크라테스 대화편 넷과 『모비 딕』, 『카라마조프가의 형제들』, 『전쟁과 평화』가 차례로 뒤를 잇습니다. 이 자리에는 다섯 권의 포스터가 하루 한 장씩 걸립니다.</p>
 
     <div class="gstage cstage" id="colStage"
          data-video-1920="media/today_college_three_1920.mp4?v=1023" data-video-1280="media/today_college_three_1280.mp4?v=1023" data-video-off="5200"
          data-tz="Europe/Paris" data-name="콜레주 드 콤포스텔라"
          data-poster="https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/college-assets/posters/2.webp"
          data-seal-x="31.83" data-seal-y="77.97"
-         aria-label="콜레주 드 콤포스텔라 — 정문에서 오늘의 개막작 포스터까지">
+         aria-label="콜레주 드 콤포스텔라 — 정문에서 오늘의 포스터까지">
       <video muted playsinline preload="none" aria-hidden="true" poster="media/today_college_three_poster.jpg?v=1023"></video>
       <div class="ggate"></div>
       <div class="hall">
@@ -835,14 +835,14 @@ main [id]{scroll-margin-top:calc(var(--head-top) + 72px)}
         <div class="tgt" data-k="stage">
           <div class="cframe">
             <div class="fr"></div>
-            <img class="poster" alt="『소크라테스의 변론 · 크리톤 · 파이돈 · 향연』 개막작 포스터">
+            <img class="poster" alt="『소크라테스의 변론 · 크리톤 · 파이돈 · 향연』 포스터">
             <div class="seal" aria-hidden="true"><b>COMING<br>SOON</b></div>
           </div>
         </div>
       </div>
       <div class="where" aria-hidden="true"></div>
       <div class="know">
-        <p class="scene line"><span class="door">개막작</span>『소크라테스의 변론 · 크리톤 · 파이돈 · 향연』</p>
+        <p class="scene line"><span class="door">곧 문을 엽니다</span>『소크라테스의 변론 · 크리톤 · 파이돈 · 향연』</p>
         <p class="k line">플라톤 · 제2장 고대의 정오 · 함께 걸으면 12주</p>
         <p class="halt line">함께 걷는 일은 EG 안에서</p>
       </div>
@@ -1273,8 +1273,10 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
       if (!b || !b.title || !st || !sec) throw new Error('개막작을 못 읽음 · ' + c.book);
       sec.querySelector('.eyebrow').textContent = '오늘의 콜레주 드 콤포스텔라 · ' + md(today);
       st.setAttribute('data-poster', 'https://cyhlotwdisjvoxvfkpnd.supabase.co/storage/v1/object/public/college-assets/posters/' + c.p + '.webp');
-      st.querySelector('.poster').setAttribute('alt', '『' + b.title + '』 개막작 포스터');
-      st.querySelector('.know .scene').innerHTML = '<span class="door">개막작</span>『' + esc(b.title) + '』';
+      st.querySelector('.poster').setAttribute('alt', '『' + b.title + '』 포스터');
+      /* 1106 소로 — 「개막작」 딱지가 그날 걸린 책을 개막작으로 읽히게 해서: 『월든』은 첫 출발 날짜, 나머지 넷은 「곧 문을 엽니다」(Collection 선반과 같은 말) */
+      var door = c.book === 194 ? (today < '2026-12-07' ? '12월 7일 첫 출발' : '매주 월요일 출발') : '곧 문을 엽니다';
+      st.querySelector('.know .scene').innerHTML = '<span class="door">' + door + '</span>『' + esc(b.title) + '』';
       var ch = String(b.era_chapter || '').replace(/\s*·\s*/, ' ');
       st.querySelector('.know .k').textContent = [b.author, ch, b.weeks_num ? '함께 걸으면 ' + b.weeks_num + '주' : ''].filter(Boolean).join(' · ');
     });
@@ -2044,7 +2046,7 @@ egWhenToday(function(){   /* 1026 파이원 — 오늘의 개막작(포스터 ·
     reset(); fit();
     var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce){ hall.classList.add('on'); aim(.5, 1); poster.classList.add('on'); seal.classList.add('on'); st.classList.add('dim');
-      lines.forEach(function(l){ l.classList.add('on'); }); where.textContent = NAME + ' · 오늘의 개막작'; return; }
+      lines.forEach(function(l){ l.classList.add('on'); }); where.textContent = NAME + ' · 오늘의 포스터'; return; }
     var off = 0;
     var vsrc = (Math.max(screen.width, screen.height) * (window.devicePixelRatio || 1) > 2000 && window.innerWidth > 900)
       ? st.getAttribute('data-video-1920') : st.getAttribute('data-video-1280');
@@ -2059,7 +2061,7 @@ egWhenToday(function(){   /* 1026 파이원 — 오늘의 개막작(포스터 ·
     /* 1020 소로 — 포스터는 홀이 열릴 때부터 걸려 있다(미술관과 같이 · 빈 무대를 기다리게 하지 않는다) */
     at(off + 3400,   function(){ gate.classList.remove('on'); hall.classList.add('on'); poster.classList.add('on'); where.textContent = NAME + ' · 1층 모집 홀'; });
     at(off + 4000,   function(){ aim(.5); });
-    at(off + 9200,   function(){ seal.classList.add('on'); where.textContent = NAME + ' · 오늘의 개막작'; });
+    at(off + 9200,   function(){ seal.classList.add('on'); where.textContent = NAME + ' · 오늘의 포스터'; });
     at(off + 10800,  function(){ st.classList.add('dim'); lines[0].classList.add('on'); });
     for (var i = 1; i < lines.length; i++) (function(i){ at(off + 10800 + i * 2000, function(){ lines[i].classList.add('on'); }); })(i);
     var end = off + 10800 + (lines.length - 1) * 2000;
