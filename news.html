@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>News · EG유니버스</title>
-<meta name="description" content="새 미술관이 문을 열었다거나, 개관 날짜가 다가온다거나 — EG유니버스의 짧은 소식을 올립니다. 다가오는 날은 맨 위에 늘 걸어 둡니다.">
+<meta name="description" content="EG유니버스의 짧은 소식을 올립니다. 홈페이지를 열었습니다 · 탐험대원을 모집합니다.">
 <meta name="theme-color" content="#0b0907">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,6 +25,26 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
   font-size:clamp(17px,1.7vw,22px);line-height:1.9;color:var(--ink-soft);word-break:keep-all;text-wrap:pretty}
 .wip{display:inline-block;margin-top:clamp(36px,5vw,60px);padding:8px 16px;border-radius:999px;
   border:1px dashed rgba(11,9,7,.3);font-size:13px;letter-spacing:.06em;color:var(--ink-dim)}
+/* ── 소식 (1106 소로 · 번벅) — 새 소식이 맨 위 · 한 편마다 날짜 · 제목 · 글 · 단추 하나 ── */
+.news{margin-top:clamp(56px,7vw,96px);display:grid;gap:clamp(56px,7vw,88px)}
+.post{max-width:40em;border-top:1px solid rgba(11,9,7,.16);padding-top:clamp(28px,3.4vw,40px);scroll-margin-top:calc(var(--head-top) + 80px)}
+.post time{display:block;font-size:12.5px;letter-spacing:.2em;color:var(--ink-dim)}
+.post h2{margin-top:14px;font-family:var(--serif);font-weight:400;font-size:clamp(26px,3.1vw,38px);
+  line-height:1.35;letter-spacing:-.018em;word-break:keep-all}
+.post p{margin-top:20px;font-family:var(--serif);font-weight:300;font-size:clamp(16.5px,1.5vw,19px);
+  line-height:1.95;color:var(--ink-soft);word-break:keep-all;text-wrap:pretty}
+.post .ships{list-style:none;margin:20px 0 0;padding:0;font-family:var(--serif);font-weight:300;
+  font-size:clamp(16px,1.45vw,18px);line-height:1.6;color:var(--ink-soft)}
+.post .ships li{display:flex;gap:16px;padding:10px 0;border-bottom:1px solid rgba(11,9,7,.08)}
+.post .ships li:last-child{border-bottom:0}
+.post .ships b{flex:0 0 7.4em;font-weight:400;color:var(--ink)}
+.post .act{margin-top:30px}
+.post .cta{display:inline-block;padding:14px 28px;border-radius:999px;background:var(--ink);color:var(--paper);
+  font-size:15px;letter-spacing:.02em;text-decoration:none;transition:background .2s ease,color .2s ease}
+.post .cta:hover{background:var(--arrow);color:var(--ink)}
+.post .more{display:inline-block;font-size:15px;color:var(--ink);text-decoration:none;
+  border-bottom:1px solid rgba(11,9,7,.4);padding-bottom:2px}
+.post .more:hover{border-bottom-color:var(--ink)}
 </style>
 </head>
 <body>
@@ -41,9 +61,7 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
     <li><a href="collection.html">Collection</a></li>
     <li><a href="expedition.html">Expedition</a></li>
     <li class="sep" aria-hidden="true"></li>
-    <li class="minor"><a href="letters.html">Letters</a></li>
     <li class="minor"><a href="news.html">News</a></li>
-    <li class="minor"><a href="voices.html">Voices</a></li>
     <li class="minor"><a href="making.html">Making</a></li>
   </ul>
 </nav>
@@ -51,14 +69,48 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
 <main>
   <div class="eyebrow">소식</div>
   <h1>News</h1>
-  <p class="gloss">새 미술관이 문을 열었다거나, 개관 날짜가 다가온다거나 — EG유니버스의 짧은 소식을 올립니다. 다가오는 날은 맨 위에 늘 걸어 둡니다.</p>
-  <span class="wip">짓는 중</span>
+  <p class="gloss">EG유니버스의 짧은 소식을 올립니다.</p>
+  <div class="news">
+
+    <article class="post" id="open">
+      <time datetime="2026-11-06">2026. 11. 6 (금)</time>
+      <h2>EG유니버스 홈페이지를 열었습니다</h2>
+      <p>EG유니버스를 짓기 시작한 지 220일째 되는 오늘, 홈페이지를 열었습니다.</p>
+      <p>지금까지 EG유니버스는 들어와 본 분만 알 수 있는 곳이었습니다. 이제는 들어오기 전에 먼저 둘러보실 수 있습니다. Today에서는 그날 걸린 그림과 곡, 그날 문을 연 도서관과 천문대가 날마다 바뀝니다. Guide에는 EG유니버스를 누리는 일곱 가지 방법을, Places에는 지구 위에 세운 72곳을, Collection에는 그림과 곡, 별, 콜레주 드 콤포스텔라의 273권을 담았습니다.</p>
+      <p>아직 다 짓지 못한 자리도 있습니다. 채우는 대로 이 소식란에 알려 드리겠습니다.</p>
+      <p>EG유니버스는 12월 25일(금)에 개관합니다. 12월 24일까지는 누구나 무료로 가입해 모든 곳을 이용하실 수 있습니다. 가입은 휴대폰으로도 되고, 이용은 노트북이나 데스크톱에서 합니다.</p>
+      <div class="act"><a class="cta" id="newsJoin" data-signup href="https://app.egsalon.com/signup.html">무료로 가입하기</a></div>
+    </article>
+
+    <article class="post" id="expedition">
+      <time datetime="2026-11-06">2026. 11. 6 (금)</time>
+      <h2>EG유니버스 탐험대원을 모집합니다</h2>
+      <p>짐은 싸지 않으셔도 됩니다. 11월 14일(토), 집을 떠나지 않는 첫 탐험대가 출발합니다. 출항일부터 12월 24일까지 노트북이나 데스크톱으로 EG유니버스에 들어와 하루 한 장씩 미션 카드를 엽니다.</p>
+      <p>배는 매주 토요일에 떠나고, 네 척 모두 11월에 태어난 사람의 이름을 달았습니다.</p>
+      <ul class="ships">
+        <li><b>11월 14일(토)</b><span>1차 · 모네 원정대</span></li>
+        <li><b>11월 21일(토)</b><span>2차 · 볼테르 원정대</span></li>
+        <li><b>11월 28일(토)</b><span>3차 · 스피노자 원정대</span></li>
+        <li><b>12월 5일(토)</b><span>4차 · 트웨인 원정대 · 마지막 배</span></li>
+      </ul>
+      <p>어느 배에 오르든 12월 24일 크리스마스이브에 모두 함께 돌아옵니다. 그날 밤 EG유니버스의 에펠탑에 새겨진 대원 이름에 한꺼번에 불이 켜집니다.</p>
+      <p>받으시는 것과 참가비는 모집 공고에 적어 두었습니다.</p>
+      <div class="act"><a class="more" href="expedition.html">모집 공고 보기 →</a></div>
+    </article>
+
+  </div>
 </main>
 
 <!-- 바닥 지도 — 글은 site.js 한 곳(1019) -->
 <footer class="eg-map" aria-label="EG유니버스의 지도"></footer>
 
 <script src="https://app.egsalon.com/eg_device.js?v=20260729"></script>
-<script src="site.js?v=1103b"></script>
+<script src="site.js?v=1106a"></script>
+<script>
+/* 1106 소로 — 12월 24일까지 「무료로 가입하기」, 12월 25일 0시(서울)부터 「EG 가입신청」 */
+(function(){ var a = document.getElementById('newsJoin'); if (!a) return;
+  var kst = new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10);
+  if (kst >= '2026-12-25') a.textContent = 'EG 가입신청'; })();
+</script>
 </body>
 </html>

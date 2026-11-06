@@ -120,10 +120,9 @@
     +     '<li><a class="map-name" href="expedition.html"><b>Expedition</b><i>탐험대</i></a>'
     +         '<p>폴라리스호 탐험대원 모집 · 매주 토요일 출항 · 12월 24일 모두 함께 귀환</p></li>'
     +   '</ol>'
+    /* 1106 소로 — Letters · Voices 는 첫 글이 실리는 날 다시 건다(주소는 살아 있음) */
     +   '<ul class="map-minor">'
-    +     '<li><a href="letters.html">Letters <i>편지</i></a></li>'
     +     '<li><a href="news.html">News <i>소식</i></a></li>'
-    +     '<li><a href="voices.html">Voices <i>후기</i></a></li>'
     +     '<li><a href="making.html">Making <i>짓는 과정</i></a></li>'
     +   '</ul>'
     +   '<div class="map-end">'
