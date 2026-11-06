@@ -201,6 +201,6 @@
 <script>/* 오늘의 카페가 되는 날 — 카페 열세 곳(sort)[ 서울 날수 % 13 ] (앱 spoonOnDuty · today.html 과 같은 셈) */
 (function(){var el=document.getElementById("cafeday");if(!el)return;var SUPA="https://cyhlotwdisjvoxvfkpnd.supabase.co",KEY="sb_publishable_jYYfQV_wQgMRFjSUuDq7xA_gWc9vsnR",WD="일월화수목금토",DAY=864e5;function lab(n){var d=new Date(n*DAY);return (d.getUTCMonth()+1)+"/"+d.getUTCDate()+"("+WD[d.getUTCDay()]+")";}fetch(SUPA+"/rest/v1/terra_pins?select=code,name&kind=eq.hansfoon&active=eq.true&order=sort",{headers:{apikey:KEY,Authorization:"Bearer "+KEY}}).then(function(r){return r.json();}).then(function(L){var c=el.getAttribute("data-code"),n=L.length,i=-1,me=null;L.forEach(function(x,k){if(x.code===c){i=k;me=x;}});if(i<0)return;var D=Math.floor((Date.now()+9*36e5)/DAY),ds=[];for(var k=0;k<28;k++)if((D+k)%n===i)ds.push(D+k);el.textContent="다음에 오늘의 카페가 되는 날 — "+(ds[0]===D?ds.slice(1):ds).map(lab).join(" · ");}).catch(function(){});})();</script>
 <script src="cafetable.js?v=1022c"></script>
-<script src="guide.js?v=1020h"></script>
+<script src="guide.js?v=1106a"></script>
 </body>
 </html>

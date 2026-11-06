@@ -16,12 +16,16 @@
      data-key    녹화 — F9(지구 캔버스만) | Shift+F9(탭 전체 · 기내 · 방 안) | 캡처
      data-must   화면에 꼭 들어가야 할 것 */
   function esc(t){ return String(t || '').replace(/[&<>"]/g, function(c){ return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]; }); }
-  window.egShotHTML = function(el){
-    var d = el.dataset, rows = [
+  /* 손님에게는 딱지 「영상 준비 중 / 사진 준비 중」 + 장면 한 줄만.
+     촬영 쪽지 전부(어디서 · 길이 · 녹화 · 꼭 담을 것)는 주소 끝에 ?shot 을 붙였을 때와 촬영표에서만 (소로 1106) */
+  var SHOT_FULL = /[?&]shot\b/.test(location.search);
+  window.egShotHTML = function(el, full){
+    full = full || SHOT_FULL;
+    var d = el.dataset, kind = d.kind || '영상', rows = full ? [
       ['어디서', d.where], ['길이', d.len], ['녹화', d.key], ['꼭 담을 것', d.must]
-    ].filter(function(r){ return r[1]; });
+    ].filter(function(r){ return r[1]; }) : [];
     return '<div class="shot">'
-      + '<span class="shot-tag">촬영 대기 · ' + esc(d.kind || '영상') + '</span>'
+      + '<span class="shot-tag">' + (full ? '촬영 대기 · ' + esc(kind) : (kind === '캡처' ? '사진' : esc(kind)) + ' 준비 중') + '</span>'
       + '<span class="shot-what">' + esc(d.shot) + '</span>'
       + (rows.length ? '<dl>' + rows.map(function(r){ return '<dt>' + r[0] + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join('') + '</dl>' : '')
       + '</div>';
