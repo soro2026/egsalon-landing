@@ -29,6 +29,18 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
   box-shadow:0 24px 60px -30px rgba(11,9,7,.55)}
 .film figcaption{margin-top:16px;font-size:13px;letter-spacing:.04em;color:var(--ink-dim);word-break:keep-all}
 .film .nw{white-space:nowrap}
+/* 1107 소로 — 날짜 세기 · 끝 3초 검게. 영상 위에 얹는 글자라 영상은 다시 굽지 않았다.
+   숫자는 캡처 6,954장의 실제 파일 날짜를 따른다(4월 1일 = Day 001) — 많이 찍은 날은 느리게, 뜸한 날은 빠르게 */
+.film-box{position:relative}
+.film-day{position:absolute;left:clamp(14px,2.2vw,26px);top:clamp(12px,2vw,22px);pointer-events:none;
+  color:#f4ecd8;text-shadow:0 0 .2em rgba(11,9,7,.85),0 0 .7em rgba(11,9,7,.55);opacity:0;transition:opacity .6s ease}
+.film-day.on{opacity:1}
+.film-day b{display:block;font-weight:500;font-size:clamp(13px,1.5vw,18px);letter-spacing:.14em;
+  font-variant-numeric:tabular-nums}
+.film-day i{display:block;margin-top:.35em;font-style:normal;font-family:var(--serif);font-weight:400;
+  font-size:clamp(12px,1.25vw,15px);letter-spacing:.08em;opacity:0;transition:opacity .9s ease}
+.film-day i.on{opacity:.9}
+.film-black{position:absolute;inset:0;background:#000;border-radius:4px;opacity:0;pointer-events:none}
 </style>
 </head>
 <body>
@@ -56,9 +68,13 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
   <p class="gloss">EG유니버스가 어떻게 지어지고 있는지, 짓는 사람의 작업 기록을 남깁니다.</p>
 
   <figure class="film">
-    <video id="makingFilm" controls muted loop playsinline preload="metadata" poster="media/making_433_poster.webp">
-      <source src="media/making_433.mp4" type="video/mp4">
-    </video>
+    <div class="film-box">
+      <video id="makingFilm" controls muted loop playsinline preload="metadata" poster="media/making_433_poster.webp">
+        <source src="media/making_433.mp4" type="video/mp4">
+      </video>
+      <div class="film-day" id="filmDay" aria-hidden="true"><b>Day 002</b><i></i></div>
+      <div class="film-black" id="filmBlack" aria-hidden="true"></div>
+    </div>
     <figcaption>2026년 4월 2일부터 11월 5일까지, <span class="nw">작업 화면 6,954장</span> · <span class="nw">4분 33초</span></figcaption>
   </figure>
 </main>
@@ -83,6 +99,40 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
     if (e.isIntersecting) { if (!byHand && v.paused) v.play().catch(() => {}); }
     else if (!v.paused) { v._auto = true; v.pause(); }
   }), { threshold: 0.5 }).observe(v);
+})();
+</script>
+<script>
+/* 날짜 세기 · 끝 3초 검게 (1107 · 소로) — [영상 초, Day] 표는 EG타임랩스 폴더의 파일 날짜에서 뽑았다.
+   빈 날(캡처가 없던 날)은 건너뛴다 — 꾸미지 않은 222일의 리듬. 마지막 캡처가 11월 5일이라 Day 219에서 멈춘다. */
+(() => {
+  const v = document.getElementById('makingFilm'), box = document.getElementById('filmDay'),
+        black = document.getElementById('filmBlack');
+  if (!v || !box || !black) return;
+  const D = [[0.0,2],[0.16,4],[0.31,5],[1.45,6],[4.12,8],[6.44,9],[8.64,10],[11.27,11],[14.1,13],[14.8,14],[16.96,15],[17.98,16],[19.2,17],[21.83,18],[23.2,19],[24.11,20],[26.86,21],[28.82,22],[32.51,23],[34.67,24],[34.91,25],[38.44,26],[41.19,27],[41.78,28],[41.93,29],[42.01,30],[42.09,31],[44.8,32],[45.23,33],[47.16,34],[47.47,35],[48.92,36],[50.85,37],[52.46,40],[52.69,41],[53.4,42],[53.52,43],[54.69,44],[56.38,45],[57.52,46],[58.07,47],[59.29,48],[60.51,49],[61.02,50],[61.8,51],[62.82,52],[63.21,53],[63.96,55],[64.39,56],[66.16,57],[66.94,58],[68.4,59],[68.83,60],[69.26,61],[70.48,62],[71.15,63],[71.46,64],[71.97,65],[72.01,66],[72.87,67],[75.58,68],[77.23,69],[78.41,70],[80.37,71],[81.55,72],[83.99,73],[84.73,74],[86.3,75],[87.91,76],[89.52,77],[93.72,78],[95.49,79],[96.9,80],[97.73,81],[100.24,82],[101.34,83],[101.73,84],[103.93,85],[105.58,86],[107.54,87],[111.16,88],[113.12,89],[116.57,90],[118.3,91],[119.09,92],[121.48,93],[123.05,94],[124.39,95],[128.31,96],[128.75,97],[129.33,98],[130.04,99],[131.77,100],[132.12,102],[132.16,104],[132.71,105],[132.83,106],[134.32,107],[136.72,108],[138.13,109],[138.4,110],[139.11,111],[139.74,112],[140.09,113],[141.74,114],[143.43,116],[143.55,117],[143.59,119],[144.41,120],[144.73,121],[145.98,122],[147.36,123],[148.57,124],[150.22,125],[152.34,126],[153.6,127],[164.4,128],[166.67,129],[169.62,130],[172.49,131],[174.57,132],[174.72,133],[175.16,134],[177.16,135],[179.83,136],[185.32,137],[189.29,138],[190.0,139],[192.04,140],[193.57,141],[195.34,142],[197.38,143],[198.67,144],[199.81,145],[202.33,146],[203.23,147],[203.74,148],[205.58,149],[207.94,150],[209.28,151],[210.34,152],[210.89,153],[211.51,154],[212.22,155],[218.9,156],[224.86,157],[225.33,158],[225.37,159],[225.45,160],[226.36,161],[227.1,162],[227.22,163],[227.45,164],[227.49,165],[228.79,166],[228.91,167],[229.3,168],[230.79,169],[230.99,170],[231.3,171],[232.05,172],[232.32,173],[232.6,175],[232.72,176],[235.27,177],[235.39,178],[237.47,179],[237.66,180],[238.13,181],[238.72,182],[239.51,184],[240.22,185],[240.84,186],[241.24,187],[241.86,188],[241.9,189],[242.69,190],[243.55,191],[243.87,192],[247.4,193],[250.9,194],[255.69,195],[256.86,196],[257.57,197],[257.61,198],[257.84,199],[264.64,200],[266.05,201],[266.44,202],[266.84,203],[267.15,204],[267.43,205],[267.82,206],[268.29,207],[268.56,208],[268.64,209],[268.84,211],[269.11,214],[269.15,216],[269.19,217],[270.1,218],[271.63,219]];
+  const num = box.querySelector('b'), mon = box.querySelector('i'), FADE = 3;
+  const monthOf = d => new Date(2026, 3, d).getMonth() + 1;   /* Day 1 = 4월 1일 */
+  let lastDay = -1, lastMon = -1, monTimer = 0, raf = 0;
+  function dayAt(t){
+    let lo = 0, hi = D.length - 1;
+    while (lo < hi){ const m = (lo + hi + 1) >> 1; if (D[m][0] <= t) lo = m; else hi = m - 1; }
+    return D[lo][1];
+  }
+  function draw(){
+    const t = v.currentTime, dur = v.duration || 273.04;
+    const d = dayAt(t);
+    if (d !== lastDay){
+      lastDay = d; num.textContent = 'Day ' + String(d).padStart(3, '0');
+      const m = monthOf(d);
+      if (m !== lastMon){
+        lastMon = m; mon.textContent = m + '월'; mon.classList.add('on');
+        clearTimeout(monTimer); monTimer = setTimeout(() => mon.classList.remove('on'), 2200);
+      }
+    }
+    black.style.opacity = Math.max(0, Math.min(1, (t - (dur - FADE)) / FADE)).toFixed(3);
+  }
+  function loop(){ draw(); raf = v.paused ? 0 : requestAnimationFrame(loop); }
+  v.addEventListener('playing', () => { box.classList.add('on'); if (!raf) raf = requestAnimationFrame(loop); });
+  ['seeked', 'timeupdate'].forEach(e => v.addEventListener(e, draw));
 })();
 </script>
 </body>
