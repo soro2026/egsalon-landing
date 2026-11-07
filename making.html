@@ -12,35 +12,52 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500&display=swap">
 <link rel="stylesheet" href="site.css?v=1020h">
 <style>
-/* ── Making — 골격만 선 자리 (1018 저녁) · 채우는 대로 이 아래가 바뀐다 ── */
+/* ── Making — 1107 소로: Today처럼 영상이 화면을 가득 채우며 시작하고, 큰 글씨는 왼쪽 아래 영상 위에 포갠다.
+      캡션은 영상 아래 그대로 ── */
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--paper)}
+html{background:var(--ink)}
 body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
-  -webkit-font-smoothing:antialiased;color:var(--ink);min-height:100vh;min-height:100svh}
-main{max-width:1080px;margin:0 auto;padding:calc(var(--head-top) + 140px) var(--gutter) 120px}
-.eyebrow{font-size:12.5px;letter-spacing:.3em;color:var(--ink-dim)}
-h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px,6.4vw,88px);
-  line-height:1.15;letter-spacing:-.025em;word-break:keep-all}
-.gloss{margin-top:clamp(24px,3.6vw,44px);max-width:34em;font-family:var(--serif);font-weight:300;
-  font-size:clamp(17px,1.7vw,22px);line-height:1.9;color:var(--ink-soft);word-break:keep-all;text-wrap:pretty}
+  -webkit-font-smoothing:antialiased;color:var(--ink);background:var(--paper);overflow-x:hidden}
+
 /* 타임랩스 한 편 (1105 밤) — 캡처 6,954장을 4분 33초로. 작은 글자는 일부러 흐리게 구웠다 */
-.film{margin-top:clamp(44px,6vw,80px)}
-.film video{display:block;width:100%;aspect-ratio:16/9;background:#0b0907;border-radius:4px;
-  box-shadow:0 24px 60px -30px rgba(11,9,7,.55)}
-.film figcaption{margin-top:16px;font-size:13px;letter-spacing:.04em;color:var(--ink-dim);word-break:keep-all}
-.film .nw{white-space:nowrap}
-/* 1107 소로 — 날짜 세기 · 끝 3초 검게. 영상 위에 얹는 글자라 영상은 다시 굽지 않았다.
-   숫자는 캡처 6,954장의 실제 파일 날짜를 따른다(4월 1일 = Day 001) — 많이 찍은 날은 느리게, 뜸한 날은 빠르게 */
-.film-box{position:relative}
-.film-day{position:absolute;left:clamp(14px,2.2vw,26px);top:clamp(12px,2vw,22px);pointer-events:none;
-  color:#f4ecd8;text-shadow:0 0 .2em rgba(11,9,7,.85),0 0 .7em rgba(11,9,7,.55);opacity:0;transition:opacity .6s ease}
+.hero{position:relative;height:100vh;height:100svh;min-height:440px;overflow:hidden;color:var(--paper);
+  background:#0b0907 url('media/making_433_poster.webp') center/cover no-repeat}
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%;cursor:pointer}
+/* 글자가 읽히도록 아래만 어둡게 — Today와 같은 결 */
+.hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(0deg, rgba(8,6,4,.72) 0%, rgba(8,6,4,.32) 24%, rgba(8,6,4,0) 46%)}
+/* 끝 3초 검게 — 영상과 날짜가 함께 어두워지고, 명패는 남는다 */
+.film-black{position:absolute;inset:0;z-index:3;background:#000;opacity:0;pointer-events:none}
+
+/* 명패 — 왼쪽 아래 (Today .plate와 같은 꼴) */
+.plate{position:absolute;z-index:4;left:var(--gutter);right:var(--gutter);
+  bottom:calc(var(--gutter) + env(safe-area-inset-bottom) + 6px);max-width:34em;
+  text-shadow:0 1px 18px rgba(0,0,0,.4);pointer-events:none}
+.plate .tag{display:flex;align-items:center;gap:10px;font-size:13px;letter-spacing:.1em;color:var(--dim)}
+.plate .tag::before{content:'';width:22px;height:2px;background:var(--arrow)}
+.plate h1{margin-top:14px;font-family:var(--serif);font-weight:400;
+  font-size:clamp(34px,5.2vw,72px);line-height:1.12;letter-spacing:-.02em;word-break:keep-all}
+.plate .face{margin-top:12px;font-size:clamp(15px,1.45vw,19px);line-height:1.6;color:rgba(244,239,230,.86);word-break:keep-all}
+
+/* 1107 소로 — 날짜 세기. 영상 위에 얹는 글자라 영상은 다시 굽지 않았다.
+   숫자는 캡처 6,954장의 실제 파일 날짜를 따른다(4월 1일 = Day 001) — 많이 찍은 날은 느리게, 뜸한 날은 빠르게.
+   자리는 오른쪽 아래(명패 맞은편) — 위쪽은 메뉴 띠가 덮는다 */
+.film-day{position:absolute;z-index:2;right:var(--gutter);bottom:calc(var(--gutter) + env(safe-area-inset-bottom) + 6px);
+  text-align:right;pointer-events:none;color:#f4ecd8;
+  text-shadow:0 0 .2em rgba(11,9,7,.85),0 0 .7em rgba(11,9,7,.55);opacity:0;transition:opacity .6s ease}
 .film-day.on{opacity:1}
-.film-day b{display:block;font-weight:500;font-size:clamp(13px,1.5vw,18px);letter-spacing:.14em;
-  font-variant-numeric:tabular-nums}
-.film-day i{display:block;margin-top:.35em;font-style:normal;font-family:var(--serif);font-weight:400;
-  font-size:clamp(12px,1.25vw,15px);letter-spacing:.08em;opacity:0;transition:opacity .9s ease}
+/* 폰 — 명패 글과 겹치므로 메뉴 띠 바로 아래로 올린다 */
+@media (max-width:640px){ .film-day{bottom:auto;top:calc(var(--head-top) + 64px)} }
+.film-day i{display:block;margin-bottom:.4em;font-style:normal;font-family:var(--serif);font-weight:400;
+  font-size:clamp(13px,1.3vw,16px);letter-spacing:.08em;opacity:0;transition:opacity .9s ease}
 .film-day i.on{opacity:.9}
-.film-black{position:absolute;inset:0;background:#000;border-radius:4px;opacity:0;pointer-events:none}
+.film-day b{display:block;font-weight:500;font-size:clamp(15px,1.7vw,22px);letter-spacing:.14em;
+  font-variant-numeric:tabular-nums}
+
+/* 캡션 — 영상 아래 */
+.cap{max-width:1080px;margin:0 auto;padding:18px var(--gutter) clamp(72px,9vw,120px);
+  font-size:13px;letter-spacing:.04em;color:var(--ink-dim);word-break:keep-all}
+.cap .nw{white-space:nowrap}
 </style>
 </head>
 <body>
@@ -62,21 +79,22 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
   </ul>
 </nav>
 
-<main>
-  <div class="eyebrow">짓는 과정</div>
-  <h1>Making</h1>
-  <p class="gloss">EG유니버스가 어떻게 지어지고 있는지, 짓는 사람의 작업 기록을 남깁니다.</p>
+<header class="hero" aria-label="Making — 짓는 과정 타임랩스">
+  <video id="makingFilm" muted loop playsinline preload="metadata" poster="media/making_433_poster.webp"
+         aria-label="EG유니버스 작업 화면 타임랩스 4분 33초 — 누르면 멈추고 다시 누르면 돕니다">
+    <source src="media/making_433.mp4" type="video/mp4">
+  </video>
+  <div class="film-day" id="filmDay" aria-hidden="true"><i></i><b>Day 002</b></div>
+  <div class="film-black" id="filmBlack" aria-hidden="true"></div>
+  <div class="plate">
+    <div class="tag">짓는 과정</div>
+    <h1>Making</h1>
+    <p class="face">EG유니버스가 어떻게 지어지고 있는지, 짓는 사람의 작업 기록을 남깁니다.</p>
+  </div>
+</header>
 
-  <figure class="film">
-    <div class="film-box">
-      <video id="makingFilm" controls muted loop playsinline preload="metadata" poster="media/making_433_poster.webp">
-        <source src="media/making_433.mp4" type="video/mp4">
-      </video>
-      <div class="film-day" id="filmDay" aria-hidden="true"><b>Day 002</b><i></i></div>
-      <div class="film-black" id="filmBlack" aria-hidden="true"></div>
-    </div>
-    <figcaption>2026년 4월 2일부터 11월 5일까지, <span class="nw">작업 화면 6,954장</span> · <span class="nw">4분 33초</span></figcaption>
-  </figure>
+<main>
+  <p class="cap">2026년 4월 2일부터 11월 5일까지, <span class="nw">작업 화면 6,954장</span> · <span class="nw">4분 33초</span></p>
 </main>
 
 <!-- 바닥 지도 — 글은 site.js 한 곳(1019) -->
@@ -90,6 +108,8 @@ h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px
 (() => {
   const v = document.getElementById('makingFilm');
   if (!v) return;
+  /* 1107 — Today처럼 조작 막대 없이 화면을 채운다. 누르면 멈추고, 다시 누르면 돈다 */
+  v.addEventListener('click', () => { if (v.paused) v.play().catch(() => {}); else v.pause(); });
   const save = navigator.connection && navigator.connection.saveData;
   if (save || !('IntersectionObserver' in window)) return;
   let byHand = false;                       /* 손님이 직접 멈추면 다시 돌리지 않는다 */
