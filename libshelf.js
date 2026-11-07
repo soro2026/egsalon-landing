@@ -296,7 +296,7 @@
     P.push('<div class="ls-lines"></div><div style="position:relative;padding:32px 26px">' +
       '<div style="font-size:22px;margin-bottom:18px;opacity:.4">✦</div>' +
       '<div style="font-family:var(--serif);font-size:14px;line-height:2;color:#3D2F10;word-break:keep-all">이 책은 ' + whenTxt + ' ' + from + ' 만나<br>홈페이지 서가에 꽂혔습니다.</div>' +
-      '<div style="margin-top:16px;font-family:var(--serif);font-size:12.5px;line-height:1.9;color:rgba(61,47,16,.7);word-break:keep-all">EG 안에서는 만난 문장마다 이런 책이 한 권씩<br>내 서가에 꽂히고, 아무것도 빠지지 않습니다.</div></div>');
+      '<div style="margin-top:16px;font-family:var(--serif);font-size:12.5px;line-height:1.9;color:rgba(61,47,16,.7);word-break:keep-all">EG유니버스에서는 만난 문장마다 이런 책이 한 권씩<br>내 서가에 꽂히고, 아무것도 빠지지 않습니다.</div></div>');
     return P;
   }
   function show(i, dir){

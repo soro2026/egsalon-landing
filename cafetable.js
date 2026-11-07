@@ -85,7 +85,7 @@
     function(){ tab.querySelector('.steam').classList.remove('on'); });
 
   /* 「탁자 위의 한 스푼」 — 지금 열려 있는 회차(spoons · open_on 이 오늘이거나 그 앞인 가장 최근 — 앱 hello_spoon fetchSpoon · Today 와 같은 셈)
-     탁자가 어두워지고 → 오늘의 문장 → 이야기 첫 두 단락 → 「이어지는 이야기와 퀴즈는 EG 안에서」 → 그대로 멈춤 · 도돌이 없음 (1022 소로) */
+     탁자가 어두워지고 → 오늘의 문장 → 이야기 첫 두 단락 → 그대로 멈춤 (1107 「EG 안에서」 줄 걷음) · 도돌이 없음 (1022 소로) */
   var sp = document.querySelector('.ct-spoon');
   if (!sp) return;
   var WD = '일월화수목금토';

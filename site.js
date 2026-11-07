@@ -4,8 +4,8 @@
    ① 단추 두 얼굴 (결정문 1018 §1)
       앱(app.egsalon.com)이 로그인한 기기에 eg_seen=1 표지를 남긴다(앱의 eg_seen.js).
       표지 있음 → 「EG 들어가기」(노랑) → 앱 첫 문. 앱이 저장된 로그인을 보고 곧장 지구로.
-      표지 없음 → 「EG 둘러보기」(먹색) → 입장 화면.
-      ⚠ 입장 화면은 맨 마지막 작업(1018 저녁 소로) — 지어지면 LOOK_URL 만 바꾼다.
+      표지 없음 → 「무료로 가입하기」(먹색) → 앱 가입 화면. 12월 25일 0시(서울)부터 「EG 가입신청」.
+      ⭐ 1107 — 「EG 둘러보기」를 걷었다(결정문 〈…낯선눈두번째… 1106오후〉 ③ · 같은 문에는 같은 이름).
       ⚠ 휴대폰이면 앱으로 보내지 않고 안내를 띄운다 — 판정은 앱의 eg_device.js 한 벌(먼저 불러 둘 것).
    ② 메뉴 띠
       body[data-nav="auto"]  현관 — 움직일 때만 내려오고, 2.6초 가만있으면 올라간다(1017 소로)
@@ -37,6 +37,12 @@
   }
   /* ⭐ 1103 — 「EG 둘러보기」는 무료 가입 화면으로(12/24까지 누구나 · 결정문 1031 v1.1 §1) */
   var LOOK_URL = signupUrl(false);
+  /* ⭐ 1107 — 처음 온 손님의 단추 이름 · 12/24까지 「무료로 가입하기」, 12/25 0시(서울)부터 「EG 가입신청」 */
+  var KST = new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10);
+  var JOIN_LABEL = (KST >= '2026-12-25') ? 'EG 가입신청' : '무료로 가입하기';
+  /* data-join — 단추 글자를 JOIN_LABEL 로 · data-until="YYYY-MM-DD" — 그날이 지나면 그 줄을 걷는다 */
+  document.querySelectorAll('[data-join]').forEach(function(a){ a.textContent = JOIN_LABEL; });
+  document.querySelectorAll('[data-until]').forEach(function(el){ if (KST > el.getAttribute('data-until')) el.remove(); });
   /* 페이지 안의 가입 단추 — data-signup(무료 가입) · data-signup="board"(승선 한 줄) */
   document.querySelectorAll('a[data-signup]').forEach(function(a){
     a.href = signupUrl(a.getAttribute('data-signup') === 'board');
@@ -128,7 +134,7 @@
     +   '<div class="map-end">'
     +     '<a class="map-home" href="home.html">EG유니버스</a>'
     +     '<span class="map-date">2026년 12월 25일(금) 개관</span>'
-    +     '<a class="map-door" data-gate href="#">EG 둘러보기</a>'
+    +     '<a class="map-door" data-gate href="#">' + JOIN_LABEL + '</a>'
     +   '</div>'
     + '</div>';
   document.querySelectorAll('footer.eg-map').forEach(function(f){
@@ -149,7 +155,7 @@
         clearTimeout(note._t); note._t = setTimeout(function(){ note.classList.remove('on'); }, 6000);
       });
     } else {
-      a.textContent = 'EG 둘러보기';
+      a.textContent = JOIN_LABEL;
       if (LOOK_URL) a.href = LOOK_URL;
       else { a.removeAttribute('href'); a.setAttribute('role','button'); a.style.cursor = 'pointer'; }
     }
