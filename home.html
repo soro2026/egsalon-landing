@@ -267,7 +267,7 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
       <p class="gloss">그림 한 점, 음악 한 곡, 별 하나를 만나다가<br>
         어느 날 <span class="book">책 한 권</span>을 손에 듭니다.</p>
       <!-- 탐험대 출발 — 글자는 아래 SAIL 스크립트가 날짜에 맞춰 바꾼다(스크립트가 없어도 첫 배가 보이게) -->
-      <a class="sail" id="sailLine" href="expedition.html"><span><b>11월 14일(토)</b>, 첫 탐험대가 출발합니다.<br>함께 원정길에 오를 대원을 모으고 있습니다.</span></a>
+      <a class="sail" id="sailLine" href="expedition.html"><span><b>11월 14일(토)</b>, 집을 떠나지 않는 첫 탐험대가 출발합니다.<br>함께 원정길에 오를 대원을 모으고 있습니다.</span></a>
       <!-- 문 이름 — 「EG 둘러보기」 · 「EG 들어가기」 (1018 소로 확정). 글자와 주소는 아래 스크립트가 정한다 -->
       <a class="door" data-gate href="#">EG 둘러보기</a>
     </div>
@@ -316,13 +316,11 @@ body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR'
       <p class="rise">그 강가에서 사람이 가장 먼저 만나는 것은 「오늘은 뭘 하지」 하고 묻는 아침입니다.</p>
       <p class="rise">그 물음의 답은 누구도 대신 찾아 주지 못하고, 돈으로도 살 수 없습니다. 좋은 그림과 음악과 책과 사람을 오래 만나며 몇 해에 걸쳐 자라는 힘이니까요. 오래전부터 사람들은 이 힘을 기르는 일을 교양이라고 불렀습니다.</p>
       <p class="rise">일도 돈 걱정도 떠난 자리에서, 자기 삶을 채우는 일이 사람에게 남는 가장 큰 일이 되는 시대. 수많은 사람이 그 허기를 안고 한꺼번에 몰려오는 시대. EG유니버스는 이것을 <span class="name">대교양의 시대</span>라고 부릅니다. 발리냐 신부가 말한 대침공이 우리에게는 이런 모습일 겁니다.</p>
-      <p class="rise">화살표는 순례자가 몰려온 뒤에 칠하면 늦습니다. 교양도 허기를 느낀 날 시작하면 늦습니다. 몇 해가 걸리는 일이니까요.</p>
     </div>
 
-    <p class="table rise">100명 가운데 한두 명은<br>
-      이 글을 읽다가 <span class="first">「이거 내 얘긴데」</span> 합니다.<br>
-      그렇게 드문 분들을 위해 지은 곳,<br>
-      EG유니버스입니다.</p>
+    <!-- 1107 — 결정문 1106오후 ⑧ 화살표 두 줄 · 이름은 다음 칸 「그래서 EG유니버스는 순서를 뒤집었습니다」에서 -->
+    <p class="table rise">화살표는 길을 대신 걸어 주지 않습니다.<br>
+      멈칫하는 갈림길에서 방향 하나를 보여 줄 뿐입니다.</p>
   </section>
 
   <!-- ④ 어떻게 — 백서 Ⅳ-6 「옳은 답과 막막한 답 · 그래서 스며들기」 · Ⅲ-1 「은교」 · 헌장 2.5~2.6 -->
@@ -568,7 +566,7 @@ const CUTS = [
   const span = el.querySelector('span');
   if (!SAIL_HIT){ span.textContent = SAIL_AFTER; el.removeAttribute('href'); return; }
   const d = SAIL_HIT[0].split('-');
-  span.innerHTML = '<b>' + (+d[1]) + '월 ' + (+d[2]) + '일(토)</b>, ' + SAIL_HIT[1] + ' 탐험대가 출발합니다.<br>함께 원정길에 오를 대원을 모으고 있습니다.';
+  span.innerHTML = '<b>' + (+d[1]) + '월 ' + (+d[2]) + '일(토)</b>, 집을 떠나지 않는 ' + SAIL_HIT[1] + ' 탐험대가 출발합니다.<br>함께 원정길에 오를 대원을 모으고 있습니다.';
 })();
 
 /* 왜의 층 — 한 단락씩 떠오르게 */
