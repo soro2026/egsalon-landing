@@ -98,7 +98,7 @@
   };
 
   /* ══ ② 그림 서랍 ══ */
-  var art = new Shelf({ no:'museum_no', short:function(n){ return n.replace(/ (미술관|박물관)$/, ''); } });
+  var art = new Shelf({ no:'museum_no', short:function(n){ return 'EG ' + n.replace(/ (미술관|박물관)$/, ''); } });   /* 1107 「오늘 · EG 우피치」 — 순환하는 EG의 방이지 실제 소장처가 아님 */
   var artBox = document.getElementById('wallRooms');
 
   function renderArt(){
@@ -123,7 +123,7 @@
         out.push('<button class="wa' + (w.ratio === 'portrait' ? ' pt' : '') + (t ? ' now' : '') + '" type="button" data-k="' + k + '"'
           + ' aria-label="' + esc(w.artist + ' 「' + w.name + '」') + '">'
           + '<span class="wa-f"><img src="' + esc(w.img) + '" alt="" loading="lazy" decoding="async"></span>'
-          + '<span class="wa-t"><b>「' + esc(w.name) + '」</b><i>' + esc(w.artist) + '</i>'
+          + '<span class="wa-t"><b>「' + esc(w.name) + '」</b><i>' + esc(w.artist) + (w.origin ? ' · ' + esc(w.origin) + ' 소장' : '') + '</i>'
           + (t ? '<em>오늘 · ' + esc(t) + '</em>' : '') + '</span></button>');
       });
       out.push('</div></section>');
@@ -134,7 +134,7 @@
   }
 
   /* ══ ③ 곡 서랍 — 작곡가의 벽 ══ */
-  var song = new Shelf({ no:'hall_no', short:function(n){ return n; } });
+  var song = new Shelf({ no:'hall_no', short:function(n){ return 'EG ' + n; } });
   var musicBox = document.getElementById('musicRooms');
   var faces = {};                       /* 지은 사람 이름 → { img, birth, death } */
   var ERAS = [
@@ -458,11 +458,11 @@
   /* ══ ④ 크게 보기 — 두 서랍이 함께 ══ */
   var lb = document.getElementById('lb'), cur = -1, kind = 'art', lastFocus = null;
   var LB = {
-    art:  { shelf:art,  head:'다섯 미술관에 걸리는 날', app:'그림의 네 겹 해설과 설명 듣기, 내 집 거실에 들이기는 EG유니버스 안에서.',
-            img:function(w){ return w.img; }, meta:function(w){ return [w.artist, w.period, w.movement]; }, by:'' },
-    song: { shelf:song, head:'다섯 음악관에 오르는 날', app:'곡 이야기 듣기와 연주는 그 곡이 음악관에 오르는 날, EG유니버스 안에서.',
+    art:  { shelf:art,  head:'다섯 미술관에 걸리는 날', app:'그림의 네 겹 해설과 설명 듣기, 내 집 거실에 들이기는 EG유니버스에서 직접 하실 수 있습니다.',
+            img:function(w){ return w.img; }, meta:function(w){ return [w.artist, w.period, w.movement]; }, by:'origin', byFmt:function(v){ return v + ' 소장'; } },
+    song: { shelf:song, head:'다섯 음악관에 오르는 날', app:'곡 이야기 듣기와 연주는 그 곡이 음악관에 오르는 날 EG유니버스에서 직접 들으실 수 있습니다.',
             img:function(w, i){ var f = faces[w.artist]; return f ? f.img : stageFor(i); }, meta:function(w){ return [w.artist, w.period]; }, by:'origin' },
-    star: { shelf:star, head:'', app:'별에 다가가 그 생애를 장면으로 펼치고, 그 별의 컴퍼니에 드는 일은 EG유니버스 안에서.',
+    star: { shelf:star, head:'', app:'별에 다가가 그 생애를 장면으로 펼치고 그 별의 컴퍼니에 드는 일은 EG유니버스에서 직접 하실 수 있습니다.',
             img:function(w){ return w.photo_url; }, meta:function(w){ return [life(w), w.field, w.primary_tag]; }, by:'',
             title:function(w){ return w.name; }, scene:function(w){ return w.description; } }
   };
@@ -486,7 +486,7 @@
     lb.querySelector('.lb-name').textContent = L.title ? L.title(w) : '「' + w.name + '」';
     lb.querySelector('.lb-meta').textContent = L.meta(w).filter(Boolean).join(' · ');
     var by = lb.querySelector('.lb-by');
-    by.textContent = L.by && w[L.by] ? '연주 · ' + w[L.by] : ''; by.hidden = !by.textContent;
+    by.textContent = L.by && w[L.by] ? (L.byFmt ? L.byFmt(w[L.by]) : '연주 · ' + w[L.by]) : ''; by.hidden = !by.textContent;
     var sc = lb.querySelector('.lb-scene'), st = L.scene ? L.scene(w) : w.scene;
     sc.textContent = plain(st); sc.hidden = !st;
     var wh = lb.querySelector('.lb-wh');
@@ -652,7 +652,7 @@
             + '<span class="ti">' + esc(edTitle(e.title)) + '</span>' + (e.why ? '<p>' + esc(e.why) + '</p>' : '') + tag
             + (i === 0 ? '<span class="first">먼저 권하는 판</span>' : '') + '</div>';
         }).join('') + '</div>';
-    h += '</section><p class="cb-app">수강 신청과 개설 요청, 같은 책을 든 사람들과 함께 읽는 일은 EG유니버스 안에서.</p>';
+    h += '</section><p class="cb-app">수강 신청과 개설 요청, 같은 책을 든 사람들과 함께 읽는 일은 EG유니버스에서 직접 하실 수 있습니다.</p>';
     return h;
   }
   function openBook(k){
@@ -709,7 +709,7 @@
 
   if (artBox) Promise.all([
     get('terra_pins?select=code,name,active,sort,meta&kind=eq.heritage&order=sort'),
-    get('heritage_items?select=id,name,artist,period,movement,ratio,img,scene:layers->>scene&category=eq.visual&status=eq.active&order=hang_order.asc.nullslast,id.asc')
+    get('heritage_items?select=id,name,artist,period,movement,ratio,img,origin,scene:layers->>scene&category=eq.visual&status=eq.active&order=hang_order.asc.nullslast,id.asc')
   ]).then(function(r){
     art.halls = Array.isArray(r[0]) ? r[0] : []; art.list = Array.isArray(r[1]) ? r[1] : [];
     if (!art.halls.length || !art.list.length) throw new Error('empty');

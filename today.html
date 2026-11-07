@@ -582,7 +582,7 @@ main [id]{scroll-margin-top:calc(var(--head-top) + 72px)}
       <div class="hall">
         <img class="wall" alt="" aria-hidden="true">
         <div class="art"><img alt="우타가와 히로시게 「오하시 다리에 내리는 소나기」"></div>
-        <div class="gplaque"><b>오하시 다리에 내리는 소나기</b><span>우타가와 히로시게 · 1857</span></div>
+        <div class="gplaque"><b>오하시 다리에 내리는 소나기</b><span>우타가와 히로시게 · 1857</span><span>브루클린 미술관 등 소장</span></div>
       </div>
       <div class="where" aria-hidden="true"></div>
       <div class="know">
@@ -1162,7 +1162,7 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
       if (!H || !N) throw new Error('관 · 그림 명단을 못 읽음');
       var hall = halls[dayNo % H], m = hall.meta || {}, no = (m.museum_no != null) ? m.museum_no : halls.indexOf(hall);
       var pick = ids[((dayNo + Math.floor(no * N / H)) % N + N) % N].id;
-      return get('heritage_items?select=id,name,artist,period,img,layers&id=eq.' + encodeURIComponent(pick) + '&limit=1').then(function(A){
+      return get('heritage_items?select=id,name,artist,period,origin,img,layers&id=eq.' + encodeURIComponent(pick) + '&limit=1').then(function(A){
         if (done) return;
         var a = A && A[0], st = document.getElementById('galStage'), sec = (document.getElementById('galerie-title') || {}).closest ? document.getElementById('galerie-title').closest('section') : null;
         if (!a || !a.img || !st || !sec || !m.frame_rect || !m.plaque_pos) throw new Error('그림 · 걸이 자리를 못 읽음 · ' + pick);
@@ -1178,7 +1178,8 @@ Array.prototype.forEach.call(document.querySelectorAll('main video[preload="none
         egStageMedia(st, window.EG_TODAY_MEDIA.galerie[hall.code]);
         st.querySelector('.art img').setAttribute('alt', (a.artist ? a.artist + ' ' : '') + '「' + a.name + '」');
         var plq = st.querySelector('.gplaque');
-        plq.innerHTML = '<b>' + esc(a.name) + '</b><span>' + esc([a.artist, a.period].filter(Boolean).join(' · ')) + '</span>';
+        plq.innerHTML = '<b>' + esc(a.name) + '</b><span>' + esc([a.artist, a.period].filter(Boolean).join(' · ')) + '</span>'
+          + (a.origin ? '<span>' + esc(a.origin) + ' 소장</span>' : '');   /* 1107 결정문 1106오후 ① — 실제 소장처 한 줄 */
         plq.classList.toggle('dark', m.plaque_ink === 'dark');   /* Places 회화 방의 고정값(우피치 · 시카고) */
         var sc = st.querySelector('.know .scene'), k = st.querySelector('.know .k');
         if (L.scene) sc.innerHTML = sceneHtml(L.scene);
