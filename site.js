@@ -110,6 +110,17 @@
         「그 순간 꽂히는 곳으로」 · 순서는 메뉴 띠와 같다(Why 다음이 Today)
         페이지에는 <footer class="eg-map"></footer> 빈 자리만 두고, 글은 여기 한 곳에서 고친다
         ⚠ 아래 ①이 [data-gate]를 손질하므로 지도는 그보다 먼저 끼운다 ── */
+  /* ── 사업자 정보 (1109 소로) — 모든 쪽 바닥 맨 아래 작은 글씨 한 덩이
+        1107 결정문 §1의 값 그대로 · 신원 정보는 첫 화면에서 바로 보이게(전자상거래법 제10조)
+        통신판매업 신고번호는 11/9 구청 신청 뒤 BIZ_SALES 에 넣으면 한 줄이 저절로 붙는다 ── */
+  var BIZ_SALES = '';   /* 예: '제2026-경북포항-0000호' */
+  var BIZ = ''
+    + '<div class="map-biz">'
+    +   '<p><span>상호 이지EG유니버스</span> · <span>대표 조신영</span> · <span>사업자등록번호 265-17-02898</span></p>'
+    +   (BIZ_SALES ? '<p><span>통신판매업 신고번호 ' + BIZ_SALES + '</span> · <span>호스팅 GitHub Pages</span></p>' : '')
+    +   '<p>경상북도 포항시 북구 흥해읍 동해대로1574번길 13, 다308호</p>'
+    +   '<p><span>전화 010-5432-7331</span> · <span>메일 <a href="mailto:lonelywalden@gmail.com">lonelywalden@gmail.com</a></span></p>'
+    + '</div>';
   var chips = GUIDE.map(function(g){ return '<a href="' + gHref(g) + '">' + g.ko + '</a>'; }).join('');
   var MAP = ''
     + '<div class="map-in">'
@@ -137,6 +148,7 @@
     +     '<span class="map-date">2026년 12월 25일(금) 개관</span>'
     +     '<a class="map-door" data-gate href="#">' + JOIN_LABEL + '</a>'
     +   '</div>'
+    +   BIZ
     + '</div>';
   document.querySelectorAll('footer.eg-map').forEach(function(f){
     if (!f.children.length) f.innerHTML = MAP;

@@ -110,6 +110,12 @@
 .eg-map .map-door:hover{transform:translateY(-1px);background:#fff}
 .eg-map .map-door.in{background:var(--arrow)}
 .eg-map .map-door.in:hover{background:#f6d773}
+/* 사업자 정보 (1109 소로) — 판권면처럼 작고 담백하게 */
+.eg-map .map-biz{margin-top:28px;font-size:12.5px;line-height:1.85;color:rgba(244,239,230,.46);word-break:keep-all}
+.eg-map .map-biz p{margin:0}
+.eg-map .map-biz span{white-space:nowrap}
+.eg-map .map-biz a{border-bottom:1px solid rgba(244,239,230,.22)}
+.eg-map .map-biz a:hover{color:var(--paper);border-bottom-color:var(--arrow)}
 
 @media (max-width:640px){
   .eg-map .map-main li{grid-template-columns:1fr}
