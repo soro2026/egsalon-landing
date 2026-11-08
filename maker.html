@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>조신영 · EG유니버스</title>
+<meta name="description" content="EG유니버스를 지은 사람 — 조신영(소로 · 小路). 지나온 일과 보도, 사업자 정보.">
+<meta name="theme-color" content="#0b0907">
+<link rel="canonical" href="https://egsalon.com/maker.html">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="site.css?v=1109a">
+<style>
+/* ── 지은 사람 (1107 결정 · 1109 지음) — 책 맨 뒤 판권면처럼 담백하게 · 간판이 아니라 서명란
+      바닥의 「대표 조신영」 이름에서 들어온다 · 사업자 정보는 바닥 지도 맨 아래가 맡는다 ── */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--paper)}
+body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+  -webkit-font-smoothing:antialiased;color:var(--ink);min-height:100vh;min-height:100svh}
+main{max-width:760px;margin:0 auto;padding:calc(var(--head-top) + 140px) var(--gutter) 120px}
+.eyebrow{font-size:12.5px;letter-spacing:.3em;color:var(--ink-dim)}
+h1{margin-top:18px;font-family:var(--serif);font-weight:400;font-size:clamp(40px,6vw,72px);
+  line-height:1.15;letter-spacing:-.02em;word-break:keep-all}
+
+/* 소로의 글 한 단락 */
+.note{margin-top:clamp(36px,5vw,56px);padding-top:clamp(28px,3.6vw,40px);border-top:1px solid rgba(11,9,7,.16)}
+.note p{font-family:var(--serif);font-weight:300;font-size:clamp(17px,1.6vw,20px);line-height:1.95;
+  color:var(--ink);word-break:keep-all;text-wrap:pretty}
+
+/* 보도 — 작게 · 출처처럼 */
+.press{margin-top:clamp(64px,8vw,104px)}
+.press h2{font-size:12.5px;font-weight:500;letter-spacing:.3em;color:var(--ink-dim)}
+.press ul{list-style:none;margin-top:14px;border-top:1px solid rgba(11,9,7,.12)}
+.press li{border-bottom:1px solid rgba(11,9,7,.07)}
+.press a{display:flex;gap:16px;align-items:baseline;padding:11px 0;color:var(--ink);text-decoration:none;
+  font-size:14.5px;line-height:1.6}
+.press .src{flex:0 0 7.2em;color:var(--ink-dim);font-size:13px}
+.press .what{flex:0 1 auto;border-bottom:1px solid transparent;transition:border-color .2s ease}
+.press a:hover .what{border-bottom-color:rgba(11,9,7,.4)}
+.press + .press{margin-top:clamp(36px,4.6vw,52px)}
+</style>
+</head>
+<body>
+
+<a class="gate" data-gate href="#">EG 둘러보기</a>
+<p class="gate-note" id="gate-note" role="status">EG유니버스는 노트북이나 데스크톱에서 열립니다. 3D 지구를 실시간으로 그리는 곳이라 넉넉한 메모리가 필요해, 휴대폰에서는 들어오실 수 없습니다. 양해 부탁드립니다.</p>
+
+<nav class="eg-nav" aria-label="EG유니버스 메뉴">
+  <a class="home" href="./">EG유니버스</a>
+  <ul>
+    <li><a href="today.html">Today</a></li>
+    <li><a href="guide.html">Guide</a></li>
+    <li><a href="places.html">Places</a></li>
+    <li><a href="collection.html">Collection</a></li>
+    <li><a href="expedition.html">Expedition</a></li>
+    <li class="sep" aria-hidden="true"></li>
+    <li class="minor"><a href="news.html">News</a></li>
+    <li class="minor"><a href="making.html">Making</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="eyebrow">지은 사람</div>
+  <h1>조신영</h1>
+
+  <!-- 소로의 글 한 단락(1109) — 끊어진 줄 대신 이어지는 글로 -->
+  <section class="note">
+    <p>소로(小路, soro)라는 닉네임을 사용합니다. 대학에서 건축공학을 전공했으나, 졸업 후에는 전공과 무관한 학술단체의 편집자와 기획 업무를 했습니다. 30대 초반부터 강연과 저술, 출판기획과 발행인의 일을 하면서 60대 초반까지 30년 활발하게 활동했습니다. 2024년부터는 새벽 인력시장에 나가 육체노동자로 새로운 삶을 살아가고 있습니다. 2026년 4월부터 EG유니버스를 제작하기 시작했고, 11월 중순부터 운영을 시작합니다.</p>
+  </section>
+
+  <!-- 보도 — 앱 profile.html 목록에서 · 한국경제 기사는 뺌(1107 소로) -->
+  <section class="press">
+    <h2>활동</h2>
+    <ul>
+      <li><a href="https://omn.kr/ohls" target="_blank" rel="noopener"><span class="src">오마이뉴스</span><span class="what">클래식북스 인터뷰</span></a></li>
+      <li><a href="https://www.lecturernews.com/news/articleView.html?idxno=15976" target="_blank" rel="noopener"><span class="src">한국강사신문</span><span class="what">생각학교ASK 운영</span></a></li>
+      <li><a href="https://www.khan.co.kr/article/200601191517011#ENT" target="_blank" rel="noopener"><span class="src">경향신문</span><span class="what">신년특집</span></a></li>
+      <li><a href="https://www.kbmaeil.com/825334" target="_blank" rel="noopener"><span class="src">경북매일</span><span class="what">일간지 고정 칼럼</span></a></li>
+    </ul>
+  </section>
+  <section class="press">
+    <h2>저술</h2>
+    <ul>
+      <li><a href="https://blog.naver.com/dnpcorp/224361691626" target="_blank" rel="noopener"><span class="src">대표작</span><span class="what">『경청』 후기</span></a></li>
+      <li><a href="https://blog.naver.com/ohsuesue/224339351215" target="_blank" rel="noopener"><span class="src">대표작</span><span class="what">『쿠션』 후기</span></a></li>
+      <li><a href="https://kookbang.dema.mil.kr/newsWeb/20210128/5/ATCE_CTGR_0060010000/view.do" target="_blank" rel="noopener"><span class="src">국방일보</span><span class="what">『정온』</span></a></li>
+      <li><a href="https://www.kyosu.net/news/articleView.html?idxno=60285" target="_blank" rel="noopener"><span class="src">교수신문</span><span class="what">『정온』</span></a></li>
+      <li><a href="https://www.kbmaeil.com/822597" target="_blank" rel="noopener"><span class="src">경북매일</span><span class="what">『엘리에이션 파워』</span></a></li>
+    </ul>
+  </section>
+</main>
+
+<!-- 바닥 지도 — 글은 site.js 한 곳 · 맨 아래 사업자 정보도 거기서 -->
+<footer class="eg-map" aria-label="EG유니버스의 지도"></footer>
+
+<script src="https://app.egsalon.com/eg_device.js?v=20260729"></script>
+<script src="site.js?v=1109a"></script>
+</body>
+</html>

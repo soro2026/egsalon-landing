@@ -116,7 +116,7 @@
   var BIZ_SALES = '';   /* 예: '제2026-경북포항-0000호' */
   var BIZ = ''
     + '<div class="map-biz">'
-    +   '<p><span>상호 이지EG유니버스</span> · <span>대표 조신영</span> · <span>사업자등록번호 265-17-02898</span></p>'
+    +   '<p><span>상호 이지EG유니버스</span> · <span>대표 <a href="maker.html">조신영</a></span> · <span>사업자등록번호 265-17-02898</span></p>'
     +   (BIZ_SALES ? '<p><span>통신판매업 신고번호 ' + BIZ_SALES + '</span> · <span>호스팅 GitHub Pages</span></p>' : '')
     +   '<p>경상북도 포항시 북구 흥해읍 동해대로1574번길 13, 다308호</p>'
     +   '<p><span>전화 010-5432-7331</span> · <span>메일 <a href="mailto:lonelywalden@gmail.com">lonelywalden@gmail.com</a></span></p>'
