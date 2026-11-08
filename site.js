@@ -31,7 +31,8 @@
   })();
   function signupUrl(board){
     var q = [];
-    if (board) q.push('board=1');
+    if (board === 'member') q.push('board=member');   /* 1109 — 탐험대 없이 정회원만 */
+    else if (board) q.push('board=1');
     if (BY) q.push('by=' + encodeURIComponent(BY));
     return APP_URL + 'signup.html' + (q.length ? '?' + q.join('&') : '');
   }
@@ -43,9 +44,10 @@
   /* data-join — 단추 글자를 JOIN_LABEL 로 · data-until="YYYY-MM-DD" — 그날이 지나면 그 줄을 걷는다 */
   document.querySelectorAll('[data-join]').forEach(function(a){ a.textContent = JOIN_LABEL; });
   document.querySelectorAll('[data-until]').forEach(function(el){ if (KST > el.getAttribute('data-until')) el.remove(); });
-  /* 페이지 안의 가입 단추 — data-signup(무료 가입) · data-signup="board"(승선 한 줄) */
+  /* 페이지 안의 가입 단추 — data-signup(무료 가입) · data-signup="board"(승선 한 줄) · data-signup="member"(정회원만 · 1109) */
   document.querySelectorAll('a[data-signup]').forEach(function(a){
-    a.href = signupUrl(a.getAttribute('data-signup') === 'board');
+    var k = a.getAttribute('data-signup');
+    a.href = signupUrl(k === 'member' ? 'member' : k === 'board');
   });
 
   /* ── Guide 일곱 가지 (1020 오후 소로) — 하나마다 페이지 하나 · 길게 이어 내려가지 않는다
