@@ -87,7 +87,8 @@
   ];
   var gHref = function(g){ return 'guide-' + g.slug + '.html'; };
   window.EG_GUIDE = GUIDE.map(function(g){ return { slug:g.slug, en:g.en, ko:g.ko, href:gHref(g) }; });   /* 촬영표(shots.html)가 페이지 목록으로 쓴다 */
-  var here = (location.pathname.split('/').pop() || 'home.html').replace(/\.html$/, '');
+  var here = (location.pathname.split('/').pop() || 'index.html').replace(/\.html$/, '');
+  if (here === 'index') here = 'home';   /* 1108 테이프 커팅 — 첫 화면이 home.html 에서 index.html(egsalon.com/) 로 */
 
   document.querySelectorAll('nav.g7').forEach(function(box){
     var html = '<ol class="g7-list">';
@@ -132,7 +133,7 @@
     +     '<li><a href="making.html">Making <i>짓는 과정</i></a></li>'
     +   '</ul>'
     +   '<div class="map-end">'
-    +     '<a class="map-home" href="home.html">EG유니버스</a>'
+    +     '<a class="map-home" href="./">EG유니버스</a>'
     +     '<span class="map-date">2026년 12월 25일(금) 개관</span>'
     +     '<a class="map-door" data-gate href="#">' + JOIN_LABEL + '</a>'
     +   '</div>'
