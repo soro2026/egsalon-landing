@@ -10,7 +10,7 @@
 #   'rooms_list': [ {'id','title','sub','body':[...], 'media':[...], 'keep':[(굵게, 이어서)...], 'remain': '...'} ],
 #   'coda': '맺는 한 줄',
 # }
-# 미디어 하나 = {'video': 'guide_x_y', 'cap': '...', 'ratio': '3/4'(있으면 그 칸만 그 비율 · 1022), 'maxw': 560(칸 폭 상한 · 가운데)}  · {'img': 'guide_x_y', 'cap': '...', 'w':1920, 'h':1080}
+# 미디어 하나 = {'video': 'guide_x_y', 'cap': '...', 'ratio': '3/4'(있으면 그 칸만 그 비율 · 1022), 'maxw': 560(칸 폭 상한 · 가운데), 'wide': 1360(본문 밖으로 넓게 · 1108)}  · {'img': 'guide_x_y', 'cap': '...', 'w':1920, 'h':1080}
 #             · {'shot': {'kind','shot','where','len','key','must'}}  · {'pair': [미디어, 미디어]}
 #             · {'hall': 'orsay', 'cap': '...', 'voice': True, 'view': 0.75}  — 미술관 방 낮 판 + 오늘 그 관에 걸린 그림(hallroom.js · DB 직접 · 1022)
 #               voice = 명패 아래 「▶ 설명 듣기」(앱과 같은 낭독) · view = 칸의 세로 ÷ 가로(기본 1.25)
@@ -31,6 +31,10 @@ def media(m, ind='  '):
         n = m['video']
         ratio = f' style="aspect-ratio:{esc(m["ratio"])}"' if m.get('ratio') else ''   # 1022 파이스2 — 세로 영상 칸(인라인이라 guide.css 꼬리표 안 건드림)
         maxw = f' style="max-width:{int(m["maxw"])}px;margin-left:auto;margin-right:auto"' if m.get('maxw') else ''   # 1022 파이스2 — 좁은 칸을 가운데로(휴대폰은 폭 100%)
+        if m.get('wide'):   # 1108 파이원 — 소로 「큼직하게」 · 본문 폭 밖으로 넓혀 화면 가운데에(최대 wide px · 휴대폰은 양옆 여백만 남김)
+            w = int(m['wide'])
+            maxw = (f' style="width:min({w}px,calc(100vw - 2 * var(--gutter)));'
+                    f'margin-left:calc(50% - min({w // 2}px,calc(50vw - var(--gutter))))"')
         return (f'{ind}<figure class="clip"{maxw} data-video-1920="media/{n}_1920.mp4" data-video-1280="media/{n}_1280.mp4">\n'
                 f'{ind}  <div class="frame"{ratio}><video muted playsinline loop preload="none" poster="media/{n}_poster.jpg"></video></div>\n'
                 f'{ind}  <figcaption>{m.get("cap","")}</figcaption></figure>')
