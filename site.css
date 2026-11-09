@@ -122,8 +122,16 @@
   .eg-map .map-door{width:100%}
   .eg-map .map-date{margin-right:0}
   .gate{padding:8px 14px;font-size:12.5px}
-  .eg-nav{padding-right:calc(var(--gutter) + 118px);gap:14px}
-  .eg-nav .home{font-size:14px}
+  /* 1109 소로 — 휴대폰에서는 위 띠를 메뉴가 다 쓴다.
+     가입 단추는 걷고(모든 쪽 맨 아래 지도 끝에 큰 단추가 있다) · News · Making은 지도로 ·
+     「EG유니버스」는 「EG」 두 글자로 — 큰 다섯이 밀지 않고 한 줄에 선다(폭 360까지) */
+  .gate{display:none}
+  .eg-nav{padding-right:var(--gutter);gap:12px}
+  .eg-nav .home{font-size:0}
+  .eg-nav .home::before{content:'EG';font-size:14px;letter-spacing:.04em}
+  .eg-nav ul{gap:12px}
+  .eg-nav a{font-size:13px;letter-spacing:.02em}
+  .eg-nav .sep,.eg-nav .minor{display:none}
 }
 
 /* ── Guide 일곱 가지 (1020 오후 소로) ─────────────────────────
