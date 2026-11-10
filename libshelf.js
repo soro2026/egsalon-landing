@@ -220,13 +220,18 @@
   window.addEventListener('resize', function(){ aim(); fitBook(); fitSpines(); });
 
   /* 책등 글씨 — 책등의 폭과 높이를 재서 한 줄로 들어가게(1022 소로 「책등이 문제발생」 — 좁은 책등에서 글씨가 두 줄로 넘쳤다) */
-  function fitSpine(bk){
-    var im = bk.querySelector('.spine'), t = bk.querySelector('.bkt');
-    var w = im.clientWidth, h = im.clientHeight; if (!w || !h) return;
-    var n = Math.max(3, t.textContent.length);
-    t.style.fontSize = Math.max(7, Math.min(w * 0.58, h * 0.84 / n, 20)).toFixed(1) + 'px';
+  /* 1110 오후 소로 「글자 수 적은 책등이 너무 커 보여 들쭉날쭉」 — 서가 전체가 한 크기.
+     가장 좁은 책등 폭으로 기준 크기 하나를 정하고, 그 크기로 한 줄에 다 안 들어가는 긴 제목만 줄인다(today.html 오늘의 도서관과 같은 셈) */
+  function fitSpines(){
+    var bks = shelf.querySelectorAll('.bk'), base = 18;
+    bks.forEach(function(bk){ var w = bk.querySelector('.spine').clientWidth; if (w) base = Math.min(base, w * 0.5); });
+    bks.forEach(function(bk){
+      var im = bk.querySelector('.spine'), t = bk.querySelector('.bkt');
+      var h = im.clientHeight; if (!im.clientWidth || !h) return;
+      var n = Math.max(3, t.textContent.length);
+      t.style.fontSize = Math.max(6, Math.min(base, h * 0.84 / n)).toFixed(1) + 'px';
+    });
   }
-  function fitSpines(){ shelf.querySelectorAll('.bk').forEach(fitSpine); }
   function drawShelf(){
     shelf.style.left = RECT.L + '%'; shelf.style.top = RECT.T + '%'; shelf.style.width = RECT.W + '%'; shelf.style.height = RECT.H + '%';
     var page = BOOKS.slice(0, PER_PAGE), racks = [];
@@ -243,7 +248,7 @@
     shelf.innerHTML = racks.join('');
     shelf.querySelectorAll('.bk').forEach(function(bk){
       var im = bk.querySelector('.spine');
-      if (im.complete && im.naturalWidth) fitSpine(bk); else im.addEventListener('load', function(){ fitSpine(bk); });
+      if (im.complete && im.naturalWidth) fitSpines(); else im.addEventListener('load', fitSpines);
     });
     head.querySelector('span').textContent = BOOKS.length + '권';
     shelf.querySelectorAll('.bk').forEach(function(el){
