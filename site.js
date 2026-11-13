@@ -19,6 +19,27 @@
   'use strict';
   var APP_URL  = 'https://app.egsalon.com/';
 
+  /* ── 홈페이지 카운터 (1114 소로) ──
+        페이지가 열릴 때마다 서버 카운터에 1을 더한다(eg_home_hit). 누구인지는 적지 않는다.
+        화면에는 아무것도 표시하지 않는다 — 매일 아침 06:00 운영자 메일로만 보고(eg_home_daily_notify).
+        운영자 기기는 egsalon.com/?me=1 로 한 번 열면 그 브라우저에서 빠진다(?me=0 이면 다시 셈). */
+  (function(){
+    try{
+      var me = new URLSearchParams(location.search).get('me');
+      if (me === '1') localStorage.setItem('eg_count_skip', '1');
+      if (me === '0') localStorage.removeItem('eg_count_skip');
+      if (localStorage.getItem('eg_count_skip') === '1') return;
+    }catch(e){}
+    try{
+      var K = 'sb_publishable_jYYfQV_wQgMRFjSUuDq7xA_gWc9vsnR';
+      fetch('https://cyhlotwdisjvoxvfkpnd.supabase.co/rest/v1/rpc/eg_home_hit', {
+        method: 'POST', keepalive: true,
+        headers: { apikey: K, Authorization: 'Bearer ' + K, 'Content-Type': 'application/json' },
+        body: '{}'
+      }).catch(function(){});
+    }catch(e){}
+  })();
+
   /* ── 초대 번호 (결정문 1031 v1.1 §8 · 1103) ──
         대원 링크(egsalon.com/…?by=017)로 오신 분 — 번호를 이 브라우저에 적어 두었다가,
         며칠 둘러본 뒤 가입 단추를 누를 때 앱 주소에 실어 넘긴다 */
