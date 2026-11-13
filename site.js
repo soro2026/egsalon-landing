@@ -122,6 +122,7 @@
     +   (BIZ_SALES ? '<p><span>통신판매업 신고번호 ' + BIZ_SALES + '</span> · <span>호스팅 GitHub Pages</span></p>' : '')
     +   '<p>경상북도 포항시 북구 흥해읍 동해대로1574번길 13, 다308호</p>'
     +   '<p><span>전화 010-5432-7331</span> · <span>메일 <a href="mailto:lonelywalden@gmail.com">lonelywalden@gmail.com</a></span></p>'
+    +   '<p><a href="terms.html">이용약관</a></p>'   /* 1113 소로 — 홈페이지 맨 아래 이용약관 */
     + '</div>';
   var chips = GUIDE.map(function(g){ return '<a href="' + gHref(g) + '">' + g.ko + '</a>'; }).join('');
   var MAP = ''
